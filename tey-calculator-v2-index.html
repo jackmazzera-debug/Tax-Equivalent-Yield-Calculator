@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEY Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --ink:    #111210;
+  --ink2:   #44433f;
+  --ink3:   #8a8880;
+  --paper:  #f5f3ee;
+  --white:  #ffffff;
+  --rule:   #e0ddd6;
+  --rule2:  #ccc9c0;
+  --navy:   #1b3557;
+  --navy2:  #122440;
+  --teal:   #0f5c52;
+  --red:    #b83c1e;
+  --amber:  #7a5200;
+  --amber-bg: #fdf3dc;
+  --green:  #1a5c3a;
+  --green-bg: #e8f5ee;
+  --blue-bg: #e8f0f8;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --radius: 3px;
+}
+
+body { font-family: var(--sans); background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.6; }
+
+/* ── HEADER ── */
+.hdr { background: var(--navy); color: #fff; padding: 1.5rem 2.5rem; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.hdr-title { font-size: 1.1rem; font-weight: 400; font-family: var(--mono); letter-spacing: 0.04em; }
+.hdr-sub { font-size: 0.7rem; font-family: var(--mono); opacity: 0.45; letter-spacing: 0.06em; margin-top: 2px; }
+.data-pill { font-family: var(--mono); font-size: 0.65rem; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); white-space: nowrap; }
+.data-pill.live { border-color: #4caf50; color: #81c784; }
+.data-pill.stale { border-color: #ff9800; color: #ffb74d; }
+
+/* ── LAYOUT ── */
+.wrap { max-width: 1160px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+
+/* ── INPUTS BAR ── */
+.inputs-bar { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
+.ig { display: flex; flex-direction: column; gap: 5px; min-width: 140px; }
+.ig label { font-size: 0.65rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); }
+.ig input, .ig select { font-family: var(--mono); font-size: 0.9rem; border: 1px solid var(--rule2); background: var(--paper); padding: 7px 9px; border-radius: var(--radius); color: var(--ink); width: 100%; transition: border-color .15s; }
+.ig input:focus, .ig select:focus { outline: none; border-color: var(--navy); background: var(--white); }
+.ig .hint { font-size: 0.62rem; font-family: var(--mono); color: var(--ink3); }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.05em; padding: 8px 16px; border-radius: var(--radius); cursor: pointer; transition: background .15s, opacity .15s; border: none; white-space: nowrap; }
+.btn-primary { background: var(--navy); color: #fff; }
+.btn-primary:hover { background: var(--navy2); }
+.btn-ghost { background: transparent; color: var(--ink2); border: 1px solid var(--rule2); }
+.btn-ghost:hover { background: var(--paper); border-color: var(--rule2); }
+.btn.loading { opacity: 0.6; cursor: wait; }
+.spin { width: 11px; height: 11px; border: 1.5px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SECTION LABEL ── */
+.slabel { font-family: var(--mono); font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink3); padding-bottom: 8px; border-bottom: 1px solid var(--rule); margin: 1.5rem 0 1rem; display: flex; align-items: center; justify-content: space-between; }
+
+/* ── OVERRIDE PANEL ── */
+.override-toggle { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; color: var(--ink3); cursor: pointer; padding: 6px 10px; border: 1px solid var(--rule2); border-radius: var(--radius); background: var(--white); transition: border-color .15s; user-select: none; }
+.override-toggle:hover { border-color: var(--navy); color: var(--navy); }
+.override-toggle .arrow { transition: transform .2s; display: inline-block; }
+.override-toggle.open .arrow { transform: rotate(90deg); }
+
+.override-panel { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 1.25rem; overflow: hidden; max-height: 0; transition: max-height .3s ease; }
+.override-panel.open { max-height: 700px; }
+.override-inner { padding: 1.25rem 1.5rem; }
+.override-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
+.override-header h3 { font-size: 0.75rem; font-family: var(--mono); font-weight: 500; color: var(--ink2); }
+.override-header p { font-size: 0.72rem; color: var(--ink3); margin-top: 2px; }
+.override-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+.override-item { display: flex; flex-direction: column; gap: 4px; }
+.override-item label { font-size: 0.63rem; font-family: var(--mono); letter-spacing: 0.07em; color: var(--ink3); display: flex; justify-content: space-between; align-items: center; }
+.override-item label span { color: var(--navy); font-weight: 500; }
+.override-item .row { display: flex; gap: 5px; align-items: center; }
+.override-item input[type=number] { font-family: var(--mono); font-size: 0.88rem; border: 1px solid var(--rule2); background: var(--paper); padding: 6px 8px; border-radius: var(--radius); color: var(--ink); flex: 1; min-width: 0; transition: border-color .15s; }
+.override-item input[type=number]:focus { outline: none; border-color: var(--navy); background: var(--white); }
+.override-item input.edited { border-color: var(--amber); background: var(--amber-bg); }
+.source-tag { font-family: var(--mono); font-size: 0.58rem; padding: 1px 5px; border-radius: 2px; white-space: nowrap; }
+.src-live { background: var(--green-bg); color: var(--green); }
+.src-fallback { background: var(--amber-bg); color: var(--amber); }
+.src-manual { background: var(--blue-bg); color: var(--navy); }
+.override-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.override-note { font-size: 0.67rem; font-family: var(--mono); color: var(--ink3); }
+
+/* ── TABLES ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+.tcard { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.tcard-label { padding: 8px 12px 0; font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); }
+.tcard table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.tcard thead th { background: #f9f8f5; font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); padding: 7px 11px; text-align: right; font-weight: 400; border-bottom: 1px solid var(--rule); }
+.tcard thead th:first-child { text-align: left; }
+.tcard tbody td { padding: 9px 11px; text-align: right; border-bottom: .5px solid var(--rule); font-family: var(--mono); font-size: 0.8rem; color: var(--ink2); }
+.tcard tbody td:first-child { text-align: left; font-family: var(--sans); font-size: 0.82rem; color: var(--ink); }
+.tcard tbody tr:last-child td { border-bottom: none; }
+.tcard tbody tr:hover { background: var(--paper); }
+.tkey { font-family: var(--mono); font-size: 0.65rem; color: var(--ink3); background: #f0ede6; padding: 1px 4px; border-radius: 2px; margin-left: 4px; }
+.winner { color: var(--navy); font-weight: 500; }
+.dimmed { color: var(--ink3); }
+
+.badge { display: inline-block; font-family: var(--mono); font-size: 0.58rem; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.04em; font-weight: 500; }
+.badge-best { background: var(--navy); color: #fff; }
+.badge-buy  { background: var(--green-bg); color: var(--green); }
+.badge-hold { background: #f0ede6; color: var(--ink3); }
+
+/* ── CHARTS ── */
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+@media (max-width: 720px) { .charts-grid { grid-template-columns: 1fr; } }
+.ccard { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem; }
+.ccard h3 { font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); margin-bottom: 1rem; font-weight: 400; }
+
+/* ── EXPLAINER + BREAKEVEN ── */
+.explainer { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+.explainer h2 { font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); margin-bottom: 1rem; font-weight: 400; }
+.formula { font-family: var(--mono); font-size: 0.85rem; color: var(--navy); background: var(--paper); border-left: 2px solid var(--navy); padding: .75rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 1.25rem; }
+.tradeoff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 720px) { .tradeoff-grid { grid-template-columns: 1fr; } }
+.tc { border: 1px solid var(--rule); border-radius: var(--radius); padding: .9rem 1rem; }
+.tc-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); margin-bottom: 4px; }
+.tc-title { font-size: 0.88rem; font-weight: 500; margin-bottom: 6px; }
+.pro, .con { font-size: 0.78rem; margin-bottom: 2px; font-family: var(--mono); }
+.pro { color: var(--green); }
+.pro::before { content: "+ "; }
+.con { color: var(--red); }
+.con::before { content: "- "; }
+
+.breakeven { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+.breakeven h2 { font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); margin-bottom: .5rem; font-weight: 400; }
+.be-desc { font-size: 0.78rem; color: var(--ink3); margin-bottom: 1.25rem; font-family: var(--mono); }
+.be-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+@media (max-width: 600px) { .be-sliders { grid-template-columns: 1fr; } }
+.sl-row { display: flex; flex-direction: column; gap: 6px; }
+.sl-row label { font-size: 0.65rem; font-family: var(--mono); letter-spacing: 0.07em; color: var(--ink3); display: flex; justify-content: space-between; }
+.sl-row label strong { color: var(--ink); }
+.sl-row input[type=range] { width: 100%; accent-color: var(--navy); }
+.be-result { font-family: var(--mono); font-size: 0.8rem; padding: .75rem 1rem; border-left: 2px solid var(--red); background: var(--paper); border-radius: 0 var(--radius) var(--radius) 0; }
+.be-result.muni-wins { border-left-color: var(--green); }
+
+.foot { font-size: 0.65rem; color: var(--ink3); font-family: var(--mono); margin-top: 2.5rem; border-top: 1px solid var(--rule); padding-top: 1rem; line-height: 1.9; }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-title">Tax Equivalent Yield Calculator</div>
+    <div class="hdr-sub">Money Market &amp; Fixed Income — Auto-Refresh via GitHub Actions</div>
+  </div>
+  <div id="dataPill" class="data-pill stale">&#9679; Loading data...</div>
+</header>
+
+<div class="wrap">
+
+  <!-- ── CLIENT INPUTS ── -->
+  <div class="inputs-bar">
+    <div class="ig">
+      <label>Federal Marginal Rate (%)</label>
+      <input type="number" id="fedRate" value="22" min="0" max="50" step="1">
+    </div>
+    <div class="ig">
+      <label>State Marginal Rate (%)</label>
+      <input type="number" id="stateRate" value="9.3" min="0" max="20" step="0.1">
+    </div>
+    <div class="ig">
+      <label>Portfolio Value ($)</label>
+      <input type="number" id="portValue" value="1000000" min="0" step="10000">
+    </div>
+    <div class="ig">
+      <label>State (muni exemption)</label>
+      <select id="stateSelect">
+        <option value="CA">California (CA)</option>
+        <option value="NY">New York (NY)</option>
+        <option value="other">Other State</option>
+      </select>
+      <span class="hint">CA/NY clients get state muni exemption</span>
+    </div>
+    <button class="btn btn-primary" id="refreshBtn" onclick="loadData()">
+      <span id="btnSpinner"></span> Refresh Data
+    </button>
+  </div>
+
+  <!-- ── YIELD OVERRIDE PANEL ── -->
+  <div style="margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <button class="override-toggle" id="overrideToggle" onclick="toggleOverride()">
+      <span class="arrow">&#9658;</span> Manually Override Yields / Model Scenarios
+    </button>
+    <div id="overrideStatusBar" style="font-family:var(--mono);font-size:0.65rem;color:var(--ink3);"></div>
+  </div>
+
+  <div class="override-panel" id="overridePanel">
+    <div class="override-inner">
+      <div class="override-header">
+        <div>
+          <h3>Yield Override &amp; Scenario Modeler</h3>
+          <p>Edit any fund's yield directly. Overrides are highlighted in amber and marked "manual" in the tables. Use to correct stale data or model hypothetical rate scenarios.</p>
+        </div>
+      </div>
+      <div class="override-grid" id="overrideGrid">
+        <!-- populated by JS -->
+      </div>
+      <div class="override-actions">
+        <button class="btn btn-ghost" onclick="resetOverrides()">&#8635; Reset All to Fetched Values</button>
+        <button class="btn btn-ghost" onclick="applyScenario('bull')">&#8679; Bull Scenario +50bps</button>
+        <button class="btn btn-ghost" onclick="applyScenario('bear')">&#8681; Bear Scenario −50bps</button>
+        <span class="override-note" id="overrideNote"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TEY EXPLAINER ── -->
+  <div class="explainer">
+    <h2>How TEY Works</h2>
+    <div class="formula">TEY = Posted Yield &divide; (1 &minus; Applicable Tax Rate)</div>
+    <p style="font-size:0.78rem;color:var(--ink3);margin-bottom:1.25rem;">TEY converts a tax-advantaged yield into its taxable equivalent so you can compare fund types on equal footing. The applicable rate depends on which taxes the fund income avoids.</p>
+    <div class="tradeoff-grid">
+      <div class="tc">
+        <div class="tc-label">State Muni</div>
+        <div class="tc-title">Fed + State Exempt</div>
+        <div class="pro">Highest TEY for high-tax states</div>
+        <div class="pro">CA/NY clients benefit most</div>
+        <div class="con">Lower face yield</div>
+        <div class="con">State credit concentration</div>
+      </div>
+      <div class="tc">
+        <div class="tc-label">Treasury / T-Fund</div>
+        <div class="tc-title">State Tax Exempt</div>
+        <div class="pro">Full faith &amp; credit backing</div>
+        <div class="pro">State exemption boosts TEY</div>
+        <div class="con">Federally taxable income</div>
+        <div class="con">Mid-range TEY typically</div>
+      </div>
+      <div class="tc">
+        <div class="tc-label">Taxable (Prime / Corp)</div>
+        <div class="tc-title">Fully Taxable</div>
+        <div class="pro">Highest posted yields</div>
+        <div class="pro">Diversified credit exposure</div>
+        <div class="con">Fed + state tax applies</div>
+        <div class="con">Lowest after-tax return</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MONEY MARKET TABLES ── -->
+  <div class="slabel">
+    Money Market Funds
+    <span style="font-size:0.6rem;color:var(--ink3);">7-day annualized yield</span>
+  </div>
+  <div class="two-col">
+    <div class="tcard">
+      <div class="tcard-label">Schwab Investor Shares</div>
+      <table><thead><tr>
+        <th>Fund</th><th>Yield</th><th>TEY</th><th>After-Tax $</th>
+      </tr></thead><tbody id="mmInvestor"></tbody></table>
+    </div>
+    <div class="tcard">
+      <div class="tcard-label">Schwab Ultra Shares</div>
+      <table><thead><tr>
+        <th>Fund</th><th>Yield</th><th>TEY</th><th>After-Tax $</th>
+      </tr></thead><tbody id="mmUltra"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ── BOND FUND TABLE ── -->
+  <div class="slabel">
+    Bond Fund / ETF Rates
+    <span style="font-size:0.6rem;color:var(--ink3);">yield to maturity</span>
+  </div>
+  <div class="tcard" style="margin-bottom:1.25rem;">
+    <table><thead><tr>
+      <th>Fund</th><th>Ticker</th><th>YTM / Yield</th><th>Source</th><th>TEY</th><th>After-Tax Yield</th><th>Est. Annual $</th><th>Signal</th>
+    </tr></thead><tbody id="bondTable"></tbody></table>
+  </div>
+
+  <!-- ── CHARTS ── -->
+  <div class="slabel">Visual Analysis</div>
+  <div class="charts-grid">
+    <div class="ccard">
+      <h3>TEY Comparison — All Funds</h3>
+      <div style="position:relative;height:240px;"><canvas id="chartTEY" role="img" aria-label="Bar chart of TEY across all funds"></canvas></div>
+    </div>
+    <div class="ccard">
+      <h3>Posted vs After-Tax Yield</h3>
+      <div style="position:relative;height:240px;"><canvas id="chartComp" role="img" aria-label="Grouped bar chart of posted yield versus after-tax yield"></canvas></div>
+    </div>
+  </div>
+  <div class="charts-grid">
+    <div class="ccard">
+      <h3>TEY Sensitivity to Marginal Rate</h3>
+      <div style="position:relative;height:240px;"><canvas id="chartSens" role="img" aria-label="Line chart of TEY sensitivity to federal marginal tax rate"></canvas></div>
+    </div>
+    <div class="ccard">
+      <h3>After-Tax Dollar Return on Portfolio</h3>
+      <div id="dollarWrap" style="position:relative;height:240px;"><canvas id="chartDollar" role="img" aria-label="Horizontal bar chart of estimated after-tax dollar return per fund"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ── BREAKEVEN ── -->
+  <div class="breakeven">
+    <h2>Breakeven Tax Rate Calculator</h2>
+    <div class="be-desc">Find the combined marginal rate at which a tax-exempt fund's after-tax yield equals a taxable fund.</div>
+    <div class="be-sliders">
+      <div class="sl-row">
+        <label>Muni Yield <strong id="lMuni">2.75%</strong></label>
+        <input type="range" id="beMuni" min="0.5" max="6" step="0.05" value="2.75">
+      </div>
+      <div class="sl-row">
+        <label>Taxable Yield <strong id="lTaxable">4.50%</strong></label>
+        <input type="range" id="beTaxable" min="0.5" max="8" step="0.05" value="4.50">
+      </div>
+    </div>
+    <div class="be-result" id="beResult">—</div>
+    <div style="position:relative;height:180px;margin-top:1.25rem;">
+      <canvas id="chartBE" role="img" aria-label="Line chart showing after-tax yields at different marginal tax rates"></canvas>
+    </div>
+  </div>
+
+  <div class="foot">
+    Yields sourced from Yahoo Finance (Schwab MMFs), iShares product API (CALI, SUB), and Vanguard fund API (VCSH, VGSH) via daily GitHub Actions workflow.
+    Fallback values used when live fetch fails — shown as "fallback" in source column. TEY assumes federal rate on all funds; state rate on national/CA muni; treasury funds exempt from state only.
+    Not investment advice. Past yields do not guarantee future returns. No data is sent to any server — all calculations run in your browser.
+  </div>
+</div>
+
+<script>
+// ─── STATE ────────────────────────────────────────────────────────────────
+const FUND_ORDER = {
+  mm_investor: ["SWKXX","SWTXX","SNSXX","SWVXX"],
+  mm_ultra:    ["SCAXX","SWOXX","SUTXX","SNAXX"],
+  bond:        ["CALI","SUB","VGSH","VCSH"],
+};
+const TAX_TYPE = {
+  SWKXX:"state_muni", SWTXX:"national_muni", SNSXX:"treasury",  SWVXX:"taxable",
+  SCAXX:"state_muni", SWOXX:"national_muni", SUTXX:"treasury",  SNAXX:"taxable",
+  CALI: "state_muni", SUB:  "national_muni", VGSH: "treasury",  VCSH: "taxable",
+};
+
+// fetched base values
+let baseData = {};
+// manual overrides: { TICKER: floatValue }
+let overrides = {};
+
+let charts = {};
+
+// ─── DATA LOADING ─────────────────────────────────────────────────────────
+async function loadData() {
+  setRefreshLoading(true);
+  try {
+    const r = await fetch("data.json?t=" + Date.now());
+    if (!r.ok) throw new Error("data.json not found");
+    const d = await r.json();
+    baseData = d.funds || {};
+    updateDataPill(d.meta);
+  } catch(e) {
+    console.warn("data.json load failed, using fallbacks:", e);
+    baseData = buildFallbacks();
+    updateDataPill({ stale: true, source: "built-in fallbacks" });
+  }
+  buildOverrideGrid();
+  render();
+  setRefreshLoading(false);
+}
+
+function buildFallbacks() {
+  const f = {
+    SWKXX:{name:"State Fund",yield:0.0177,source:"fallback",live:false},
+    SWTXX:{name:"National Fund",yield:0.02128,source:"fallback",live:false},
+    SNSXX:{name:"Treasury Fund",yield:0.033856,source:"fallback",live:false},
+    SWVXX:{name:"Taxable (Prime)",yield:0.034873,source:"fallback",live:false},
+    SCAXX:{name:"State Fund (Ultra)",yield:0.019201,source:"fallback",live:false},
+    SWOXX:{name:"National Fund (Ultra)",yield:0.02278,source:"fallback",live:false},
+    SUTXX:{name:"Treasury Fund (Ultra)",yield:0.035356,source:"fallback",live:false},
+    SNAXX:{name:"Taxable (Ultra)",yield:0.036373,source:"fallback",live:false},
+    CALI: {name:"CA Muni ETF",yield:0.0256,source:"fallback",live:false},
+    SUB:  {name:"National Muni ETF",yield:0.02455,source:"fallback",live:false},
+    VGSH: {name:"Treasury ETF",yield:0.035791,source:"fallback",live:false},
+    VCSH: {name:"Corp Bond ETF",yield:0.043699,source:"fallback",live:false},
+  };
+  return f;
+}
+
+function updateDataPill(meta) {
+  const pill = document.getElementById("dataPill");
+  if (!meta) return;
+  const ts = meta.last_updated ? new Date(meta.last_updated).toLocaleString() : "unknown";
+  if (meta.stale) {
+    pill.className = "data-pill stale";
+    pill.textContent = "⚠ Stale / Fallback — " + (meta.source || "");
+  } else {
+    pill.className = "data-pill live";
+    pill.textContent = "● Live — " + ts;
+  }
+}
+
+function setRefreshLoading(on) {
+  const btn = document.getElementById("refreshBtn");
+  const sp = document.getElementById("btnSpinner");
+  if (on) { btn.classList.add("loading"); sp.innerHTML = '<span class="spin"></span>'; }
+  else     { btn.classList.remove("loading"); sp.innerHTML = ""; }
+}
+
+// ─── YIELD RESOLUTION (base OR manual override) ───────────────────────────
+function getYield(ticker) {
+  if (overrides[ticker] !== undefined) return overrides[ticker];
+  return (baseData[ticker] || {}).yield || 0;
+}
+function getSource(ticker) {
+  if (overrides[ticker] !== undefined) return "manual";
+  return (baseData[ticker] || {}).source || "fallback";
+}
+function isManual(ticker) { return overrides[ticker] !== undefined; }
+
+// ─── TAX MATH ─────────────────────────────────────────────────────────────
+function taxParams() {
+  const fed   = (parseFloat(document.getElementById("fedRate").value)   || 0) / 100;
+  const state = (parseFloat(document.getElementById("stateRate").value) || 0) / 100;
+  const port  = parseFloat(document.getElementById("portValue").value)  || 1e6;
+  return { fed, state, combined: Math.min(fed + state, 0.99), port };
+}
+
+function calcTEY(y, taxType) {
+  const { fed, state, combined } = taxParams();
+  if (taxType === "state_muni")    return y / (1 - combined);
+  if (taxType === "national_muni") return y / (1 - state);
+  if (taxType === "treasury")      return y / (1 - fed);
+  return y;
+}
+
+function afterTax(y, taxType) {
+  const { fed, state, combined } = taxParams();
+  if (taxType === "state_muni")    return y;
+  if (taxType === "national_muni") return y * (1 - state);
+  if (taxType === "treasury")      return y * (1 - fed);
+  return y * (1 - combined);
+}
+
+// ─── FORMAT HELPERS ───────────────────────────────────────────────────────
+const pct  = (v, d=2) => (v*100).toFixed(d) + "%";
+const usd  = (v)      => "$" + Math.round(v).toLocaleString();
+
+// ─── OVERRIDE PANEL ───────────────────────────────────────────────────────
+function toggleOverride() {
+  const btn   = document.getElementById("overrideToggle");
+  const panel = document.getElementById("overridePanel");
+  btn.classList.toggle("open");
+  panel.classList.toggle("open");
+}
+
+function buildOverrideGrid() {
+  const grid = document.getElementById("overrideGrid");
+  const allTickers = [...FUND_ORDER.mm_investor, ...FUND_ORDER.mm_ultra, ...FUND_ORDER.bond];
+  grid.innerHTML = allTickers.map(t => {
+    const d = baseData[t] || {};
+    const y = d.yield || 0;
+    const srcClass = d.live ? "src-live" : "src-fallback";
+    const srcLabel = d.source || "fallback";
+    return `
+      <div class="override-item" id="oi_${t}">
+        <label>
+          ${t}
+          <span class="source-tag ${srcClass}" id="src_${t}">${srcLabel}</span>
+        </label>
+        <div class="row">
+          <input type="number" id="ov_${t}"
+            value="${(y*100).toFixed(4)}"
+            step="0.01" min="0" max="20"
+            data-base="${(y*100).toFixed(4)}"
+            oninput="onOverrideChange('${t}', this)"
+            placeholder="${(y*100).toFixed(4)}">
+          <span style="font-family:var(--mono);font-size:0.72rem;color:var(--ink3);">%</span>
+        </div>
+      </div>`;
+  }).join("");
+  updateOverrideStatus();
+}
+
+function onOverrideChange(ticker, input) {
+  const base = parseFloat(input.dataset.base);
+  const val  = parseFloat(input.value);
+  if (isNaN(val) || val === base) {
+    delete overrides[ticker];
+    input.classList.remove("edited");
+    document.getElementById("src_" + ticker).className =
+      "source-tag " + ((baseData[ticker] || {}).live ? "src-live" : "src-fallback");
+    document.getElementById("src_" + ticker).textContent =
+      (baseData[ticker] || {}).source || "fallback";
+  } else {
+    overrides[ticker] = val / 100;
+    input.classList.add("edited");
+    document.getElementById("src_" + ticker).className = "source-tag src-manual";
+    document.getElementById("src_" + ticker).textContent = "manual";
+  }
+  updateOverrideStatus();
+  render();
+}
+
+function resetOverrides() {
+  overrides = {};
+  buildOverrideGrid();
+  render();
+}
+
+function applyScenario(dir) {
+  const delta = dir === "bull" ? 0.005 : -0.005;
+  const allTickers = [...FUND_ORDER.mm_investor, ...FUND_ORDER.mm_ultra, ...FUND_ORDER.bond];
+  allTickers.forEach(t => {
+    const base = (baseData[t] || {}).yield || 0;
+    const newVal = Math.max(0.0001, base + delta);
+    overrides[t] = newVal;
+    const input = document.getElementById("ov_" + t);
+    if (input) {
+      input.value = (newVal * 100).toFixed(4);
+      input.classList.add("edited");
+      document.getElementById("src_" + t).className = "source-tag src-manual";
+      document.getElementById("src_" + t).textContent = "manual";
+    }
+  });
+  updateOverrideStatus();
+  render();
+}
+
+function updateOverrideStatus() {
+  const count = Object.keys(overrides).length;
+  const note = document.getElementById("overrideNote");
+  const bar  = document.getElementById("overrideStatusBar");
+  if (count > 0) {
+    const msg = count + " fund" + (count > 1 ? "s" : "") + " manually overridden";
+    note.textContent = msg;
+    bar.textContent  = "⚠ " + msg;
+    bar.style.color  = "var(--amber)";
+  } else {
+    note.textContent = "";
+    bar.textContent  = "";
+  }
+}
+
+// ─── RENDER TABLES ────────────────────────────────────────────────────────
+function renderMMTable(tbodyId, tickers) {
+  const { port } = taxParams();
+  const teyVals = tickers.map(t => calcTEY(getYield(t), TAX_TYPE[t]));
+  const maxTEY = Math.max(...teyVals);
+  const rows = tickers.map((t, i) => {
+    const y   = getYield(t);
+    const tey = teyVals[i];
+    const at  = afterTax(y, TAX_TYPE[t]);
+    const d   = baseData[t] || {};
+    const isBest = tey === maxTEY;
+    const manual = isManual(t);
+    const nameCell = `${d.name || t}<span class="tkey">${t}</span>${manual ? ' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:0.55rem;">edited</span>' : ""}`;
+    return `<tr>
+      <td>${nameCell}</td>
+      <td class="${isBest?'winner':'dimmed'}">${pct(y)}</td>
+      <td class="${isBest?'winner':''}">${pct(tey)}</td>
+      <td>${usd(at * port)}</td>
+    </tr>`;
+  }).join("");
+  document.getElementById(tbodyId).innerHTML = rows;
+}
+
+function renderBondTable() {
+  const { port } = taxParams();
+  const tickers = FUND_ORDER.bond;
+  const teyVals = tickers.map(t => calcTEY(getYield(t), TAX_TYPE[t]));
+  const maxTEY  = Math.max(...teyVals);
+  document.getElementById("bondTable").innerHTML = tickers.map((t, i) => {
+    const y   = getYield(t);
+    const tey = teyVals[i];
+    const at  = afterTax(y, TAX_TYPE[t]);
+    const d   = baseData[t] || {};
+    const src = getSource(t);
+    const srcClass = src === "manual" ? "src-manual" : (d.live ? "src-live" : "src-fallback");
+    const isBest = tey === maxTEY;
+    const manual = isManual(t);
+    const signal = isBest
+      ? '<span class="badge badge-best">Best TEY</span>'
+      : (at > 0.031 ? '<span class="badge badge-buy">Hold</span>' : '<span class="badge badge-hold">—</span>');
+    return `<tr>
+      <td>${d.name || t}${manual ? ' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:0.55rem;">edited</span>' : ""}</td>
+      <td><span class="tkey" style="font-size:0.72rem">${t}</span></td>
+      <td class="${isBest?'winner':'dimmed'}">${pct(y)}</td>
+      <td><span class="source-tag ${srcClass}">${src}</span></td>
+      <td class="${isBest?'winner':''}">${pct(tey)}</td>
+      <td>${pct(at)}</td>
+      <td>${usd(at * port)}</td>
+      <td>${signal}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ─── RENDER CHARTS ────────────────────────────────────────────────────────
+const C_NAVY   = "#1b3557";
+const C_NAVYL  = "rgba(27,53,87,0.22)";
+const C_TEAL   = "#0f5c52";
+const C_RED    = "#b83c1e";
+const C_AMBER  = "#7a5200";
+const C_RULE   = "#e0ddd6";
+const MONO_FONT = "'DM Mono', monospace";
+
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+function allFundTickers() {
+  return [...FUND_ORDER.mm_investor, ...FUND_ORDER.bond];
+}
+
+function renderChartTEY() {
+  destroyChart("chartTEY");
+  const tickers = allFundTickers();
+  const labels = tickers.map(t => (baseData[t]?.name || t).replace(" Fund","").replace(" ETF","").replace(" (Prime)","").replace(" (Ultra)",""));
+  const vals = tickers.map(t => parseFloat((calcTEY(getYield(t), TAX_TYPE[t])*100).toFixed(3)));
+  const max = Math.max(...vals);
+  charts["chartTEY"] = new Chart(document.getElementById("chartTEY"), {
+    type: "bar",
+    data: { labels, datasets: [{ data: vals, backgroundColor: vals.map(v => v===max ? C_NAVY : C_NAVYL), borderColor: C_NAVY, borderWidth: 1 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
+        x: { ticks: { font: { family: MONO_FONT, size: 10 }, maxRotation: 35 }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderChartComp() {
+  destroyChart("chartComp");
+  const tickers = allFundTickers();
+  const labels = tickers.map(t => (baseData[t]?.name || t).replace(" Fund","").replace(" ETF","").replace(" (Prime)","").replace(" (Ultra)",""));
+  const raw = tickers.map(t => parseFloat((getYield(t)*100).toFixed(3)));
+  const at  = tickers.map(t => parseFloat((afterTax(getYield(t), TAX_TYPE[t])*100).toFixed(3)));
+  charts["chartComp"] = new Chart(document.getElementById("chartComp"), {
+    type: "bar",
+    data: { labels, datasets: [
+      { label: "Posted Yield",    data: raw, backgroundColor: C_NAVYL, borderColor: C_NAVY, borderWidth: 1 },
+      { label: "After-Tax Yield", data: at,  backgroundColor: C_TEAL,  borderColor: C_TEAL, borderWidth: 1 },
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom", labels: { font: { family: MONO_FONT, size: 10 }, boxWidth: 10 } } },
+      scales: {
+        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
+        x: { ticks: { font: { family: MONO_FONT, size: 10 }, maxRotation: 35 }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderChartSensitivity() {
+  destroyChart("chartSens");
+  const stateRate = (parseFloat(document.getElementById("stateRate").value)||0)/100;
+  const rates = [];
+  for (let r = 0; r <= 55; r += 5) rates.push(r);
+  const datasets = [
+    { label: "State Muni",   base: getYield("SWKXX"), taxType: "state_muni",    color: C_NAVY },
+    { label: "Nat'l Muni",   base: getYield("SWTXX"), taxType: "national_muni", color: C_RED },
+    { label: "Treasury",     base: getYield("SNSXX"), taxType: "treasury",      color: C_TEAL },
+    { label: "Taxable",      base: getYield("SWVXX"), taxType: "taxable",       color: C_AMBER },
+  ].map(d => ({
+    label: d.label,
+    data: rates.map(fedPct => {
+      const fed = fedPct / 100;
+      const combined = Math.min(fed + stateRate, 0.99);
+      let tey;
+      if      (d.taxType === "state_muni")    tey = d.base / (1 - combined);
+      else if (d.taxType === "national_muni") tey = d.base / (1 - stateRate);
+      else if (d.taxType === "treasury")      tey = d.base / (1 - fed);
+      else                                    tey = d.base;
+      return parseFloat((tey*100).toFixed(3));
+    }),
+    borderColor: d.color, backgroundColor: "transparent", borderWidth: 1.5, pointRadius: 3, tension: 0.2,
+  }));
+  charts["chartSens"] = new Chart(document.getElementById("chartSens"), {
+    type: "line",
+    data: { labels: rates.map(r => r+"%"), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom", labels: { font: { family: MONO_FONT, size: 10 }, boxWidth: 10 } } },
+      scales: {
+        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
+        x: { ticks: { font: { family: MONO_FONT, size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderChartDollar() {
+  destroyChart("chartDollar");
+  const { port } = taxParams();
+  const tickers = allFundTickers();
+  const labels = tickers.map(t => (baseData[t]?.name || t).replace(" Fund","").replace(" ETF","").replace(" (Prime)","").replace(" (Ultra)",""));
+  const vals = tickers.map(t => Math.round(afterTax(getYield(t), TAX_TYPE[t]) * port));
+  const max = Math.max(...vals);
+  const wrap = document.getElementById("dollarWrap");
+  const h = Math.max(240, tickers.length * 36 + 50);
+  wrap.style.height = h + "px";
+  charts["chartDollar"] = new Chart(document.getElementById("chartDollar"), {
+    type: "bar",
+    data: { labels, datasets: [{ data: vals, backgroundColor: vals.map(v => v===max ? C_NAVY : C_NAVYL), borderColor: C_NAVY, borderWidth: 1, indexAxis: "y" }] },
+    options: {
+      indexAxis: "y", responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { callback: v => "$" + (v/1000).toFixed(0)+"k", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
+        y: { ticks: { font: { family: MONO_FONT, size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderBreakeven() {
+  const muniY    = parseFloat(document.getElementById("beMuni").value)    / 100;
+  const taxableY = parseFloat(document.getElementById("beTaxable").value) / 100;
+  document.getElementById("lMuni").textContent    = (muniY*100).toFixed(2)+"%";
+  document.getElementById("lTaxable").textContent = (taxableY*100).toFixed(2)+"%";
+  const breakeven = taxableY > 0 ? 1 - (muniY / taxableY) : 0;
+  const { combined } = taxParams();
+  const muniWins = muniY > taxableY * (1 - combined);
+  const res = document.getElementById("beResult");
+  res.className = "be-result" + (muniWins ? " muni-wins" : "");
+  res.innerHTML = `Breakeven: <strong>${(breakeven*100).toFixed(1)}%</strong> combined rate — at your ${(combined*100).toFixed(1)}% rate, <strong>${muniWins ? "muni wins" : "taxable wins"}</strong> after tax.`;
+
+  destroyChart("chartBE");
+  const rates = [];
+  for (let r = 0; r <= 60; r += 2) rates.push(r/100);
+  charts["chartBE"] = new Chart(document.getElementById("chartBE"), {
+    type: "line",
+    data: { labels: rates.map(r => (r*100).toFixed(0)+"%"), datasets: [
+      { label: "Muni after-tax",    data: rates.map(() => parseFloat((muniY*100).toFixed(3))),               borderColor: C_TEAL,  backgroundColor: "transparent", borderWidth: 2, pointRadius: 0 },
+      { label: "Taxable after-tax", data: rates.map(r => parseFloat((taxableY*(1-r)*100).toFixed(3))), borderColor: C_RED,   backgroundColor: "transparent", borderWidth: 2, pointRadius: 0, borderDash: [5,4] },
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom", labels: { font: { family: MONO_FONT, size: 10 }, boxWidth: 10 } } },
+      scales: {
+        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
+        x: { ticks: { font: { family: MONO_FONT, size: 10 }, maxTicksLimit: 10 }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ─── MASTER RENDER ────────────────────────────────────────────────────────
+function render() {
+  renderMMTable("mmInvestor", FUND_ORDER.mm_investor);
+  renderMMTable("mmUltra",    FUND_ORDER.mm_ultra);
+  renderBondTable();
+  renderChartTEY();
+  renderChartComp();
+  renderChartSensitivity();
+  renderChartDollar();
+  renderBreakeven();
+}
+
+// ─── EVENT LISTENERS ──────────────────────────────────────────────────────
+["fedRate","stateRate","portValue","stateSelect"].forEach(id =>
+  document.getElementById(id).addEventListener("input", render)
+);
+["beMuni","beTaxable"].forEach(id =>
+  document.getElementById(id).addEventListener("input", renderBreakeven)
+);
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", loadData);
+</script>
+</body>
+</html>

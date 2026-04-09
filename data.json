@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "last_updated": "2026-04-09T00:00:00Z",
+    "source": "seed / fallback values — run GitHub Action to refresh",
+    "stale": true
+  },
+  "funds": {
+    "SWKXX": { "name": "State Fund", "yield": 0.0177,   "type": "7day",  "source": "Schwab" },
+    "SWTXX": { "name": "National Fund", "yield": 0.02128, "type": "7day",  "source": "Schwab" },
+    "SNSXX": { "name": "Treasury Fund", "yield": 0.033856,"type": "7day",  "source": "Schwab" },
+    "SWVXX": { "name": "Taxable (Prime)","yield": 0.034873,"type": "7day",  "source": "Schwab" },
+    "SCAXX": { "name": "State Fund (Ultra)","yield": 0.019201,"type": "7day","source": "Schwab" },
+    "SWOXX": { "name": "National Fund (Ultra)","yield": 0.02278,"type": "7day","source": "Schwab" },
+    "SUTXX": { "name": "Treasury Fund (Ultra)","yield": 0.035356,"type": "7day","source": "Schwab" },
+    "SNAXX": { "name": "Taxable (Ultra)", "yield": 0.036373,"type": "7day", "source": "Schwab" },
+    "CALI":  { "name": "CA Muni ETF",    "yield": 0.0256,  "type": "ytm",   "source": "iShares" },
+    "SUB":   { "name": "National Muni ETF","yield": 0.02455,"type": "ytm",   "source": "iShares" },
+    "VGSH":  { "name": "Treasury ETF",   "yield": 0.035791,"type": "ytm",   "source": "Vanguard" },
+    "VCSH":  { "name": "Corp Bond ETF",  "yield": 0.043699,"type": "ytm",   "source": "Vanguard" }
+  }
+}
