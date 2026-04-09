@@ -2,24 +2,21 @@ name: Refresh Fund Yields
 
 on:
   schedule:
-    # Runs weekdays at 6pm ET (22:00 UTC) — after market close
     - cron: "0 22 * * 1-5"
-  workflow_dispatch: # allows manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   update-yields:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
           persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
         with:
           python-version: "3.12"
 
