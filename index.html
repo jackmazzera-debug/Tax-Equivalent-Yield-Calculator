@@ -9,145 +9,114 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root {
-  --ink:    #111210;
-  --ink2:   #44433f;
-  --ink3:   #8a8880;
-  --paper:  #f5f3ee;
-  --white:  #ffffff;
-  --rule:   #e0ddd6;
-  --rule2:  #ccc9c0;
-  --navy:   #1b3557;
-  --navy2:  #122440;
-  --teal:   #0f5c52;
-  --red:    #b83c1e;
-  --amber:  #7a5200;
-  --amber-bg: #fdf3dc;
-  --green:  #1a5c3a;
-  --green-bg: #e8f5ee;
-  --blue-bg: #e8f0f8;
-  --mono: 'DM Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-  --radius: 3px;
+  --ink:#111210;--ink2:#44433f;--ink3:#8a8880;--paper:#f5f3ee;--white:#ffffff;
+  --rule:#e0ddd6;--rule2:#ccc9c0;--navy:#1b3557;--navy2:#122440;--teal:#0f5c52;
+  --red:#b83c1e;--amber:#7a5200;--amber-bg:#fdf3dc;--green:#1a5c3a;
+  --green-bg:#e8f5ee;--blue-bg:#e8f0f8;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--radius:3px;
 }
-
-body { font-family: var(--sans); background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.6; }
-
-/* ── HEADER ── */
-.hdr { background: var(--navy); color: #fff; padding: 1.5rem 2.5rem; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-.hdr-title { font-size: 1.1rem; font-weight: 400; font-family: var(--mono); letter-spacing: 0.04em; }
-.hdr-sub { font-size: 0.7rem; font-family: var(--mono); opacity: 0.45; letter-spacing: 0.06em; margin-top: 2px; }
-.data-pill { font-family: var(--mono); font-size: 0.65rem; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); white-space: nowrap; }
-.data-pill.live { border-color: #4caf50; color: #81c784; }
-.data-pill.stale { border-color: #ff9800; color: #ffb74d; }
-
-/* ── LAYOUT ── */
-.wrap { max-width: 1160px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
-
-/* ── INPUTS BAR ── */
-.inputs-bar { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
-.ig { display: flex; flex-direction: column; gap: 5px; min-width: 140px; }
-.ig label { font-size: 0.65rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); }
-.ig input, .ig select { font-family: var(--mono); font-size: 0.9rem; border: 1px solid var(--rule2); background: var(--paper); padding: 7px 9px; border-radius: var(--radius); color: var(--ink); width: 100%; transition: border-color .15s; }
-.ig input:focus, .ig select:focus { outline: none; border-color: var(--navy); background: var(--white); }
-.ig .hint { font-size: 0.62rem; font-family: var(--mono); color: var(--ink3); }
-
-/* ── BUTTONS ── */
-.btn { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.05em; padding: 8px 16px; border-radius: var(--radius); cursor: pointer; transition: background .15s, opacity .15s; border: none; white-space: nowrap; }
-.btn-primary { background: var(--navy); color: #fff; }
-.btn-primary:hover { background: var(--navy2); }
-.btn-ghost { background: transparent; color: var(--ink2); border: 1px solid var(--rule2); }
-.btn-ghost:hover { background: var(--paper); border-color: var(--rule2); }
-.btn.loading { opacity: 0.6; cursor: wait; }
-.spin { width: 11px; height: 11px; border: 1.5px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; display: inline-block; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── SECTION LABEL ── */
-.slabel { font-family: var(--mono); font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink3); padding-bottom: 8px; border-bottom: 1px solid var(--rule); margin: 1.5rem 0 1rem; display: flex; align-items: center; justify-content: space-between; }
-
-/* ── OVERRIDE PANEL ── */
-.override-toggle { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; color: var(--ink3); cursor: pointer; padding: 6px 10px; border: 1px solid var(--rule2); border-radius: var(--radius); background: var(--white); transition: border-color .15s; user-select: none; }
-.override-toggle:hover { border-color: var(--navy); color: var(--navy); }
-.override-toggle .arrow { transition: transform .2s; display: inline-block; }
-.override-toggle.open .arrow { transform: rotate(90deg); }
-
-.override-panel { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 1.25rem; overflow: hidden; max-height: 0; transition: max-height .3s ease; }
-.override-panel.open { max-height: 700px; }
-.override-inner { padding: 1.25rem 1.5rem; }
-.override-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
-.override-header h3 { font-size: 0.75rem; font-family: var(--mono); font-weight: 500; color: var(--ink2); }
-.override-header p { font-size: 0.72rem; color: var(--ink3); margin-top: 2px; }
-.override-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1rem; }
-.override-item { display: flex; flex-direction: column; gap: 4px; }
-.override-item label { font-size: 0.63rem; font-family: var(--mono); letter-spacing: 0.07em; color: var(--ink3); display: flex; justify-content: space-between; align-items: center; }
-.override-item label span { color: var(--navy); font-weight: 500; }
-.override-item .row { display: flex; gap: 5px; align-items: center; }
-.override-item input[type=number] { font-family: var(--mono); font-size: 0.88rem; border: 1px solid var(--rule2); background: var(--paper); padding: 6px 8px; border-radius: var(--radius); color: var(--ink); flex: 1; min-width: 0; transition: border-color .15s; }
-.override-item input[type=number]:focus { outline: none; border-color: var(--navy); background: var(--white); }
-.override-item input.edited { border-color: var(--amber); background: var(--amber-bg); }
-.source-tag { font-family: var(--mono); font-size: 0.58rem; padding: 1px 5px; border-radius: 2px; white-space: nowrap; }
-.src-live { background: var(--green-bg); color: var(--green); }
-.src-fallback { background: var(--amber-bg); color: var(--amber); }
-.src-manual { background: var(--blue-bg); color: var(--navy); }
-.override-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.override-note { font-size: 0.67rem; font-family: var(--mono); color: var(--ink3); }
-
-/* ── TABLES ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
-.tcard { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
-.tcard-label { padding: 8px 12px 0; font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); }
-.tcard table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-.tcard thead th { background: #f9f8f5; font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); padding: 7px 11px; text-align: right; font-weight: 400; border-bottom: 1px solid var(--rule); }
-.tcard thead th:first-child { text-align: left; }
-.tcard tbody td { padding: 9px 11px; text-align: right; border-bottom: .5px solid var(--rule); font-family: var(--mono); font-size: 0.8rem; color: var(--ink2); }
-.tcard tbody td:first-child { text-align: left; font-family: var(--sans); font-size: 0.82rem; color: var(--ink); }
-.tcard tbody tr:last-child td { border-bottom: none; }
-.tcard tbody tr:hover { background: var(--paper); }
-.tkey { font-family: var(--mono); font-size: 0.65rem; color: var(--ink3); background: #f0ede6; padding: 1px 4px; border-radius: 2px; margin-left: 4px; }
-.winner { color: var(--navy); font-weight: 500; }
-.dimmed { color: var(--ink3); }
-
-.badge { display: inline-block; font-family: var(--mono); font-size: 0.58rem; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.04em; font-weight: 500; }
-.badge-best { background: var(--navy); color: #fff; }
-.badge-buy  { background: var(--green-bg); color: var(--green); }
-.badge-hold { background: #f0ede6; color: var(--ink3); }
-
-/* ── CHARTS ── */
-.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-@media (max-width: 720px) { .charts-grid { grid-template-columns: 1fr; } }
-.ccard { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem; }
-.ccard h3 { font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); margin-bottom: 1rem; font-weight: 400; }
-
-/* ── EXPLAINER + BREAKEVEN ── */
-.explainer { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
-.explainer h2 { font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); margin-bottom: 1rem; font-weight: 400; }
-.formula { font-family: var(--mono); font-size: 0.85rem; color: var(--navy); background: var(--paper); border-left: 2px solid var(--navy); padding: .75rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 1.25rem; }
-.tradeoff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-@media (max-width: 720px) { .tradeoff-grid { grid-template-columns: 1fr; } }
-.tc { border: 1px solid var(--rule); border-radius: var(--radius); padding: .9rem 1rem; }
-.tc-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); margin-bottom: 4px; }
-.tc-title { font-size: 0.88rem; font-weight: 500; margin-bottom: 6px; }
-.pro, .con { font-size: 0.78rem; margin-bottom: 2px; font-family: var(--mono); }
-.pro { color: var(--green); }
-.pro::before { content: "+ "; }
-.con { color: var(--red); }
-.con::before { content: "- "; }
-
-.breakeven { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
-.breakeven h2 { font-size: 0.62rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink3); margin-bottom: .5rem; font-weight: 400; }
-.be-desc { font-size: 0.78rem; color: var(--ink3); margin-bottom: 1.25rem; font-family: var(--mono); }
-.be-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-@media (max-width: 600px) { .be-sliders { grid-template-columns: 1fr; } }
-.sl-row { display: flex; flex-direction: column; gap: 6px; }
-.sl-row label { font-size: 0.65rem; font-family: var(--mono); letter-spacing: 0.07em; color: var(--ink3); display: flex; justify-content: space-between; }
-.sl-row label strong { color: var(--ink); }
-.sl-row input[type=range] { width: 100%; accent-color: var(--navy); }
-.be-result { font-family: var(--mono); font-size: 0.8rem; padding: .75rem 1rem; border-left: 2px solid var(--red); background: var(--paper); border-radius: 0 var(--radius) var(--radius) 0; }
-.be-result.muni-wins { border-left-color: var(--green); }
-
-.foot { font-size: 0.65rem; color: var(--ink3); font-family: var(--mono); margin-top: 2.5rem; border-top: 1px solid var(--rule); padding-top: 1rem; line-height: 1.9; }
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:14px;line-height:1.6}
+.hdr{background:var(--navy);color:#fff;padding:1.5rem 2.5rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hdr-title{font-size:1.1rem;font-weight:400;font-family:var(--mono);letter-spacing:.04em}
+.hdr-sub{font-size:.7rem;font-family:var(--mono);opacity:.45;letter-spacing:.06em;margin-top:2px}
+.data-pill{font-family:var(--mono);font-size:.65rem;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);white-space:nowrap}
+.data-pill.live{border-color:#4caf50;color:#81c784}
+.data-pill.stale{border-color:#ff9800;color:#ffb74d}
+.wrap{max-width:1200px;margin:0 auto;padding:1.5rem 2rem 4rem}
+.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-end}
+.ig{display:flex;flex-direction:column;gap:5px;min-width:140px}
+.ig label{font-size:.65rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3)}
+.ig input,.ig select{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s}
+.ig input:focus,.ig select:focus{outline:none;border-color:var(--navy);background:var(--white)}
+.ig .hint{font-size:.62rem;font-family:var(--mono);color:var(--ink3)}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;padding:8px 16px;border-radius:var(--radius);cursor:pointer;transition:background .15s,opacity .15s;border:none;white-space:nowrap}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy2)}
+.btn-ghost{background:transparent;color:var(--ink2);border:1px solid var(--rule2)}
+.btn-ghost:hover{background:var(--paper)}
+.btn.loading{opacity:.6;cursor:wait}
+.spin{width:11px;height:11px;border:1.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.slabel{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink3);padding-bottom:8px;border-bottom:1px solid var(--rule);margin:1.5rem 0 1rem;display:flex;align-items:center;justify-content:space-between}
+/* override panel */
+.override-toggle{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.65rem;letter-spacing:.06em;color:var(--ink3);cursor:pointer;padding:6px 10px;border:1px solid var(--rule2);border-radius:var(--radius);background:var(--white);transition:border-color .15s;user-select:none}
+.override-toggle:hover{border-color:var(--navy);color:var(--navy)}
+.override-toggle .arrow{transition:transform .2s;display:inline-block}
+.override-toggle.open .arrow{transform:rotate(90deg)}
+.override-panel{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:1.25rem;overflow:hidden;max-height:0;transition:max-height .35s ease}
+.override-panel.open{max-height:900px}
+.override-inner{padding:1.25rem 1.5rem}
+.override-header h3{font-size:.75rem;font-family:var(--mono);font-weight:500;color:var(--ink2);margin-bottom:4px}
+.override-header p{font-size:.72rem;color:var(--ink3);margin-bottom:1rem}
+.ov-section-title{font-size:.6rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin:1rem 0 .5rem;padding-bottom:4px;border-bottom:1px solid var(--rule)}
+.override-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin-bottom:.75rem}
+.override-item{display:flex;flex-direction:column;gap:4px}
+.override-item label{font-size:.63rem;font-family:var(--mono);letter-spacing:.07em;color:var(--ink3);display:flex;justify-content:space-between;align-items:center}
+.override-item .row{display:flex;gap:5px;align-items:center}
+.override-item input[type=number]{font-family:var(--mono);font-size:.88rem;border:1px solid var(--rule2);background:var(--paper);padding:6px 8px;border-radius:var(--radius);color:var(--ink);flex:1;min-width:0;transition:border-color .15s}
+.override-item input[type=number]:focus{outline:none;border-color:var(--navy);background:var(--white)}
+.override-item input.edited{border-color:var(--amber);background:var(--amber-bg)}
+.source-tag{font-family:var(--mono);font-size:.58rem;padding:1px 5px;border-radius:2px;white-space:nowrap}
+.src-live{background:var(--green-bg);color:var(--green)}
+.src-fallback{background:var(--amber-bg);color:var(--amber)}
+.src-manual{background:var(--blue-bg);color:var(--navy)}
+.override-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:.75rem}
+.override-note{font-size:.67rem;font-family:var(--mono);color:var(--ink3)}
+/* tables */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+@media(max-width:720px){.two-col{grid-template-columns:1fr}}
+.tcard{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden}
+.tcard-label{padding:8px 12px 0;font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
+.tcard table{width:100%;border-collapse:collapse;font-size:.82rem}
+.tcard thead th{background:#f9f8f5;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:7px 11px;text-align:right;font-weight:400;border-bottom:1px solid var(--rule)}
+.tcard thead th:first-child{text-align:left}
+.tcard tbody td{padding:9px 11px;text-align:right;border-bottom:.5px solid var(--rule);font-family:var(--mono);font-size:.8rem;color:var(--ink2)}
+.tcard tbody td:first-child{text-align:left;font-family:var(--sans);font-size:.82rem;color:var(--ink)}
+.tcard tbody tr:last-child td{border-bottom:none}
+.tcard tbody tr:hover{background:var(--paper)}
+.tcard tbody tr.blank-row td{color:var(--ink3);font-style:italic;text-align:center!important;font-size:.75rem}
+.tkey{font-family:var(--mono);font-size:.65rem;color:var(--ink3);background:#f0ede6;padding:1px 4px;border-radius:2px;margin-left:4px}
+.winner{color:var(--navy);font-weight:500}
+.dimmed{color:var(--ink3)}
+.badge{display:inline-block;font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:2px;letter-spacing:.04em;font-weight:500}
+.badge-best{background:var(--navy);color:#fff}
+.badge-buy{background:var(--green-bg);color:var(--green)}
+.badge-hold{background:#f0ede6;color:var(--ink3)}
+/* charts */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+@media(max-width:720px){.charts-grid{grid-template-columns:1fr}}
+.ccard{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem}
+.ccard h3{font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:1rem;font-weight:400}
+/* explainer */
+.explainer{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.explainer h2{font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:1rem;font-weight:400}
+.formula{font-family:var(--mono);font-size:.85rem;color:var(--navy);background:var(--paper);border-left:2px solid var(--navy);padding:.75rem 1rem;border-radius:0 var(--radius) var(--radius) 0;margin-bottom:1.25rem}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.formula-item{background:var(--paper);border-radius:var(--radius);padding:.6rem .9rem;font-family:var(--mono);font-size:.75rem}
+.formula-item .fi-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:3px}
+.formula-item .fi-formula{color:var(--navy)}
+.tradeoff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:720px){.tradeoff-grid{grid-template-columns:1fr}}
+.tc{border:1px solid var(--rule);border-radius:var(--radius);padding:.9rem 1rem}
+.tc-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:4px}
+.tc-title{font-size:.88rem;font-weight:500;margin-bottom:6px}
+.pro,.con{font-size:.78rem;margin-bottom:2px;font-family:var(--mono)}
+.pro{color:var(--green)}.pro::before{content:"+ "}
+.con{color:var(--red)}.con::before{content:"- "}
+/* breakeven */
+.breakeven{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.breakeven h2{font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:.5rem;font-weight:400}
+.be-desc{font-size:.78rem;color:var(--ink3);margin-bottom:1.25rem;font-family:var(--mono)}
+.be-sliders{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+@media(max-width:600px){.be-sliders{grid-template-columns:1fr}}
+.sl-row{display:flex;flex-direction:column;gap:6px}
+.sl-row label{font-size:.65rem;font-family:var(--mono);letter-spacing:.07em;color:var(--ink3);display:flex;justify-content:space-between}
+.sl-row label strong{color:var(--ink)}
+.sl-row input[type=range]{width:100%;accent-color:var(--navy)}
+.be-result{font-family:var(--mono);font-size:.8rem;padding:.75rem 1rem;border-left:2px solid var(--red);background:var(--paper);border-radius:0 var(--radius) var(--radius) 0}
+.be-result.muni-wins{border-left-color:var(--green)}
+.foot{font-size:.65rem;color:var(--ink3);font-family:var(--mono);margin-top:2.5rem;border-top:1px solid var(--rule);padding-top:1rem;line-height:1.9}
 </style>
 </head>
 <body>
@@ -155,18 +124,18 @@ body { font-family: var(--sans); background: var(--paper); color: var(--ink); fo
 <header class="hdr">
   <div>
     <div class="hdr-title">Tax Equivalent Yield Calculator</div>
-    <div class="hdr-sub">Money Market &amp; Fixed Income — Auto-Refresh via GitHub Actions</div>
+    <div class="hdr-sub">Money Market &amp; Fixed Income — Fixed Income Implementation Tool</div>
   </div>
   <div id="dataPill" class="data-pill stale">&#9679; Loading data...</div>
 </header>
 
 <div class="wrap">
 
-  <!-- ── CLIENT INPUTS ── -->
+  <!-- INPUTS -->
   <div class="inputs-bar">
     <div class="ig">
       <label>Federal Marginal Rate (%)</label>
-      <input type="number" id="fedRate" value="22" min="0" max="50" step="1">
+      <input type="number" id="fedRate" value="32" min="0" max="50" step="1">
     </div>
     <div class="ig">
       <label>State Marginal Rate (%)</label>
@@ -174,313 +143,528 @@ body { font-family: var(--sans); background: var(--paper); color: var(--ink); fo
     </div>
     <div class="ig">
       <label>Portfolio Value ($)</label>
-      <input type="number" id="portValue" value="1000000" min="0" step="10000">
+      <input type="text" id="portValue" value="1,000,000" inputmode="numeric"
+        style="font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;"
+        oninput="formatPortfolioInput(this)">
     </div>
     <div class="ig">
-      <label>State (muni exemption)</label>
+      <label>Client State</label>
       <select id="stateSelect">
         <option value="CA">California (CA)</option>
         <option value="NY">New York (NY)</option>
+        <option value="OR">Oregon (OR)</option>
         <option value="other">Other State</option>
       </select>
-      <span class="hint">CA/NY clients get state muni exemption</span>
+      <span class="hint" id="stateHint">CA: SWKXX/SCAXX state muni available</span>
+    </div>
+    <div class="ig">
+      <label>Bond Fund Duration</label>
+      <select id="bondDuration">
+        <option value="short">Short-Term</option>
+        <option value="inter">Intermediate-Term</option>
+      </select>
+      <span class="hint" id="bondHint">CALI / SUB / VGSH / VCSH</span>
     </div>
     <button class="btn btn-primary" id="refreshBtn" onclick="loadData()">
       <span id="btnSpinner"></span> Refresh Data
     </button>
   </div>
 
-  <!-- ── YIELD OVERRIDE PANEL ── -->
+  <!-- OVERRIDE PANEL -->
   <div style="margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <button class="override-toggle" id="overrideToggle" onclick="toggleOverride()">
       <span class="arrow">&#9658;</span> Manually Override Yields / Model Scenarios
     </button>
-    <div id="overrideStatusBar" style="font-family:var(--mono);font-size:0.65rem;color:var(--ink3);"></div>
+    <div id="overrideStatusBar" style="font-family:var(--mono);font-size:.65rem;color:var(--amber);"></div>
   </div>
 
   <div class="override-panel" id="overridePanel">
     <div class="override-inner">
       <div class="override-header">
-        <div>
-          <h3>Yield Override &amp; Scenario Modeler</h3>
-          <p>Edit any fund's yield directly. Overrides are highlighted in amber and marked "manual" in the tables. Use to correct stale data or model hypothetical rate scenarios.</p>
-        </div>
+        <h3>Yield Override &amp; Scenario Modeler</h3>
+        <p>Edit any fund's yield directly. Amber highlight = manual override. Use to correct stale data or model rate scenarios.</p>
       </div>
-      <div class="override-grid" id="overrideGrid">
-        <!-- populated by JS -->
-      </div>
+      <div class="ov-section-title">Schwab Investor Shares (Money Market)</div>
+      <div class="override-grid" id="ovGridInvestor"></div>
+      <div class="ov-section-title">Schwab Ultra Shares (Money Market)</div>
+      <div class="override-grid" id="ovGridUltra"></div>
+      <div class="ov-section-title">Bond ETFs</div>
+      <div class="override-grid" id="ovGridBond"></div>
       <div class="override-actions">
-        <button class="btn btn-ghost" onclick="resetOverrides()">&#8635; Reset All to Fetched Values</button>
-        <button class="btn btn-ghost" onclick="applyScenario('bull')">&#8679; Bull Scenario +50bps</button>
-        <button class="btn btn-ghost" onclick="applyScenario('bear')">&#8681; Bear Scenario −50bps</button>
+        <button class="btn btn-ghost" onclick="resetOverrides()">&#8635; Reset All</button>
+        <button class="btn btn-ghost" onclick="applyScenario('bull')">&#8679; +50bps All</button>
+        <button class="btn btn-ghost" onclick="applyScenario('bear')">&#8681; −50bps All</button>
         <span class="override-note" id="overrideNote"></span>
       </div>
     </div>
   </div>
 
-  <!-- ── TEY EXPLAINER ── -->
+  <!-- TEY EXPLAINER -->
   <div class="explainer">
-    <h2>How TEY Works</h2>
+    <h2>TEY Methodology</h2>
     <div class="formula">TEY = Posted Yield &divide; (1 &minus; Applicable Tax Rate)</div>
-    <p style="font-size:0.78rem;color:var(--ink3);margin-bottom:1.25rem;">TEY converts a tax-advantaged yield into its taxable equivalent so you can compare fund types on equal footing. The applicable rate depends on which taxes the fund income avoids.</p>
+    <div class="formula-grid">
+      <div class="formula-item">
+        <div class="fi-label">Corporate / Taxable</div>
+        <div class="fi-formula">No adjustment — TEY = Yield</div>
+      </div>
+      <div class="formula-item">
+        <div class="fi-label">Treasury / T-Fund</div>
+        <div class="fi-formula">TEY = Yield &divide; (1 &minus; State Rate)</div>
+      </div>
+      <div class="formula-item">
+        <div class="fi-label">National Muni</div>
+        <div class="fi-formula">TEY = Yield &divide; (1 &minus; Fed Rate)</div>
+      </div>
+      <div class="formula-item">
+        <div class="fi-label">State Muni (CA / NY / OR)</div>
+        <div class="fi-formula">TEY = Yield &divide; (1 &minus; Fed &minus; State)</div>
+      </div>
+    </div>
     <div class="tradeoff-grid">
       <div class="tc">
         <div class="tc-label">State Muni</div>
         <div class="tc-title">Fed + State Exempt</div>
         <div class="pro">Highest TEY for high-tax states</div>
-        <div class="pro">CA/NY clients benefit most</div>
-        <div class="con">Lower face yield</div>
+        <div class="pro">CA/NY/OR clients benefit most</div>
+        <div class="con">Lower posted yield</div>
         <div class="con">State credit concentration</div>
       </div>
       <div class="tc">
-        <div class="tc-label">Treasury / T-Fund</div>
+        <div class="tc-label">National Muni</div>
+        <div class="tc-title">Federal Tax Exempt</div>
+        <div class="pro">Broad municipal diversification</div>
+        <div class="pro">Fed exemption boosts TEY</div>
+        <div class="con">State tax still applies</div>
+        <div class="con">Lower TEY than state muni in CA/NY</div>
+      </div>
+      <div class="tc">
+        <div class="tc-label">Treasury</div>
         <div class="tc-title">State Tax Exempt</div>
         <div class="pro">Full faith &amp; credit backing</div>
         <div class="pro">State exemption boosts TEY</div>
-        <div class="con">Federally taxable income</div>
-        <div class="con">Mid-range TEY typically</div>
-      </div>
-      <div class="tc">
-        <div class="tc-label">Taxable (Prime / Corp)</div>
-        <div class="tc-title">Fully Taxable</div>
-        <div class="pro">Highest posted yields</div>
-        <div class="pro">Diversified credit exposure</div>
-        <div class="con">Fed + state tax applies</div>
-        <div class="con">Lowest after-tax return</div>
+        <div class="con">Federally taxable</div>
+        <div class="con">Mid-range TEY</div>
       </div>
     </div>
   </div>
 
-  <!-- ── MONEY MARKET TABLES ── -->
+  <!-- MONEY MARKET TABLES -->
   <div class="slabel">
     Money Market Funds
-    <span style="font-size:0.6rem;color:var(--ink3);">7-day annualized yield</span>
+    <span style="font-size:.6rem;color:var(--ink3);">7-day annualized yield &nbsp;|&nbsp; <span id="mmStateLabel">—</span></span>
   </div>
   <div class="two-col">
     <div class="tcard">
       <div class="tcard-label">Schwab Investor Shares</div>
       <table><thead><tr>
-        <th>Fund</th><th>Yield</th><th>TEY</th><th>After-Tax $</th>
+        <th>Fund</th><th>Ticker</th><th>7-Day Yield</th><th>TEY</th><th>After-Tax $</th>
       </tr></thead><tbody id="mmInvestor"></tbody></table>
     </div>
     <div class="tcard">
       <div class="tcard-label">Schwab Ultra Shares</div>
       <table><thead><tr>
-        <th>Fund</th><th>Yield</th><th>TEY</th><th>After-Tax $</th>
+        <th>Fund</th><th>Ticker</th><th>7-Day Yield</th><th>TEY</th><th>After-Tax $</th>
       </tr></thead><tbody id="mmUltra"></tbody></table>
     </div>
   </div>
 
-  <!-- ── BOND FUND TABLE ── -->
+  <!-- BOND FUND TABLE -->
   <div class="slabel">
-    Bond Fund / ETF Rates
-    <span style="font-size:0.6rem;color:var(--ink3);">yield to maturity</span>
+    Bond Fund / ETF Rates — <span id="bondDurationLabel">Short-Term</span>
+    <span style="font-size:.6rem;color:var(--ink3);">yield to maturity</span>
   </div>
   <div class="tcard" style="margin-bottom:1.25rem;">
     <table><thead><tr>
-      <th>Fund</th><th>Ticker</th><th>YTM / Yield</th><th>Source</th><th>TEY</th><th>After-Tax Yield</th><th>Est. Annual $</th><th>Signal</th>
+      <th>Fund Type</th><th>Ticker</th><th>YTM</th><th>Data Source</th><th>TEY</th><th>After-Tax Yield</th><th>Est. Annual $</th><th>Signal</th>
     </tr></thead><tbody id="bondTable"></tbody></table>
   </div>
 
-  <!-- ── CHARTS ── -->
-  <div class="slabel">Visual Analysis</div>
+  <!-- CHARTS -->
+  <div class="slabel">Visual Analysis — Money Market Funds</div>
   <div class="charts-grid">
     <div class="ccard">
-      <h3>TEY Comparison — All Funds</h3>
-      <div style="position:relative;height:240px;"><canvas id="chartTEY" role="img" aria-label="Bar chart of TEY across all funds"></canvas></div>
+      <h3>TEY Comparison — Investor Shares</h3>
+      <div style="position:relative;height:250px;"><canvas id="chartTEY_inv" role="img" aria-label="TEY bar chart investor shares"></canvas></div>
     </div>
     <div class="ccard">
-      <h3>Posted vs After-Tax Yield</h3>
-      <div style="position:relative;height:240px;"><canvas id="chartComp" role="img" aria-label="Grouped bar chart of posted yield versus after-tax yield"></canvas></div>
-    </div>
-  </div>
-  <div class="charts-grid">
-    <div class="ccard">
-      <h3>TEY Sensitivity to Marginal Rate</h3>
-      <div style="position:relative;height:240px;"><canvas id="chartSens" role="img" aria-label="Line chart of TEY sensitivity to federal marginal tax rate"></canvas></div>
-    </div>
-    <div class="ccard">
-      <h3>After-Tax Dollar Return on Portfolio</h3>
-      <div id="dollarWrap" style="position:relative;height:240px;"><canvas id="chartDollar" role="img" aria-label="Horizontal bar chart of estimated after-tax dollar return per fund"></canvas></div>
+      <h3>TEY Comparison — Ultra Shares</h3>
+      <div style="position:relative;height:250px;"><canvas id="chartTEY_ult" role="img" aria-label="TEY bar chart ultra shares"></canvas></div>
     </div>
   </div>
 
-  <!-- ── BREAKEVEN ── -->
+  <div class="slabel">Visual Analysis — Bond ETFs</div>
+  <div class="charts-grid">
+    <div class="ccard">
+      <h3>TEY vs After-Tax Yield — Bond ETFs</h3>
+      <div style="position:relative;height:250px;"><canvas id="chartBondComp" role="img" aria-label="Bond ETF TEY vs after-tax yield"></canvas></div>
+    </div>
+    <div class="ccard">
+      <h3>Est. After-Tax Annual $ — Bond ETFs</h3>
+      <div id="dollarWrap" style="position:relative;height:250px;"><canvas id="chartDollar" role="img" aria-label="After-tax dollar return bond ETFs"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="ccard">
+      <h3>TEY Sensitivity to Federal Marginal Rate</h3>
+      <div style="position:relative;height:250px;"><canvas id="chartSens" role="img" aria-label="TEY sensitivity line chart"></canvas></div>
+    </div>
+    <div class="ccard">
+      <h3>After-Tax $ — All Funds vs Portfolio Value</h3>
+      <div style="position:relative;height:250px;"><canvas id="chartAllDollar" role="img" aria-label="All funds after-tax dollar comparison"></canvas></div>
+    </div>
+  </div>
+
+  <!-- BREAKEVEN -->
   <div class="breakeven">
-    <h2>Breakeven Tax Rate Calculator</h2>
-    <div class="be-desc">Find the combined marginal rate at which a tax-exempt fund's after-tax yield equals a taxable fund.</div>
+    <h2>Breakeven Tax Rate — State Muni vs Taxable</h2>
+    <div class="be-desc">Drag sliders to find the combined rate at which a state muni's yield equals a taxable fund after tax.</div>
     <div class="be-sliders">
       <div class="sl-row">
-        <label>Muni Yield <strong id="lMuni">2.75%</strong></label>
+        <label>State Muni Yield <strong id="lMuni">2.75%</strong></label>
         <input type="range" id="beMuni" min="0.5" max="6" step="0.05" value="2.75">
       </div>
       <div class="sl-row">
-        <label>Taxable Yield <strong id="lTaxable">4.50%</strong></label>
+        <label>Taxable / Treasury Yield <strong id="lTaxable">4.50%</strong></label>
         <input type="range" id="beTaxable" min="0.5" max="8" step="0.05" value="4.50">
       </div>
     </div>
     <div class="be-result" id="beResult">—</div>
     <div style="position:relative;height:180px;margin-top:1.25rem;">
-      <canvas id="chartBE" role="img" aria-label="Line chart showing after-tax yields at different marginal tax rates"></canvas>
+      <canvas id="chartBE" role="img" aria-label="Breakeven tax rate line chart"></canvas>
     </div>
   </div>
 
   <div class="foot">
-    Yields sourced from Yahoo Finance (Schwab MMFs), iShares product API (CALI, SUB), and Vanguard fund API (VCSH, VGSH) via daily GitHub Actions workflow.
-    Fallback values used when live fetch fails — shown as "fallback" in source column. TEY assumes federal rate on all funds; state rate on national/CA muni; treasury funds exempt from state only.
-    Not investment advice. Past yields do not guarantee future returns. No data is sent to any server — all calculations run in your browser.
+    TEY math: Corporate = no adjustment (TEY = yield). Treasury = yield / (1 - state rate). National Muni = yield / (1 - fed rate). State Muni = yield / (1 - fed - state).
+    After-Tax $: Corporate = yield × (1 - fed - state) × portfolio. Treasury = yield × (1 - fed) × portfolio. National Muni = yield × (1 - state) × portfolio. State Muni = yield × portfolio.
+    Yields from data.json refreshed nightly via GitHub Actions. Fallback values shown when live fetch unavailable. Not investment advice.
   </div>
 </div>
 
 <script>
-// ─── STATE ────────────────────────────────────────────────────────────────
-const FUND_ORDER = {
-  mm_investor: ["SWKXX","SWTXX","SNSXX","SWVXX"],
-  mm_ultra:    ["SCAXX","SWOXX","SUTXX","SNAXX"],
-  bond:        ["CALI","SUB","VGSH","VCSH"],
-};
-const TAX_TYPE = {
-  SWKXX:"state_muni", SWTXX:"national_muni", SNSXX:"treasury",  SWVXX:"taxable",
-  SCAXX:"state_muni", SWOXX:"national_muni", SUTXX:"treasury",  SNAXX:"taxable",
-  CALI: "state_muni", SUB:  "national_muni", VGSH: "treasury",  VCSH: "taxable",
+// ═══════════════════════════════════════════════════════════
+// FUND DEFINITIONS
+// State-dependent: which tickers to show changes based on stateSelect
+// ═══════════════════════════════════════════════════════════
+
+// All possible fund data — keyed by ticker
+// Sources: Schwab Money Funds PDF (schwabassetmanagement.com), April 2026
+const ALL_FUNDS = {
+  // Schwab Investor Shares — money market
+  SWKXX: { name:"CA Municipal Money Fund",       taxType:"state_muni",    series:"mm_investor" },
+  SWYXX: { name:"NY Municipal Money Fund",       taxType:"state_muni",    series:"mm_investor" },
+  SWTXX: { name:"Municipal Money Fund",          taxType:"national_muni", series:"mm_investor" },
+  SWWXX: { name:"AMT Tax-Free Money Fund",       taxType:"national_muni", series:"mm_investor" },
+  SNOXX: { name:"Treasury Obligations Money Fund",taxType:"treasury",     series:"mm_investor" },
+  SNSXX: { name:"U.S. Treasury Money Fund",      taxType:"treasury",      series:"mm_investor" },
+  SNVXX: { name:"Government Money Fund",         taxType:"treasury",      series:"mm_investor" },
+  SWVXX: { name:"Prime Advantage Money Fund",    taxType:"taxable",       series:"mm_investor" },
+  // Schwab Ultra Shares — money market
+  SCAXX: { name:"CA Municipal Money Fund",       taxType:"state_muni",    series:"mm_ultra" },
+  SNYXX: { name:"NY Municipal Money Fund",       taxType:"state_muni",    series:"mm_ultra" },
+  SWOXX: { name:"Municipal Money Fund",          taxType:"national_muni", series:"mm_ultra" },
+  SCTXX: { name:"AMT Tax-Free Money Fund",       taxType:"national_muni", series:"mm_ultra" },
+  SCOXX: { name:"Treasury Obligations Money Fund",taxType:"treasury",     series:"mm_ultra" },
+  SUTXX: { name:"U.S. Treasury Money Fund",      taxType:"treasury",      series:"mm_ultra" },
+  SGUXX: { name:"Government Money Fund",         taxType:"treasury",      series:"mm_ultra" },
+  SNAXX: { name:"Prime Advantage Money Fund",    taxType:"taxable",       series:"mm_ultra" },
+  // Bond ETFs — Short-Term
+  CALI:  { name:"CA Muni Bond ETF (iShares)",         taxType:"state_muni",    series:"bond", duration:"short" },
+  SUB:   { name:"Short-Term National Muni ETF",        taxType:"national_muni", series:"bond", duration:"short" },
+  VGSH:  { name:"Short-Term Treasury ETF (Vanguard)",  taxType:"treasury",      series:"bond", duration:"short" },
+  VCSH:  { name:"Short-Term Corp Bond ETF (Vanguard)", taxType:"taxable",       series:"bond", duration:"short" },
+  // Bond ETFs — Intermediate-Term (state-specific muni swaps with state dropdown)
+  CMF:   { name:"CA Intermediate Muni ETF (iShares)",  taxType:"state_muni",    series:"bond", duration:"inter", stateOnly:"CA" },
+  MUB:   { name:"National Muni ETF (iShares)",         taxType:"national_muni", series:"bond", duration:"inter" },
+  NYF:   { name:"NY AMT-Free Muni ETF (iShares)",      taxType:"state_muni",    series:"bond", duration:"inter", stateOnly:"NY" },
+  FORCX: { name:"OR Intermediate Muni Fund (Columbia)",taxType:"state_muni",    series:"bond", duration:"inter", stateOnly:"OR" },
+  IEI:   { name:"Intermediate Treasury ETF (iShares)", taxType:"treasury",      series:"bond", duration:"inter" },
+  VCIT:  { name:"Intermediate Corp Bond ETF (Vanguard)",taxType:"taxable",      series:"bond", duration:"inter" },
 };
 
-// fetched base values
+// Fallback yields — Schwab Money Fund rates page, as of 04/09/2026 (full table confirmed)
+// When data.json is live, getYield() uses last-pulled value instead of these.
+const FALLBACKS = {
+  // Investor Shares — Muni (tax-exempt) 04/09/2026
+  SWKXX:0.0182,  // CA Municipal Money Fund          1.82%
+  SWYXX:0.0212,  // NY Municipal Money Fund          2.12%
+  SWTXX:0.0213,  // Municipal Money Fund             2.13%
+  SWWXX:0.0211,  // AMT Tax-Free Money Fund          2.11%
+  // Investor Shares — Treasury / Government 04/09/2026
+  SNOXX:0.0338,  // Treasury Obligations Money Fund  3.38%
+  SNSXX:0.0338,  // U.S. Treasury Money Fund         3.38%
+  SNVXX:0.0337,  // Government Money Fund            3.37%
+  // Investor Shares — Taxable 04/09/2026
+  SWVXX:0.0347,  // Prime Advantage Money Fund       3.47%
+  // Ultra Shares — Muni (tax-exempt) 04/09/2026
+  SCAXX:0.0197,  // CA Municipal Money Fund          1.97%
+  SNYXX:0.0227,  // NY Municipal Money Fund          2.27%
+  SWOXX:0.0228,  // Municipal Money Fund             2.28%
+  SCTXX:0.0226,  // AMT Tax-Free Money Fund          2.26%
+  // Ultra Shares — Treasury / Government 04/09/2026
+  SCOXX:0.0353,  // Treasury Obligations Money Fund  3.53%
+  SUTXX:0.0353,  // U.S. Treasury Money Fund         3.53%
+  SGUXX:0.0352,  // Government Money Fund            3.52%
+  // Ultra Shares — Taxable 04/09/2026
+  SNAXX:0.0362,  // Prime Advantage Money Fund       3.62%
+  // Bond ETFs — Short-Term
+  CALI:0.0256,   SUB:0.02455,  VGSH:0.035791, VCSH:0.043699,
+  // Bond ETFs — Intermediate-Term (fallback YTM estimates)
+  CMF:0.0310,    MUB:0.0330,   NYF:0.0305,    FORCX:0.0320,
+  IEI:0.0400,    VCIT:0.0480,
+};
+
+// State hints
+const STATE_HINTS = {
+  CA:"CA: SWKXX (Investor) / SCAXX (Ultra) — CA muni exempt from fed + state",
+  NY:"NY: SWYXX (Investor) / SNYXX (Ultra) — NY muni exempt from fed + state",
+  OR:"OR: No state-specific muni fund — national muni (SWTXX/SWOXX) used",
+  other:"Other: No state muni available — SNOXX/SCOXX treasury, SWTXX/SWOXX national muni",
+};
+
+const STATE_TREASURY = {
+  CA:"SNSXX", NY:"SNSXX", OR:"SNSXX", other:"SNOXX",
+};
+const STATE_TREASURY_ULTRA = {
+  CA:"SUTXX", NY:"SUTXX", OR:"SUTXX", other:"SCOXX",
+};
+
 let baseData = {};
-// manual overrides: { TICKER: floatValue }
 let overrides = {};
-
 let charts = {};
 
-// ─── DATA LOADING ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// ACTIVE FUND LISTS — rebuilt on every render based on state
+// ═══════════════════════════════════════════════════════════
+function getState() {
+  return document.getElementById("stateSelect").value;
+}
+
+function activeMM_Investor() {
+  const st = getState();
+  const rows = [];
+  // Row 1: State muni — CA and NY have dedicated funds; OR/other leave blank
+  if      (st === "CA") rows.push("SWKXX");
+  else if (st === "NY") rows.push("SWYXX");
+  else                  rows.push(null);
+  // Row 2: National Muni (Municipal Money Fund) — all states
+  rows.push("SWTXX");
+  // Row 3: AMT Tax-Free (also national muni, fed exempt) — all states
+  rows.push("SWWXX");
+  // Row 4: Treasury — SNSXX (U.S. Treasury) for CA/NY/OR; SNOXX (Treasury Obligations) for other
+  rows.push(st === "other" ? "SNOXX" : "SNSXX");
+  // Row 5: Government (taxable, state exempt via treasury backing)
+  rows.push("SNVXX");
+  // Row 6: Taxable (Prime)
+  rows.push("SWVXX");
+  return rows;
+}
+
+function activeMM_Ultra() {
+  const st = getState();
+  const rows = [];
+  // Row 1: State muni
+  if      (st === "CA") rows.push("SCAXX");
+  else if (st === "NY") rows.push("SNYXX");
+  else                  rows.push(null);
+  // Row 2: National Muni
+  rows.push("SWOXX");
+  // Row 3: AMT Tax-Free
+  rows.push("SCTXX");
+  // Row 4: Treasury
+  rows.push(st === "other" ? "SCOXX" : "SUTXX");
+  // Row 5: Government
+  rows.push("SGUXX");
+  // Row 6: Taxable
+  rows.push("SNAXX");
+  return rows;
+}
+
+function getBondDuration() {
+  return document.getElementById("bondDuration").value; // "short" or "inter"
+}
+
+function activeBond() {
+  const dur = getBondDuration();
+  const st  = getState();
+
+  if (dur === "short") {
+    return ["CALI","SUB","VGSH","VCSH"];
+  }
+
+  // Intermediate — state muni row is state-specific
+  const rows = [];
+  if      (st === "CA") rows.push("CMF");
+  else if (st === "NY") rows.push("NYF");
+  else if (st === "OR") rows.push("FORCX");
+  else                  rows.push("MUB"); // other state: national muni as state muni proxy
+  rows.push("MUB");   // national muni
+  rows.push("IEI");   // treasury
+  rows.push("VCIT");  // corporate taxable
+  return rows;
+}
+
+// ═══════════════════════════════════════════════════════════
+// DATA LOADING
+// ═══════════════════════════════════════════════════════════
 async function loadData() {
   setRefreshLoading(true);
   try {
     const r = await fetch("data.json?t=" + Date.now());
-    if (!r.ok) throw new Error("data.json not found");
+    if (!r.ok) throw new Error("not found");
     const d = await r.json();
     baseData = d.funds || {};
     updateDataPill(d.meta);
   } catch(e) {
-    console.warn("data.json load failed, using fallbacks:", e);
-    baseData = buildFallbacks();
-    updateDataPill({ stale: true, source: "built-in fallbacks" });
+    baseData = buildFallbackData();
+    updateDataPill({ stale:true, source:"built-in fallbacks" });
   }
-  buildOverrideGrid();
+  buildOverrideGrids();
   render();
   setRefreshLoading(false);
 }
 
-function buildFallbacks() {
-  const f = {
-    SWKXX:{name:"State Fund",yield:0.0177,source:"fallback",live:false},
-    SWTXX:{name:"National Fund",yield:0.02128,source:"fallback",live:false},
-    SNSXX:{name:"Treasury Fund",yield:0.033856,source:"fallback",live:false},
-    SWVXX:{name:"Taxable (Prime)",yield:0.034873,source:"fallback",live:false},
-    SCAXX:{name:"State Fund (Ultra)",yield:0.019201,source:"fallback",live:false},
-    SWOXX:{name:"National Fund (Ultra)",yield:0.02278,source:"fallback",live:false},
-    SUTXX:{name:"Treasury Fund (Ultra)",yield:0.035356,source:"fallback",live:false},
-    SNAXX:{name:"Taxable (Ultra)",yield:0.036373,source:"fallback",live:false},
-    CALI: {name:"CA Muni ETF",yield:0.0256,source:"fallback",live:false},
-    SUB:  {name:"National Muni ETF",yield:0.02455,source:"fallback",live:false},
-    VGSH: {name:"Treasury ETF",yield:0.035791,source:"fallback",live:false},
-    VCSH: {name:"Corp Bond ETF",yield:0.043699,source:"fallback",live:false},
-  };
-  return f;
+function buildFallbackData() {
+  const out = {};
+  Object.keys(FALLBACKS).forEach(t => {
+    out[t] = { name:(ALL_FUNDS[t]||{}).name||t, yield:FALLBACKS[t], source:"fallback", live:false };
+  });
+  return out;
 }
 
 function updateDataPill(meta) {
   const pill = document.getElementById("dataPill");
   if (!meta) return;
-  const ts = meta.last_updated ? new Date(meta.last_updated).toLocaleString() : "unknown";
   if (meta.stale) {
     pill.className = "data-pill stale";
-    pill.textContent = "⚠ Stale / Fallback — " + (meta.source || "");
+    pill.textContent = "⚠ Fallback data — " + (meta.source||"");
   } else {
     pill.className = "data-pill live";
-    pill.textContent = "● Live — " + ts;
+    pill.textContent = "● Live — " + new Date(meta.last_updated).toLocaleString();
   }
 }
 
 function setRefreshLoading(on) {
   const btn = document.getElementById("refreshBtn");
-  const sp = document.getElementById("btnSpinner");
-  if (on) { btn.classList.add("loading"); sp.innerHTML = '<span class="spin"></span>'; }
-  else     { btn.classList.remove("loading"); sp.innerHTML = ""; }
+  const sp  = document.getElementById("btnSpinner");
+  btn.classList.toggle("loading", on);
+  sp.innerHTML = on ? '<span class="spin"></span>' : "";
 }
 
-// ─── YIELD RESOLUTION (base OR manual override) ───────────────────────────
+// ═══════════════════════════════════════════════════════════
+// YIELD RESOLUTION
+// ═══════════════════════════════════════════════════════════
 function getYield(ticker) {
+  if (!ticker) return 0;
   if (overrides[ticker] !== undefined) return overrides[ticker];
-  return (baseData[ticker] || {}).yield || 0;
+  return (baseData[ticker]||{}).yield || FALLBACKS[ticker] || 0;
 }
 function getSource(ticker) {
+  if (!ticker) return "";
   if (overrides[ticker] !== undefined) return "manual";
-  return (baseData[ticker] || {}).source || "fallback";
+  return (baseData[ticker]||{}).source || "fallback";
 }
-function isManual(ticker) { return overrides[ticker] !== undefined; }
+function isManual(ticker) { return ticker && overrides[ticker] !== undefined; }
 
-// ─── TAX MATH ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// PORTFOLIO VALUE — comma-formatted text input
+// ═══════════════════════════════════════════════════════════
+function formatPortfolioInput(input) {
+  const raw = input.value.replace(/[^0-9]/g, "");
+  if (raw === "") { input.value = ""; return; }
+  const num = parseInt(raw, 10);
+  // Preserve cursor position after formatting
+  input.value = num.toLocaleString("en-US");
+  render();
+}
+
+function getPortfolioValue() {
+  const raw = (document.getElementById("portValue").value || "").replace(/[^0-9]/g, "");
+  return parseInt(raw, 10) || 1000000;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ── TAX MATH ──
+//
+// Corporate / Taxable:   TEY = yield  (no adjustment)
+//   after-tax yield = yield × (1 - fed - state)
+//
+// Treasury:              TEY = yield / (1 - state)
+//   after-tax yield = yield × (1 - fed)    [state exempt]
+//
+// National Muni:         TEY = yield / (1 - fed)
+//   after-tax yield = yield × (1 - state)  [fed exempt; state still applies]
+//
+// State Muni (CA/NY):    TEY = yield / (1 - fed - state)
+//   after-tax yield = yield                [both exempt]
+// ═══════════════════════════════════════════════════════════
 function taxParams() {
   const fed   = (parseFloat(document.getElementById("fedRate").value)   || 0) / 100;
   const state = (parseFloat(document.getElementById("stateRate").value) || 0) / 100;
-  const port  = parseFloat(document.getElementById("portValue").value)  || 1e6;
-  return { fed, state, combined: Math.min(fed + state, 0.99), port };
+  const port  = getPortfolioValue();
+  const combined = Math.min(fed + state, 0.99);
+  return { fed, state, combined, port };
 }
 
 function calcTEY(y, taxType) {
   const { fed, state, combined } = taxParams();
-  if (taxType === "state_muni")    return y / (1 - combined);
-  if (taxType === "national_muni") return y / (1 - state);
-  if (taxType === "treasury")      return y / (1 - fed);
-  return y;
+  if (taxType === "state_muni")    return combined < 1 ? y / (1 - combined) : y;
+  if (taxType === "national_muni") return fed    < 1 ? y / (1 - fed)      : y;
+  if (taxType === "treasury")      return state  < 1 ? y / (1 - state)    : y;
+  return y; // taxable — no adjustment
 }
 
-function afterTax(y, taxType) {
+function afterTaxYield(y, taxType) {
   const { fed, state, combined } = taxParams();
-  if (taxType === "state_muni")    return y;
-  if (taxType === "national_muni") return y * (1 - state);
-  if (taxType === "treasury")      return y * (1 - fed);
-  return y * (1 - combined);
+  if (taxType === "state_muni")    return y;                    // both exempt
+  if (taxType === "national_muni") return y * (1 - state);     // state tax still applies
+  if (taxType === "treasury")      return y * (1 - fed);       // fed tax still applies
+  return y * (1 - combined);                                   // fully taxable
 }
 
-// ─── FORMAT HELPERS ───────────────────────────────────────────────────────
-const pct  = (v, d=2) => (v*100).toFixed(d) + "%";
-const usd  = (v)      => "$" + Math.round(v).toLocaleString();
+// Est. annual $ = after-tax yield × portfolio value
+function estAnnualDollar(y, taxType) {
+  return afterTaxYield(y, taxType) * taxParams().port;
+}
 
-// ─── OVERRIDE PANEL ───────────────────────────────────────────────────────
+const pct = (v, d=2) => (v*100).toFixed(d) + "%";
+const usd = (v) => "$" + Math.round(v).toLocaleString();
+
+// ═══════════════════════════════════════════════════════════
+// OVERRIDE PANEL
+// ═══════════════════════════════════════════════════════════
 function toggleOverride() {
-  const btn   = document.getElementById("overrideToggle");
-  const panel = document.getElementById("overridePanel");
-  btn.classList.toggle("open");
-  panel.classList.toggle("open");
+  document.getElementById("overrideToggle").classList.toggle("open");
+  document.getElementById("overridePanel").classList.toggle("open");
 }
 
-function buildOverrideGrid() {
-  const grid = document.getElementById("overrideGrid");
-  const allTickers = [...FUND_ORDER.mm_investor, ...FUND_ORDER.mm_ultra, ...FUND_ORDER.bond];
-  grid.innerHTML = allTickers.map(t => {
-    const d = baseData[t] || {};
-    const y = d.yield || 0;
-    const srcClass = d.live ? "src-live" : "src-fallback";
-    const srcLabel = d.source || "fallback";
-    return `
-      <div class="override-item" id="oi_${t}">
-        <label>
-          ${t}
-          <span class="source-tag ${srcClass}" id="src_${t}">${srcLabel}</span>
+function buildOverrideGrids() {
+  const groups = [
+    { id:"ovGridInvestor", tickers:["SWKXX","SWYXX","SWTXX","SWWXX","SNOXX","SNSXX","SNVXX","SWVXX"] },
+    { id:"ovGridUltra",    tickers:["SCAXX","SNYXX","SWOXX","SCTXX","SCOXX","SUTXX","SGUXX","SNAXX"] },
+    { id:"ovGridBond",     tickers:["CALI","SUB","VGSH","VCSH","CMF","MUB","NYF","FORCX","IEI","VCIT"] },
+  ];
+  groups.forEach(({ id, tickers }) => {
+    document.getElementById(id).innerHTML = tickers.map(t => {
+      const d = baseData[t] || {};
+      const y = getYield(t);
+      const srcClass = d.live ? "src-live" : "src-fallback";
+      return `<div class="override-item" id="oi_${t}">
+        <label>${t} — ${ALL_FUNDS[t]?.name||t}
+          <span class="source-tag ${srcClass}" id="src_${t}">${d.source||"fallback"}</span>
         </label>
         <div class="row">
-          <input type="number" id="ov_${t}"
-            value="${(y*100).toFixed(4)}"
+          <input type="number" id="ov_${t}" value="${(y*100).toFixed(4)}"
             step="0.01" min="0" max="20"
             data-base="${(y*100).toFixed(4)}"
-            oninput="onOverrideChange('${t}', this)"
-            placeholder="${(y*100).toFixed(4)}">
-          <span style="font-family:var(--mono);font-size:0.72rem;color:var(--ink3);">%</span>
+            oninput="onOverrideChange('${t}',this)">
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--ink3)">%</span>
         </div>
       </div>`;
-  }).join("");
+    }).join("");
+  });
   updateOverrideStatus();
 }
 
@@ -490,15 +674,14 @@ function onOverrideChange(ticker, input) {
   if (isNaN(val) || val === base) {
     delete overrides[ticker];
     input.classList.remove("edited");
-    document.getElementById("src_" + ticker).className =
-      "source-tag " + ((baseData[ticker] || {}).live ? "src-live" : "src-fallback");
-    document.getElementById("src_" + ticker).textContent =
-      (baseData[ticker] || {}).source || "fallback";
+    const d = baseData[ticker] || {};
+    const el = document.getElementById("src_"+ticker);
+    if (el) { el.className = "source-tag " + (d.live?"src-live":"src-fallback"); el.textContent = d.source||"fallback"; }
   } else {
     overrides[ticker] = val / 100;
     input.classList.add("edited");
-    document.getElementById("src_" + ticker).className = "source-tag src-manual";
-    document.getElementById("src_" + ticker).textContent = "manual";
+    const el = document.getElementById("src_"+ticker);
+    if (el) { el.className = "source-tag src-manual"; el.textContent = "manual"; }
   }
   updateOverrideStatus();
   render();
@@ -506,23 +689,21 @@ function onOverrideChange(ticker, input) {
 
 function resetOverrides() {
   overrides = {};
-  buildOverrideGrid();
+  buildOverrideGrids();
   render();
 }
 
 function applyScenario(dir) {
   const delta = dir === "bull" ? 0.005 : -0.005;
-  const allTickers = [...FUND_ORDER.mm_investor, ...FUND_ORDER.mm_ultra, ...FUND_ORDER.bond];
-  allTickers.forEach(t => {
-    const base = (baseData[t] || {}).yield || 0;
-    const newVal = Math.max(0.0001, base + delta);
-    overrides[t] = newVal;
-    const input = document.getElementById("ov_" + t);
+  Object.keys(FALLBACKS).forEach(t => {
+    const base = (baseData[t]||{}).yield || FALLBACKS[t] || 0;
+    overrides[t] = Math.max(0.0001, base + delta);
+    const input = document.getElementById("ov_"+t);
     if (input) {
-      input.value = (newVal * 100).toFixed(4);
+      input.value = (overrides[t]*100).toFixed(4);
       input.classList.add("edited");
-      document.getElementById("src_" + t).className = "source-tag src-manual";
-      document.getElementById("src_" + t).textContent = "manual";
+      const el = document.getElementById("src_"+t);
+      if (el) { el.className = "source-tag src-manual"; el.textContent = "manual"; }
     }
   });
   updateOverrideStatus();
@@ -530,188 +711,236 @@ function applyScenario(dir) {
 }
 
 function updateOverrideStatus() {
-  const count = Object.keys(overrides).length;
-  const note = document.getElementById("overrideNote");
-  const bar  = document.getElementById("overrideStatusBar");
-  if (count > 0) {
-    const msg = count + " fund" + (count > 1 ? "s" : "") + " manually overridden";
-    note.textContent = msg;
-    bar.textContent  = "⚠ " + msg;
-    bar.style.color  = "var(--amber)";
-  } else {
-    note.textContent = "";
-    bar.textContent  = "";
-  }
+  const n = Object.keys(overrides).length;
+  const msg = n > 0 ? `⚠ ${n} fund${n>1?"s":""} manually overridden` : "";
+  document.getElementById("overrideNote").textContent = msg;
+  document.getElementById("overrideStatusBar").textContent = msg;
 }
 
-// ─── RENDER TABLES ────────────────────────────────────────────────────────
-function renderMMTable(tbodyId, tickers) {
-  const { port } = taxParams();
-  const teyVals = tickers.map(t => calcTEY(getYield(t), TAX_TYPE[t]));
-  const maxTEY = Math.max(...teyVals);
-  const rows = tickers.map((t, i) => {
-    const y   = getYield(t);
-    const tey = teyVals[i];
-    const at  = afterTax(y, TAX_TYPE[t]);
-    const d   = baseData[t] || {};
-    const isBest = tey === maxTEY;
-    const manual = isManual(t);
-    const nameCell = `${d.name || t}<span class="tkey">${t}</span>${manual ? ' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:0.55rem;">edited</span>' : ""}`;
+// ═══════════════════════════════════════════════════════════
+// RENDER TABLES
+// ═══════════════════════════════════════════════════════════
+function renderMMTable(tbodyId, tickerList) {
+  // tickerList may contain null entries (blank rows for unavailable state munis)
+  const validTickers = tickerList.filter(Boolean);
+  const teyValues = validTickers.map(t => calcTEY(getYield(t), ALL_FUNDS[t].taxType));
+  const maxTEY = Math.max(...teyValues);
+
+  document.getElementById(tbodyId).innerHTML = tickerList.map(ticker => {
+    if (!ticker) {
+      return `<tr class="blank-row"><td colspan="5">— No state-specific muni available for this state —</td></tr>`;
+    }
+    const fund = ALL_FUNDS[ticker];
+    const y    = getYield(ticker);
+    const tey  = calcTEY(y, fund.taxType);
+    const atd  = estAnnualDollar(y, fund.taxType);
+    const best = tey === maxTEY;
+    const edited = isManual(ticker);
+    const src = getSource(ticker);
+    const srcClass = src==="manual"?"src-manual":(((baseData[ticker]||{}).live)?"src-live":"src-fallback");
+
     return `<tr>
-      <td>${nameCell}</td>
-      <td class="${isBest?'winner':'dimmed'}">${pct(y)}</td>
-      <td class="${isBest?'winner':''}">${pct(tey)}</td>
-      <td>${usd(at * port)}</td>
+      <td>${fund.name}${edited?' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:.55rem">edited</span>':""}</td>
+      <td><span class="tkey">${ticker}</span> <span class="source-tag ${srcClass}" style="margin-left:2px">${src}</span></td>
+      <td class="${best?'winner':'dimmed'}">${pct(y)}</td>
+      <td class="${best?'winner':''}">${pct(tey)}</td>
+      <td>${usd(atd)}</td>
     </tr>`;
   }).join("");
-  document.getElementById(tbodyId).innerHTML = rows;
 }
 
 function renderBondTable() {
-  const { port } = taxParams();
-  const tickers = FUND_ORDER.bond;
-  const teyVals = tickers.map(t => calcTEY(getYield(t), TAX_TYPE[t]));
+  const tickers = activeBond();
+  const teyVals = tickers.map(t => calcTEY(getYield(t), ALL_FUNDS[t].taxType));
   const maxTEY  = Math.max(...teyVals);
+
   document.getElementById("bondTable").innerHTML = tickers.map((t, i) => {
-    const y   = getYield(t);
-    const tey = teyVals[i];
-    const at  = afterTax(y, TAX_TYPE[t]);
-    const d   = baseData[t] || {};
-    const src = getSource(t);
-    const srcClass = src === "manual" ? "src-manual" : (d.live ? "src-live" : "src-fallback");
-    const isBest = tey === maxTEY;
-    const manual = isManual(t);
-    const signal = isBest
+    const fund = ALL_FUNDS[t];
+    const y    = getYield(t);
+    const tey  = teyVals[i];
+    const aty  = afterTaxYield(y, fund.taxType);
+    const atd  = estAnnualDollar(y, fund.taxType);
+    const best = tey === maxTEY;
+    const src  = getSource(t);
+    const srcClass = src==="manual"?"src-manual":((baseData[t]||{}).live?"src-live":"src-fallback");
+    const edited = isManual(t);
+    const signal = best
       ? '<span class="badge badge-best">Best TEY</span>'
-      : (at > 0.031 ? '<span class="badge badge-buy">Hold</span>' : '<span class="badge badge-hold">—</span>');
+      : (aty > 0.03 ? '<span class="badge badge-buy">Hold</span>' : '<span class="badge badge-hold">—</span>');
+
     return `<tr>
-      <td>${d.name || t}${manual ? ' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:0.55rem;">edited</span>' : ""}</td>
-      <td><span class="tkey" style="font-size:0.72rem">${t}</span></td>
-      <td class="${isBest?'winner':'dimmed'}">${pct(y)}</td>
+      <td>${fund.name}${edited?' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:.55rem">edited</span>':""}</td>
+      <td><span class="tkey">${t}</span></td>
+      <td class="${best?'winner':'dimmed'}">${pct(y)}</td>
       <td><span class="source-tag ${srcClass}">${src}</span></td>
-      <td class="${isBest?'winner':''}">${pct(tey)}</td>
-      <td>${pct(at)}</td>
-      <td>${usd(at * port)}</td>
+      <td class="${best?'winner':''}">${pct(tey)}</td>
+      <td>${pct(aty)}</td>
+      <td>${usd(atd)}</td>
       <td>${signal}</td>
     </tr>`;
   }).join("");
 }
 
-// ─── RENDER CHARTS ────────────────────────────────────────────────────────
-const C_NAVY   = "#1b3557";
-const C_NAVYL  = "rgba(27,53,87,0.22)";
-const C_TEAL   = "#0f5c52";
-const C_RED    = "#b83c1e";
-const C_AMBER  = "#7a5200";
-const C_RULE   = "#e0ddd6";
-const MONO_FONT = "'DM Mono', monospace";
+// ═══════════════════════════════════════════════════════════
+// RENDER CHARTS
+// ═══════════════════════════════════════════════════════════
+const C_NAVY="#1b3557", C_NAVYL="rgba(27,53,87,0.22)", C_TEAL="#0f5c52";
+const C_RED="#b83c1e", C_AMBER="#7a5200", C_RULE="#e0ddd6";
+const MONO="'DM Mono',monospace";
 
-function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+function destroyChart(id) { if(charts[id]){charts[id].destroy();delete charts[id];} }
 
-function allFundTickers() {
-  return [...FUND_ORDER.mm_investor, ...FUND_ORDER.bond];
+function mmChartData(tickerList) {
+  const valid = tickerList.map(t => t || null);
+  const labels = valid.map(t => t ? `${ALL_FUNDS[t].name.replace(/ \(.*\)/,"")} (${t})` : "—");
+  const tey    = valid.map(t => t ? parseFloat((calcTEY(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)) : 0);
+  const atY    = valid.map(t => t ? parseFloat((afterTaxYield(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)) : 0);
+  const raw    = valid.map(t => t ? parseFloat((getYield(t)*100).toFixed(3)) : 0);
+  const maxTEY = Math.max(...tey);
+  return { labels, tey, atY, raw, maxTEY };
 }
 
-function renderChartTEY() {
-  destroyChart("chartTEY");
-  const tickers = allFundTickers();
-  const labels = tickers.map(t => (baseData[t]?.name || t).replace(" Fund","").replace(" ETF","").replace(" (Prime)","").replace(" (Ultra)",""));
-  const vals = tickers.map(t => parseFloat((calcTEY(getYield(t), TAX_TYPE[t])*100).toFixed(3)));
-  const max = Math.max(...vals);
-  charts["chartTEY"] = new Chart(document.getElementById("chartTEY"), {
-    type: "bar",
-    data: { labels, datasets: [{ data: vals, backgroundColor: vals.map(v => v===max ? C_NAVY : C_NAVYL), borderColor: C_NAVY, borderWidth: 1 }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
-        x: { ticks: { font: { family: MONO_FONT, size: 10 }, maxRotation: 35 }, grid: { display: false } }
+function renderMMBarChart(canvasId, tickerList, title) {
+  destroyChart(canvasId);
+  const { labels, tey, maxTEY } = mmChartData(tickerList);
+  charts[canvasId] = new Chart(document.getElementById(canvasId), {
+    type:"bar",
+    data:{ labels, datasets:[{
+      label:"TEY (%)",
+      data: tey,
+      backgroundColor: tey.map(v => v===maxTEY ? C_NAVY : C_NAVYL),
+      borderColor: C_NAVY, borderWidth:1
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label: ctx => " TEY: " + ctx.raw.toFixed(2) + "%" }}},
+      scales:{
+        y:{ ticks:{ callback:v=>v.toFixed(2)+"%", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
+        x:{ ticks:{ font:{family:MONO,size:10}, maxRotation:35 }, grid:{display:false} }
       }
     }
   });
 }
 
-function renderChartComp() {
-  destroyChart("chartComp");
-  const tickers = allFundTickers();
-  const labels = tickers.map(t => (baseData[t]?.name || t).replace(" Fund","").replace(" ETF","").replace(" (Prime)","").replace(" (Ultra)",""));
-  const raw = tickers.map(t => parseFloat((getYield(t)*100).toFixed(3)));
-  const at  = tickers.map(t => parseFloat((afterTax(getYield(t), TAX_TYPE[t])*100).toFixed(3)));
-  charts["chartComp"] = new Chart(document.getElementById("chartComp"), {
-    type: "bar",
-    data: { labels, datasets: [
-      { label: "Posted Yield",    data: raw, backgroundColor: C_NAVYL, borderColor: C_NAVY, borderWidth: 1 },
-      { label: "After-Tax Yield", data: at,  backgroundColor: C_TEAL,  borderColor: C_TEAL, borderWidth: 1 },
+function renderBondCompChart() {
+  destroyChart("chartBondComp");
+  const tickers = activeBond();
+  const labels  = tickers.map(t => `${ALL_FUNDS[t].name.replace(/ ETF/,"")} (${t})`);
+  const teyVals = tickers.map(t => parseFloat((calcTEY(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)));
+  const atVals  = tickers.map(t => parseFloat((afterTaxYield(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)));
+  const rawVals = tickers.map(t => parseFloat((getYield(t)*100).toFixed(3)));
+  charts["chartBondComp"] = new Chart(document.getElementById("chartBondComp"), {
+    type:"bar",
+    data:{ labels, datasets:[
+      { label:"Posted YTM",    data:rawVals,  backgroundColor:C_NAVYL, borderColor:C_NAVY, borderWidth:1 },
+      { label:"After-Tax Yield", data:atVals, backgroundColor:C_TEAL,  borderColor:C_TEAL, borderWidth:1 },
+      { label:"TEY",           data:teyVals,  backgroundColor:"rgba(200,68,30,0.25)", borderColor:C_RED, borderWidth:1 },
     ]},
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: "bottom", labels: { font: { family: MONO_FONT, size: 10 }, boxWidth: 10 } } },
-      scales: {
-        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
-        x: { ticks: { font: { family: MONO_FONT, size: 10 }, maxRotation: 35 }, grid: { display: false } }
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:"bottom", labels:{ font:{family:MONO,size:10}, boxWidth:10 }}},
+      scales:{
+        y:{ ticks:{ callback:v=>v.toFixed(2)+"%", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
+        x:{ ticks:{ font:{family:MONO,size:10}, maxRotation:35 }, grid:{display:false} }
       }
     }
   });
 }
 
-function renderChartSensitivity() {
-  destroyChart("chartSens");
-  const stateRate = (parseFloat(document.getElementById("stateRate").value)||0)/100;
-  const rates = [];
-  for (let r = 0; r <= 55; r += 5) rates.push(r);
-  const datasets = [
-    { label: "State Muni",   base: getYield("SWKXX"), taxType: "state_muni",    color: C_NAVY },
-    { label: "Nat'l Muni",   base: getYield("SWTXX"), taxType: "national_muni", color: C_RED },
-    { label: "Treasury",     base: getYield("SNSXX"), taxType: "treasury",      color: C_TEAL },
-    { label: "Taxable",      base: getYield("SWVXX"), taxType: "taxable",       color: C_AMBER },
-  ].map(d => ({
-    label: d.label,
-    data: rates.map(fedPct => {
-      const fed = fedPct / 100;
-      const combined = Math.min(fed + stateRate, 0.99);
-      let tey;
-      if      (d.taxType === "state_muni")    tey = d.base / (1 - combined);
-      else if (d.taxType === "national_muni") tey = d.base / (1 - stateRate);
-      else if (d.taxType === "treasury")      tey = d.base / (1 - fed);
-      else                                    tey = d.base;
-      return parseFloat((tey*100).toFixed(3));
-    }),
-    borderColor: d.color, backgroundColor: "transparent", borderWidth: 1.5, pointRadius: 3, tension: 0.2,
-  }));
-  charts["chartSens"] = new Chart(document.getElementById("chartSens"), {
-    type: "line",
-    data: { labels: rates.map(r => r+"%"), datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: "bottom", labels: { font: { family: MONO_FONT, size: 10 }, boxWidth: 10 } } },
-      scales: {
-        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
-        x: { ticks: { font: { family: MONO_FONT, size: 10 } }, grid: { display: false } }
-      }
-    }
-  });
-}
-
-function renderChartDollar() {
+function renderBondDollarChart() {
   destroyChart("chartDollar");
-  const { port } = taxParams();
-  const tickers = allFundTickers();
-  const labels = tickers.map(t => (baseData[t]?.name || t).replace(" Fund","").replace(" ETF","").replace(" (Prime)","").replace(" (Ultra)",""));
-  const vals = tickers.map(t => Math.round(afterTax(getYield(t), TAX_TYPE[t]) * port));
-  const max = Math.max(...vals);
-  const wrap = document.getElementById("dollarWrap");
-  const h = Math.max(240, tickers.length * 36 + 50);
-  wrap.style.height = h + "px";
+  const tickers = activeBond();
+  const labels  = tickers.map(t => `${ALL_FUNDS[t].name.replace(/ ETF/,"")} (${t})`);
+  const vals    = tickers.map(t => Math.round(estAnnualDollar(getYield(t),ALL_FUNDS[t].taxType)));
+  const maxVal  = Math.max(...vals);
+  const h = Math.max(220, tickers.length * 48 + 60);
+  document.getElementById("dollarWrap").style.height = h + "px";
   charts["chartDollar"] = new Chart(document.getElementById("chartDollar"), {
-    type: "bar",
-    data: { labels, datasets: [{ data: vals, backgroundColor: vals.map(v => v===max ? C_NAVY : C_NAVYL), borderColor: C_NAVY, borderWidth: 1, indexAxis: "y" }] },
-    options: {
-      indexAxis: "y", responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { callback: v => "$" + (v/1000).toFixed(0)+"k", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
-        y: { ticks: { font: { family: MONO_FONT, size: 10 } }, grid: { display: false } }
+    type:"bar",
+    data:{ labels, datasets:[{
+      data: vals,
+      backgroundColor: vals.map(v => v===maxVal ? C_NAVY : C_NAVYL),
+      borderColor: C_NAVY, borderWidth:1, indexAxis:"y"
+    }]},
+    options:{
+      indexAxis:"y", responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label: ctx => " " + usd(ctx.raw) + " after-tax" }}},
+      scales:{
+        x:{ ticks:{ callback:v=>"$"+(v/1000).toFixed(0)+"k", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
+        y:{ ticks:{ font:{family:MONO,size:10} }, grid:{display:false} }
+      }
+    }
+  });
+}
+
+function renderSensitivityChart() {
+  destroyChart("chartSens");
+  const { state } = taxParams();
+  const fedRates = [];
+  for (let r=0; r<=55; r+=5) fedRates.push(r);
+  const series = [
+    { label:"State Muni (SWKXX)",   y:getYield("SWKXX"), taxType:"state_muni",    color:C_NAVY },
+    { label:"National Muni (SWTXX)",y:getYield("SWTXX"), taxType:"national_muni", color:C_RED },
+    { label:"Treasury (SNSXX)",     y:getYield("SNSXX"), taxType:"treasury",      color:C_TEAL },
+    { label:"Taxable (SWVXX)",      y:getYield("SWVXX"), taxType:"taxable",       color:C_AMBER },
+  ];
+  charts["chartSens"] = new Chart(document.getElementById("chartSens"), {
+    type:"line",
+    data:{
+      labels: fedRates.map(r=>r+"%"),
+      datasets: series.map(s => ({
+        label: s.label,
+        data: fedRates.map(fedPct => {
+          const fed = fedPct/100;
+          const combined = Math.min(fed+state, 0.99);
+          let tey;
+          if      (s.taxType==="state_muni")    tey = combined<1 ? s.y/(1-combined) : s.y;
+          else if (s.taxType==="national_muni") tey = fed<1      ? s.y/(1-fed)      : s.y;
+          else if (s.taxType==="treasury")      tey = state<1    ? s.y/(1-state)    : s.y;
+          else                                  tey = s.y;
+          return parseFloat((tey*100).toFixed(3));
+        }),
+        borderColor:s.color, backgroundColor:"transparent", borderWidth:1.5, pointRadius:3, tension:0.2
+      }))
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:"bottom", labels:{font:{family:MONO,size:10},boxWidth:10}}},
+      scales:{
+        y:{ ticks:{callback:v=>v.toFixed(2)+"%",font:{family:MONO,size:10}}, grid:{color:C_RULE} },
+        x:{ ticks:{font:{family:MONO,size:10}}, grid:{display:false} }
+      }
+    }
+  });
+}
+
+function renderAllDollarChart() {
+  destroyChart("chartAllDollar");
+  // Combine investor MM + bond ETFs for cross-comparison
+  const invTickers = activeMM_Investor().filter(Boolean);
+  const bondTickers = activeBond();
+  const allT = [...invTickers, ...bondTickers];
+  const labels = allT.map(t => `${ALL_FUNDS[t].name.replace(/ \(.*\)/,"").replace(/ ETF/,"")} (${t})`);
+  const vals   = allT.map(t => Math.round(estAnnualDollar(getYield(t),ALL_FUNDS[t].taxType)));
+  const maxVal = Math.max(...vals);
+  const h = Math.max(220, allT.length * 36 + 60);
+  document.getElementById("chartAllDollar").parentElement.style.height = h+"px";
+  charts["chartAllDollar"] = new Chart(document.getElementById("chartAllDollar"), {
+    type:"bar",
+    data:{ labels, datasets:[{
+      data:vals,
+      backgroundColor:vals.map(v=>v===maxVal?C_NAVY:C_NAVYL),
+      borderColor:C_NAVY, borderWidth:1, indexAxis:"y"
+    }]},
+    options:{
+      indexAxis:"y", responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label:ctx=>" "+usd(ctx.raw)+" after-tax" }}},
+      scales:{
+        x:{ ticks:{callback:v=>"$"+(v/1000).toFixed(0)+"k",font:{family:MONO,size:10}}, grid:{color:C_RULE} },
+        y:{ ticks:{font:{family:MONO,size:9}}, grid:{display:false} }
       }
     }
   });
@@ -722,54 +951,78 @@ function renderBreakeven() {
   const taxableY = parseFloat(document.getElementById("beTaxable").value) / 100;
   document.getElementById("lMuni").textContent    = (muniY*100).toFixed(2)+"%";
   document.getElementById("lTaxable").textContent = (taxableY*100).toFixed(2)+"%";
-  const breakeven = taxableY > 0 ? 1 - (muniY / taxableY) : 0;
+  const breakeven = taxableY > 0 ? 1 - (muniY/taxableY) : 0;
   const { combined } = taxParams();
-  const muniWins = muniY > taxableY * (1 - combined);
+  const muniWins = muniY > taxableY*(1-combined);
   const res = document.getElementById("beResult");
-  res.className = "be-result" + (muniWins ? " muni-wins" : "");
-  res.innerHTML = `Breakeven: <strong>${(breakeven*100).toFixed(1)}%</strong> combined rate — at your ${(combined*100).toFixed(1)}% rate, <strong>${muniWins ? "muni wins" : "taxable wins"}</strong> after tax.`;
-
+  res.className = "be-result" + (muniWins?" muni-wins":"");
+  res.innerHTML = `Breakeven combined rate: <strong>${(breakeven*100).toFixed(1)}%</strong> — at your combined rate of ${(combined*100).toFixed(1)}%, <strong>${muniWins?"state muni wins":"taxable wins"}</strong> on an after-tax basis.`;
   destroyChart("chartBE");
-  const rates = [];
-  for (let r = 0; r <= 60; r += 2) rates.push(r/100);
+  const rateSteps = [];
+  for (let r=0; r<=60; r+=2) rateSteps.push(r/100);
   charts["chartBE"] = new Chart(document.getElementById("chartBE"), {
-    type: "line",
-    data: { labels: rates.map(r => (r*100).toFixed(0)+"%"), datasets: [
-      { label: "Muni after-tax",    data: rates.map(() => parseFloat((muniY*100).toFixed(3))),               borderColor: C_TEAL,  backgroundColor: "transparent", borderWidth: 2, pointRadius: 0 },
-      { label: "Taxable after-tax", data: rates.map(r => parseFloat((taxableY*(1-r)*100).toFixed(3))), borderColor: C_RED,   backgroundColor: "transparent", borderWidth: 2, pointRadius: 0, borderDash: [5,4] },
+    type:"line",
+    data:{ labels:rateSteps.map(r=>(r*100).toFixed(0)+"%"), datasets:[
+      { label:"State Muni after-tax",  data:rateSteps.map(()=>parseFloat((muniY*100).toFixed(3))),              borderColor:C_TEAL, backgroundColor:"transparent", borderWidth:2, pointRadius:0 },
+      { label:"Taxable after-tax",     data:rateSteps.map(r=>parseFloat((taxableY*(1-r)*100).toFixed(3))),      borderColor:C_RED,  backgroundColor:"transparent", borderWidth:2, pointRadius:0, borderDash:[5,4] },
     ]},
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: "bottom", labels: { font: { family: MONO_FONT, size: 10 }, boxWidth: 10 } } },
-      scales: {
-        y: { ticks: { callback: v => v.toFixed(2)+"%", font: { family: MONO_FONT, size: 10 } }, grid: { color: C_RULE } },
-        x: { ticks: { font: { family: MONO_FONT, size: 10 }, maxTicksLimit: 10 }, grid: { display: false } }
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:"bottom", labels:{font:{family:MONO,size:10},boxWidth:10}}},
+      scales:{
+        y:{ ticks:{callback:v=>v.toFixed(2)+"%",font:{family:MONO,size:10}}, grid:{color:C_RULE} },
+        x:{ ticks:{font:{family:MONO,size:10},maxTicksLimit:10}, grid:{display:false} }
       }
     }
   });
 }
 
-// ─── MASTER RENDER ────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// MASTER RENDER
+// ═══════════════════════════════════════════════════════════
 function render() {
-  renderMMTable("mmInvestor", FUND_ORDER.mm_investor);
-  renderMMTable("mmUltra",    FUND_ORDER.mm_ultra);
+  const st = getState();
+
+  // Update state hint
+  document.getElementById("stateHint").textContent = STATE_HINTS[st] || "";
+  const dur = getBondDuration();
+  const bondTickers = activeBond();
+  document.getElementById("bondHint").textContent = bondTickers.join(" / ");
+  document.getElementById("mmStateLabel").textContent =
+    st==="CA"?"Showing CA state muni (SWKXX/SCAXX)":
+    st==="NY"?"Showing NY state muni (SWYXX/SNYXX)":
+    st==="OR"?"OR: national muni shown — no OR-specific fund":
+    "Other: SNOXX/SCOXX treasury, SWTXX/SWOXX national muni";
+
+  document.getElementById("bondDurationLabel").textContent =
+    dur === "inter" ? "Intermediate-Term" : "Short-Term";
+
+  const invList  = activeMM_Investor();
+  const ultList  = activeMM_Ultra();
+
+  renderMMTable("mmInvestor", invList);
+  renderMMTable("mmUltra",    ultList);
   renderBondTable();
-  renderChartTEY();
-  renderChartComp();
-  renderChartSensitivity();
-  renderChartDollar();
+
+  renderMMBarChart("chartTEY_inv", invList, "Investor");
+  renderMMBarChart("chartTEY_ult", ultList, "Ultra");
+  renderBondCompChart();
+  renderBondDollarChart();
+  renderSensitivityChart();
+  renderAllDollarChart();
   renderBreakeven();
 }
 
-// ─── EVENT LISTENERS ──────────────────────────────────────────────────────
-["fedRate","stateRate","portValue","stateSelect"].forEach(id =>
+// ═══════════════════════════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════════════════════════
+["fedRate","stateRate","stateSelect","bondDuration"].forEach(id =>
   document.getElementById(id).addEventListener("input", render)
 );
 ["beMuni","beTaxable"].forEach(id =>
   document.getElementById(id).addEventListener("input", renderBreakeven)
 );
 
-// ─── INIT ─────────────────────────────────────────────────────────────────
 window.addEventListener("DOMContentLoaded", loadData);
 </script>
 </body>
