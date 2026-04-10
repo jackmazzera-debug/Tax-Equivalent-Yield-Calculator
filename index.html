@@ -491,18 +491,23 @@ function activeBond() {
   const st  = getState();
 
   if (dur === "short") {
-    return ["CALI","SUB","VGSH","VCSH"];
+    // Short-term: CA muni only shown if client is in CA
+    // For other states, skip CALI (don't show a CA-specific fund to non-CA clients)
+    if (st === "CA") return ["CALI","SUB","VGSH","VCSH"];
+    return ["SUB","VGSH","VCSH"];
   }
 
-  // Intermediate — state muni row is state-specific
+  // Intermediate-term
+  // State muni row: only show if client's state has a specific fund
+  // National muni (MUB) always shown regardless of state
   const rows = [];
-  if      (st === "CA") rows.push("CMF");
-  else if (st === "NY") rows.push("NYF");
-  else if (st === "OR") rows.push("FORCX");
-  else                  rows.push("MUB"); // other state: national muni as state muni proxy
-  rows.push("MUB");   // national muni
-  rows.push("IEI");   // treasury
-  rows.push("VCIT");  // corporate taxable
+  if      (st === "CA") rows.push("CMF");   // CA-specific state muni
+  else if (st === "NY") rows.push("NYF");   // NY-specific state muni
+  else if (st === "OR") rows.push("FORCX"); // OR-specific state muni
+  // "other" — no state muni row; don't duplicate MUB
+  rows.push("MUB");   // national muni (always)
+  rows.push("IEI");   // intermediate treasury
+  rows.push("VCIT");  // intermediate corporate taxable
   return rows;
 }
 
@@ -631,6 +636,33 @@ function estAnnualDollar(y, taxType) {
 
 const pct = (v, d=2) => (v*100).toFixed(d) + "%";
 const usd = (v) => "$" + Math.round(v).toLocaleString();
+
+// Abbreviated chart labels — ticker is always shown, name is shortened
+const NAME_ABBREV = {
+  "CA Municipal Money Fund":           "CA Muni MM",
+  "NY Municipal Money Fund":           "NY Muni MM",
+  "Municipal Money Fund":              "Natl Muni MM",
+  "AMT Tax-Free Money Fund":           "AMT Tax-Free",
+  "Treasury Obligations Money Fund":   "Tsy Oblig.",
+  "U.S. Treasury Money Fund":          "US Treasury",
+  "Government Money Fund":             "Government",
+  "Prime Advantage Money Fund":        "Prime (Taxable)",
+  "CA Muni Bond ETF (iShares)":        "CA Muni",
+  "Short-Term National Muni ETF":      "Natl Muni",
+  "Short-Term Treasury ETF (Vanguard)":"ST Treasury",
+  "Short-Term Corp Bond ETF (Vanguard)":"ST Corp",
+  "CA Intermediate Muni ETF (iShares)":"CA Int. Muni",
+  "National Muni ETF (iShares)":       "Natl Muni",
+  "NY AMT-Free Muni ETF (iShares)":    "NY Muni",
+  "OR Intermediate Muni Fund (Columbia)":"OR Muni",
+  "Intermediate Treasury ETF (iShares)":"Int. Treasury",
+  "Intermediate Corp Bond ETF (Vanguard)":"Int. Corp",
+};
+function shortLabel(ticker) {
+  const name = (ALL_FUNDS[ticker] || {}).name || ticker;
+  const abbrev = NAME_ABBREV[name] || name.replace(/ Money Fund/,"").replace(/ ETF/,"").replace(/ \(.*?\)/,"").trim();
+  return `${abbrev} (${ticker})`;
+}
 
 // ═══════════════════════════════════════════════════════════
 // OVERRIDE PANEL
@@ -792,7 +824,7 @@ function destroyChart(id) { if(charts[id]){charts[id].destroy();delete charts[id
 
 function mmChartData(tickerList) {
   const valid = tickerList.map(t => t || null);
-  const labels = valid.map(t => t ? `${ALL_FUNDS[t].name.replace(/ \(.*\)/,"")} (${t})` : "—");
+  const labels = valid.map(t => t ? shortLabel(t) : "—");
   const tey    = valid.map(t => t ? parseFloat((calcTEY(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)) : 0);
   const atY    = valid.map(t => t ? parseFloat((afterTaxYield(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)) : 0);
   const raw    = valid.map(t => t ? parseFloat((getYield(t)*100).toFixed(3)) : 0);
@@ -817,7 +849,7 @@ function renderMMBarChart(canvasId, tickerList, title) {
         tooltip:{ callbacks:{ label: ctx => " TEY: " + ctx.raw.toFixed(2) + "%" }}},
       scales:{
         y:{ ticks:{ callback:v=>v.toFixed(2)+"%", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
-        x:{ ticks:{ font:{family:MONO,size:10}, maxRotation:35 }, grid:{display:false} }
+        x:{ ticks:{ font:{family:MONO,size:9}, maxRotation:30, autoSkip:false }, grid:{display:false} }
       }
     }
   });
@@ -826,7 +858,7 @@ function renderMMBarChart(canvasId, tickerList, title) {
 function renderBondCompChart() {
   destroyChart("chartBondComp");
   const tickers = activeBond();
-  const labels  = tickers.map(t => `${ALL_FUNDS[t].name.replace(/ ETF/,"")} (${t})`);
+  const labels  = tickers.map(t => shortLabel(t));
   const teyVals = tickers.map(t => parseFloat((calcTEY(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)));
   const atVals  = tickers.map(t => parseFloat((afterTaxYield(getYield(t),ALL_FUNDS[t].taxType)*100).toFixed(3)));
   const rawVals = tickers.map(t => parseFloat((getYield(t)*100).toFixed(3)));
@@ -842,7 +874,7 @@ function renderBondCompChart() {
       plugins:{ legend:{ position:"bottom", labels:{ font:{family:MONO,size:10}, boxWidth:10 }}},
       scales:{
         y:{ ticks:{ callback:v=>v.toFixed(2)+"%", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
-        x:{ ticks:{ font:{family:MONO,size:10}, maxRotation:35 }, grid:{display:false} }
+        x:{ ticks:{ font:{family:MONO,size:9}, maxRotation:30, autoSkip:false }, grid:{display:false} }
       }
     }
   });
@@ -851,7 +883,7 @@ function renderBondCompChart() {
 function renderBondDollarChart() {
   destroyChart("chartDollar");
   const tickers = activeBond();
-  const labels  = tickers.map(t => `${ALL_FUNDS[t].name.replace(/ ETF/,"")} (${t})`);
+  const labels  = tickers.map(t => shortLabel(t));
   const vals    = tickers.map(t => Math.round(estAnnualDollar(getYield(t),ALL_FUNDS[t].taxType)));
   const maxVal  = Math.max(...vals);
   const h = Math.max(220, tickers.length * 48 + 60);
@@ -869,7 +901,7 @@ function renderBondDollarChart() {
         tooltip:{ callbacks:{ label: ctx => " " + usd(ctx.raw) + " after-tax" }}},
       scales:{
         x:{ ticks:{ callback:v=>"$"+(v/1000).toFixed(0)+"k", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
-        y:{ ticks:{ font:{family:MONO,size:10} }, grid:{display:false} }
+        y:{ ticks:{ font:{family:MONO,size:9}, maxRotation:0 }, grid:{display:false} }
       }
     }
   });
@@ -922,7 +954,7 @@ function renderAllDollarChart() {
   const invTickers = activeMM_Investor().filter(Boolean);
   const bondTickers = activeBond();
   const allT = [...invTickers, ...bondTickers];
-  const labels = allT.map(t => `${ALL_FUNDS[t].name.replace(/ \(.*\)/,"").replace(/ ETF/,"")} (${t})`);
+  const labels = allT.map(t => shortLabel(t));
   const vals   = allT.map(t => Math.round(estAnnualDollar(getYield(t),ALL_FUNDS[t].taxType)));
   const maxVal = Math.max(...vals);
   const h = Math.max(220, allT.length * 36 + 60);
@@ -940,7 +972,7 @@ function renderAllDollarChart() {
         tooltip:{ callbacks:{ label:ctx=>" "+usd(ctx.raw)+" after-tax" }}},
       scales:{
         x:{ ticks:{callback:v=>"$"+(v/1000).toFixed(0)+"k",font:{family:MONO,size:10}}, grid:{color:C_RULE} },
-        y:{ ticks:{font:{family:MONO,size:9}}, grid:{display:false} }
+        y:{ ticks:{font:{family:MONO,size:9}, maxRotation:0 }, grid:{display:false} }
       }
     }
   });
