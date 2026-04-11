@@ -27,7 +27,7 @@ FALLBACKS = {
     "SCOXX": 0.0353, "SUTXX": 0.0353, "SGUXX": 0.0352, "SNAXX": 0.0362,
     "CALI":  0.0256, "SUB":   0.02455, "CMF":  0.0310, "MUB":   0.0330,
     "NYF":   0.0305, "IEI":   0.0400,  "VCSH": 0.043699, "VGSH": 0.035791,
-    "VCIT":  0.0480, "FORCX": 0.0320,
+    "VCIT":  0.0480, "FORCX": 0.0298,
 }
 
 FUND_META = {
