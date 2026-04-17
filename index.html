@@ -1085,6 +1085,63 @@ function renderBreakeven() {
 }
 
 // ═══════════════════════════════════════════════════════════
+// MANUAL TEY CALCULATOR
+// ═══════════════════════════════════════════════════════════
+function calcManualTEY() {
+  const yRaw    = parseFloat(document.getElementById("mcYield").value);
+  const taxType = document.getElementById("mcTaxType").value;
+  const { fed, state, combined, port } = taxParams();
+
+  // Always update formula note so it reflects current tax rates
+  const formulaMap = {
+    state_muni:    `Yield ÷ (1 − ${(fed*100).toFixed(1)}% − ${(state*100).toFixed(1)}%)`,
+    national_muni: `Yield ÷ (1 − ${(fed*100).toFixed(1)}%)`,
+    treasury:      `Yield ÷ (1 − ${(state*100).toFixed(1)}%)`,
+    taxable:       `No adjustment — TEY = Yield`,
+  };
+  document.getElementById("mcTaxFormula").textContent = formulaMap[taxType] || "";
+
+  if (isNaN(yRaw) || yRaw <= 0) {
+    ["mcPostedVal","mcTEYVal","mcATYVal","mcDollarVal"].forEach(id =>
+      document.getElementById(id).textContent = "—"
+    );
+    document.getElementById("mcTEYSub").textContent = "";
+    document.getElementById("mcDollarSub").textContent = "";
+    document.getElementById("mcTaxNote").textContent = "";
+    return;
+  }
+
+  const y   = yRaw / 100;
+  const tey = calcTEY(y, taxType);
+  const aty = afterTaxYield(y, taxType);
+  const dollarReturn = aty * port;
+
+  document.getElementById("mcPostedVal").textContent  = pct(y);
+  document.getElementById("mcTEYVal").textContent     = pct(tey);
+  document.getElementById("mcATYVal").textContent     = pct(aty);
+  document.getElementById("mcDollarVal").textContent  = usd(dollarReturn);
+
+  const uplift = tey - y;
+  document.getElementById("mcTEYSub").textContent =
+    uplift > 0.0001 ? `+${pct(uplift)} vs posted` : "same as posted";
+
+  const taxableReturn = y * (1 - combined) * port;
+  const diff = dollarReturn - taxableReturn;
+  document.getElementById("mcDollarSub").textContent =
+    taxType !== "taxable" && Math.abs(diff) > 1
+      ? (diff > 0 ? "+" : "") + usd(diff) + " vs fully taxable"
+      : "";
+
+  const noteMap = {
+    state_muni:    `Fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}% = ${(combined*100).toFixed(1)}% combined exemption applied.`,
+    national_muni: `Fed ${(fed*100).toFixed(1)}% exemption applied. State ${(state*100).toFixed(1)}% still applies to income.`,
+    treasury:      `State ${(state*100).toFixed(1)}% exemption applied. Fed ${(fed*100).toFixed(1)}% still applies.`,
+    taxable:       `Full combined rate ${(combined*100).toFixed(1)}% applied (fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}%).`,
+  };
+  document.getElementById("mcTaxNote").textContent = noteMap[taxType] || "";
+}
+
+// ═══════════════════════════════════════════════════════════
 // MASTER RENDER
 // ═══════════════════════════════════════════════════════════
 function render() {
