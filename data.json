@@ -1,33 +1,33 @@
 {
   "meta": {
-    "last_updated": "2026-04-11T03:08:48.336631+00:00",
+    "last_updated": "2026-04-17T02:28:42.596652+00:00",
     "live_count": 25,
     "total_count": 26,
     "stale": true
   },
   "funds": {
     "SWKXX": {
-      "yield": 0.0202,
+      "yield": 0.0227,
       "source": "Schwab",
       "live": true
     },
     "SWYXX": {
-      "yield": 0.0238,
+      "yield": 0.0269,
       "source": "Schwab",
       "live": true
     },
     "SWTXX": {
-      "yield": 0.0236,
+      "yield": 0.0262,
       "source": "Schwab",
       "live": true
     },
     "SWWXX": {
-      "yield": 0.0235,
+      "yield": 0.0259,
       "source": "Schwab",
       "live": true
     },
     "SNOXX": {
-      "yield": 0.0338,
+      "yield": 0.0339,
       "source": "Schwab",
       "live": true
     },
@@ -37,37 +37,37 @@
       "live": true
     },
     "SNVXX": {
-      "yield": 0.0336,
+      "yield": 0.0337,
       "source": "Schwab",
       "live": true
     },
     "SWVXX": {
-      "yield": 0.0346,
+      "yield": 0.0347,
       "source": "Schwab",
       "live": true
     },
     "SCAXX": {
-      "yield": 0.0217,
+      "yield": 0.0242,
       "source": "Schwab",
       "live": true
     },
     "SNYXX": {
-      "yield": 0.0253,
+      "yield": 0.0284,
       "source": "Schwab",
       "live": true
     },
     "SWOXX": {
-      "yield": 0.0251,
+      "yield": 0.0277,
       "source": "Schwab",
       "live": true
     },
     "SCTXX": {
-      "yield": 0.025,
+      "yield": 0.0274,
       "source": "Schwab",
       "live": true
     },
     "SCOXX": {
-      "yield": 0.0353,
+      "yield": 0.0354,
       "source": "Schwab",
       "live": true
     },
@@ -77,57 +77,57 @@
       "live": true
     },
     "SGUXX": {
-      "yield": 0.0351,
+      "yield": 0.0352,
       "source": "Schwab",
       "live": true
     },
     "SNAXX": {
-      "yield": 0.0361,
+      "yield": 0.0362,
       "source": "Schwab",
       "live": true
     },
     "CALI": {
-      "yield": 0.0269,
+      "yield": 0.0285,
       "source": "iShares",
       "live": true
     },
     "SUB": {
-      "yield": 0.0248,
+      "yield": 0.0253,
       "source": "iShares",
       "live": true
     },
     "CMF": {
-      "yield": 0.0316,
+      "yield": 0.0319,
       "source": "iShares",
       "live": true
     },
     "MUB": {
-      "yield": 0.0343,
+      "yield": 0.0346,
       "source": "iShares",
       "live": true
     },
     "NYF": {
-      "yield": 0.0343,
+      "yield": 0.0347,
       "source": "iShares",
       "live": true
     },
     "IEI": {
-      "yield": 0.0393,
+      "yield": 0.0391,
       "source": "iShares",
       "live": true
     },
     "VCSH": {
-      "yield": 0.042,
+      "yield": 0.046,
       "source": "Vanguard",
       "live": true
     },
     "VGSH": {
-      "yield": 0.034,
+      "yield": 0.038,
       "source": "Vanguard",
       "live": true
     },
     "VCIT": {
-      "yield": 0.047,
+      "yield": 0.051,
       "source": "Vanguard",
       "live": true
     },
