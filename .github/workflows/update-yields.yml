@@ -2,7 +2,7 @@ name: Refresh Fund Yields
 
 on:
   schedule:
-    - cron: "0 22 * * 1-5"
+    - cron: "0 22 * * *"
   workflow_dispatch:
 
 jobs:
