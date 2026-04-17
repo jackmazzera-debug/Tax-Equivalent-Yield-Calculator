@@ -122,6 +122,13 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .be-result{font-family:var(--mono);font-size:.8rem;padding:.75rem 1rem;border-left:2px solid var(--red);background:var(--paper);border-radius:0 var(--radius) var(--radius) 0}
 .be-result.muni-wins{border-left-color:var(--green)}
 .foot{font-size:.65rem;color:var(--ink3);font-family:var(--mono);margin-top:2.5rem;border-top:1px solid var(--rule);padding-top:1rem;line-height:1.9}
+/* NIIT toggle */
+.niit-toggle-wrap{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap}
+.niit-toggle-wrap:hover{border-color:var(--navy)}
+.niit-toggle-wrap input[type=checkbox]{width:14px;height:14px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}
+.niit-toggle-wrap .niit-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);letter-spacing:.03em}
+.niit-toggle-wrap .niit-badge{font-family:var(--mono);font-size:.6rem;padding:1px 6px;border-radius:2px;background:var(--blue-bg);color:var(--navy);margin-left:4px}
+.niit-toggle-wrap.active .niit-badge{background:var(--navy);color:#fff}
 
 /* manual TEY calculator */
 .manual-calc{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem}
@@ -186,6 +193,11 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
       </select>
       <span class="hint" id="bondHint">CALI / SUB / VGSH / VCSH</span>
     </div>
+    <label class="niit-toggle-wrap" id="niitWrap" onclick="toggleNIIT()">
+      <input type="checkbox" id="niitCheck" onclick="event.stopPropagation()">
+      <span class="niit-label">Apply NIIT</span>
+      <span class="niit-badge" id="niitBadge">+3.8%</span>
+    </label>
     <button class="btn btn-primary" id="refreshBtn" onclick="loadData()">
       <span id="btnSpinner"></span> Refresh Data
     </button>
@@ -402,7 +414,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
   </div>
 
   <div class="foot">
-    TEY math: Corporate = no adjustment (TEY = yield). Treasury = yield / (1 - state rate). National Muni = yield / (1 - fed rate). State Muni = yield / (1 - fed - state).
+    TEY math: Corporate = no adjustment. Treasury = yield / (1 - state rate). National Muni = yield / (1 - fed rate). State Muni = yield / (1 - fed - state). NIIT (3.8%) applies to treasury and taxable after-tax income when toggled on — muni income is NIIT-exempt.
     After-Tax $: Corporate = yield × (1 - fed - state) × portfolio. Treasury = yield × (1 - fed) × portfolio. National Muni = yield × (1 - state) × portfolio. State Muni = yield × portfolio.
     Yields from data.json refreshed nightly via GitHub Actions. Fallback values shown when live fetch unavailable. Not investment advice.
   </div>
@@ -670,28 +682,52 @@ function getPortfolioValue() {
 // State Muni (CA/NY):    TEY = yield / (1 - fed - state)
 //   after-tax yield = yield                [both exempt]
 // ═══════════════════════════════════════════════════════════
+function getNIIT() {
+  return document.getElementById("niitCheck")?.checked ? 0.038 : 0;
+}
+function toggleNIIT() {
+  const cb = document.getElementById("niitCheck");
+  cb.checked = !cb.checked;
+  const wrap = document.getElementById("niitWrap");
+  const badge = document.getElementById("niitBadge");
+  wrap.classList.toggle("active", cb.checked);
+  badge.textContent = cb.checked ? "ON" : "+3.8%";
+  render();
+}
+
 function taxParams() {
   const fed   = (parseFloat(document.getElementById("fedRate").value)   || 0) / 100;
   const state = (parseFloat(document.getElementById("stateRate").value) || 0) / 100;
+  const niit  = getNIIT(); // 0.038 when on, 0 when off
   const port  = getPortfolioValue();
   const combined = Math.min(fed + state, 0.99);
-  return { fed, state, combined, port };
+  // niitCombined: fed + state + niit — applies to fully taxable income
+  // niitFed: fed + niit — applies to treasury (state exempt but federally taxable)
+  const niitCombined = Math.min(fed + state + niit, 0.99);
+  const niitFed      = Math.min(fed + niit, 0.99);
+  return { fed, state, combined, port, niit, niitCombined, niitFed };
 }
 
 function calcTEY(y, taxType) {
-  const { fed, state, combined } = taxParams();
+  const { fed, state, combined, niit, niitCombined, niitFed } = taxParams();
+  // TEY = what taxable yield would equal this after-tax
+  // Muni: NIIT-exempt → TEY denominator unchanged
   if (taxType === "state_muni")    return combined < 1 ? y / (1 - combined) : y;
-  if (taxType === "national_muni") return fed    < 1 ? y / (1 - fed)      : y;
-  if (taxType === "treasury")      return state  < 1 ? y / (1 - state)    : y;
-  return y; // taxable — no adjustment
+  if (taxType === "national_muni") return fed < 1 ? y / (1 - fed) : y;
+  // Treasury: state exempt, but subject to fed + NIIT
+  // TEY = y / (1 - state) so a taxable fund at TEY earns same after-tax
+  // But with NIIT on, treasury's own after-tax drops, so its TEY (vs taxable) rises
+  if (taxType === "treasury")      return state < 1 ? y / (1 - state) : y;
+  // Taxable: TEY = yield (no uplift needed — already taxable)
+  return y;
 }
 
 function afterTaxYield(y, taxType) {
-  const { fed, state, combined } = taxParams();
-  if (taxType === "state_muni")    return y;                    // both exempt
-  if (taxType === "national_muni") return y * (1 - state);     // state tax still applies
-  if (taxType === "treasury")      return y * (1 - fed);       // fed tax still applies
-  return y * (1 - combined);                                   // fully taxable
+  const { fed, state, combined, niit, niitCombined, niitFed } = taxParams();
+  if (taxType === "state_muni")    return y;                        // NIIT-exempt
+  if (taxType === "national_muni") return y * (1 - state);         // NIIT-exempt (muni)
+  if (taxType === "treasury")      return y * (1 - niitFed);       // fed + NIIT, state exempt
+  return y * (1 - niitCombined);                                   // fed + state + NIIT
 }
 
 // Est. annual $ = after-tax yield × portfolio value
@@ -1058,20 +1094,27 @@ function renderBreakeven() {
   const taxableY = parseFloat(document.getElementById("beTaxable").value) / 100;
   document.getElementById("lMuni").textContent    = (muniY*100).toFixed(2)+"%";
   document.getElementById("lTaxable").textContent = (taxableY*100).toFixed(2)+"%";
+  const { combined, niit, niitCombined } = taxParams();
+  // With NIIT, taxable after-tax uses niitCombined; breakeven shifts
+  const effectiveTaxableRate = niitCombined;
+  const muniAfterTax = muniY; // muni always NIIT-exempt
+  const taxableAfterTax = taxableY * (1 - effectiveTaxableRate);
   const breakeven = taxableY > 0 ? 1 - (muniY/taxableY) : 0;
-  const { combined } = taxParams();
-  const muniWins = muniY > taxableY*(1-combined);
+  // With NIIT the effective breakeven is higher (NIIT adds to taxable burden)
+  const breakevenWithNIIT = taxableY > 0 ? 1 - (muniY/(taxableY)) - niit : 0;
+  const muniWins = muniAfterTax > taxableAfterTax;
+  const niitNote = niit > 0 ? ` (incl. 3.8% NIIT — effective taxable rate ${(effectiveTaxableRate*100).toFixed(1)}%)` : "";
   const res = document.getElementById("beResult");
   res.className = "be-result" + (muniWins?" muni-wins":"");
-  res.innerHTML = `Breakeven combined rate: <strong>${(breakeven*100).toFixed(1)}%</strong> — at your combined rate of ${(combined*100).toFixed(1)}%, <strong>${muniWins?"state muni wins":"taxable wins"}</strong> on an after-tax basis.`;
+  res.innerHTML = `Breakeven combined rate: <strong>${(breakeven*100).toFixed(1)}%</strong>${niitNote} — at your rate of ${(combined*100).toFixed(1)}%${niit>0?" + 3.8% NIIT":""}, <strong>${muniWins?"state muni wins":"taxable wins"}</strong> on an after-tax basis.`;
   destroyChart("chartBE");
   const rateSteps = [];
   for (let r=0; r<=60; r+=2) rateSteps.push(r/100);
   charts["chartBE"] = new Chart(document.getElementById("chartBE"), {
     type:"line",
     data:{ labels:rateSteps.map(r=>(r*100).toFixed(0)+"%"), datasets:[
-      { label:"State Muni after-tax",  data:rateSteps.map(()=>parseFloat((muniY*100).toFixed(3))),              borderColor:C_TEAL, backgroundColor:"transparent", borderWidth:2, pointRadius:0 },
-      { label:"Taxable after-tax",     data:rateSteps.map(r=>parseFloat((taxableY*(1-r)*100).toFixed(3))),      borderColor:C_RED,  backgroundColor:"transparent", borderWidth:2, pointRadius:0, borderDash:[5,4] },
+      { label:"State Muni after-tax",  data:rateSteps.map(()=>parseFloat((muniY*100).toFixed(3))),                              borderColor:C_TEAL, backgroundColor:"transparent", borderWidth:2, pointRadius:0 },
+      { label:"Taxable after-tax",     data:rateSteps.map(r=>parseFloat((taxableY*(1-(r+niit))*100).toFixed(3))),               borderColor:C_RED,  backgroundColor:"transparent", borderWidth:2, pointRadius:0, borderDash:[5,4] },
     ]},
     options:{
       responsive:true, maintainAspectRatio:false,
@@ -1093,11 +1136,13 @@ function calcManualTEY() {
   const { fed, state, combined, port } = taxParams();
 
   // Always update formula note so it reflects current tax rates
+  const { niit, niitCombined, niitFed } = taxParams();
+  const niitStr = niit > 0 ? ` + 3.8% NIIT` : "";
   const formulaMap = {
-    state_muni:    `Yield ÷ (1 − ${(fed*100).toFixed(1)}% − ${(state*100).toFixed(1)}%)`,
-    national_muni: `Yield ÷ (1 − ${(fed*100).toFixed(1)}%)`,
-    treasury:      `Yield ÷ (1 − ${(state*100).toFixed(1)}%)`,
-    taxable:       `No adjustment — TEY = Yield`,
+    state_muni:    `Yield ÷ (1 − ${(fed*100).toFixed(1)}% − ${(state*100).toFixed(1)}%) [NIIT-exempt]`,
+    national_muni: `Yield ÷ (1 − ${(fed*100).toFixed(1)}%) [NIIT-exempt]`,
+    treasury:      `After-tax = Yield × (1 − ${(fed*100).toFixed(1)}%${niitStr})`,
+    taxable:       `After-tax = Yield × (1 − ${(combined*100).toFixed(1)}%${niitStr})`,
   };
   document.getElementById("mcTaxFormula").textContent = formulaMap[taxType] || "";
 
@@ -1115,6 +1160,7 @@ function calcManualTEY() {
   const tey = calcTEY(y, taxType);
   const aty = afterTaxYield(y, taxType);
   const dollarReturn = aty * port;
+  const { niit: niitVal } = taxParams();
 
   document.getElementById("mcPostedVal").textContent  = pct(y);
   document.getElementById("mcTEYVal").textContent     = pct(tey);
@@ -1132,11 +1178,12 @@ function calcManualTEY() {
       ? (diff > 0 ? "+" : "") + usd(diff) + " vs fully taxable"
       : "";
 
+  const niitNote2 = niitVal > 0 ? ` + 3.8% NIIT` : "";
   const noteMap = {
-    state_muni:    `Fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}% = ${(combined*100).toFixed(1)}% combined exemption applied.`,
-    national_muni: `Fed ${(fed*100).toFixed(1)}% exemption applied. State ${(state*100).toFixed(1)}% still applies to income.`,
-    treasury:      `State ${(state*100).toFixed(1)}% exemption applied. Fed ${(fed*100).toFixed(1)}% still applies.`,
-    taxable:       `Full combined rate ${(combined*100).toFixed(1)}% applied (fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}%).`,
+    state_muni:    `Fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}% = ${(combined*100).toFixed(1)}% combined exemption applied. NIIT does not apply to muni income.`,
+    national_muni: `Fed ${(fed*100).toFixed(1)}% exemption applied. State ${(state*100).toFixed(1)}% still applies. NIIT does not apply to muni income.`,
+    treasury:      `State ${(state*100).toFixed(1)}% exempt. Fed ${(fed*100).toFixed(1)}%${niitNote2} applies to treasury income.`,
+    taxable:       `Full rate: fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}%${niitNote2} = ${(niitCombined*100).toFixed(1)}% effective rate.`,
   };
   document.getElementById("mcTaxNote").textContent = noteMap[taxType] || "";
 }
