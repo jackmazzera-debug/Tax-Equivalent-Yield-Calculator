@@ -24,10 +24,10 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .data-pill.live{border-color:#4caf50;color:#81c784}
 .data-pill.stale{border-color:#ff9800;color:#ffb74d}
 .wrap{max-width:1200px;margin:0 auto;padding:1.5rem 2rem 4rem}
-.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1rem 1.5rem;margin-bottom:1.25rem;display:flex;flex-direction:row;flex-wrap:nowrap;gap:0;align-items:stretch}
-.ig{display:flex;flex-direction:column;gap:4px;padding:0 1rem;border-right:1px solid var(--rule);flex:1 1 0;min-width:0;justify-content:center}
+.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1rem 1.5rem;margin-bottom:1.25rem;display:flex;flex-direction:row;flex-wrap:nowrap;gap:0;align-items:center}
+.ig{display:flex;flex-direction:column;gap:4px;padding:0 1rem;border-right:1px solid var(--rule);flex:1 1 0;min-width:0}
 .ig label{font-size:.6rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ig input,.ig select{font-family:var(--mono);font-size:.88rem;border:1px solid var(--rule2);background:var(--paper);padding:6px 8px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;box-sizing:border-box}
+.ig input,.ig select{font-family:var(--mono);font-size:.88rem;border:1px solid var(--rule2);background:var(--paper);padding:0 8px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;box-sizing:border-box;height:34px;line-height:34px}
 .ig input:focus,.ig select:focus{outline:none;border-color:var(--navy);background:var(--white)}
 .ig:first-child{padding-left:0}
 .ig:last-child{border-right:none}
@@ -128,7 +128,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .be-result.muni-wins{border-left-color:var(--green)}
 .foot{font-size:.65rem;color:var(--ink3);font-family:var(--mono);margin-top:2.5rem;border-top:1px solid var(--rule);padding-top:1rem;line-height:1.9}
 /* NIIT toggle */
-.niit-toggle-wrap{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap}
+.niit-toggle-wrap{display:flex;align-items:center;gap:8px;padding:0 8px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap;height:34px}
 .niit-toggle-wrap:hover{border-color:var(--navy)}
 .niit-toggle-wrap input[type=checkbox]{width:14px;height:14px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}
 .niit-toggle-wrap .niit-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);letter-spacing:.03em}
@@ -187,7 +187,6 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
         <option value="OR">Oregon (OR)</option>
         <option value="other">Other State</option>
       </select>
-      <span class="hint" id="stateHint">CA: SWKXX/SCAXX state muni available</span>
     </div>
     <div class="ig">
       <label>Bond Fund Duration</label>
@@ -195,7 +194,6 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
         <option value="short">Short-Term</option>
         <option value="inter">Intermediate-Term</option>
       </select>
-      <span class="hint" id="bondHint">CALI / SUB / VGSH / VCSH</span>
     </div>
     <div class="ig">
       <label>NIIT</label>
@@ -204,7 +202,12 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
         <span class="niit-label">Apply NIIT</span>
         <span class="niit-badge" id="niitBadge">+3.8%</span>
       </label>
-      <span class="hint">&nbsp;</span>
+    </div>
+    <div class="ig" style="border-right:none;flex:0 0 auto;padding-right:0">
+      <label>&nbsp;</label>
+      <button class="btn btn-primary" id="refreshBtn" onclick="loadData()" style="height:34px;white-space:nowrap">
+        <span id="btnSpinner"></span>&#8635; Refresh
+      </button>
     </div>
   </div>
 
@@ -333,7 +336,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 
   <!-- MONEY MARKET TABLES -->
   <div class="slabel">
-    Money Market Funds
+    Money Market Funds &nbsp;<span id="asOfDate" style="font-size:.6rem;color:var(--ink3);font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--mono)"></span>
     <span style="font-size:.6rem;color:var(--ink3);">7-day annualized yield &nbsp;|&nbsp; <span id="mmStateLabel">—</span></span>
   </div>
   <div class="two-col">
@@ -597,7 +600,10 @@ function activeBond() {
 // DATA LOADING
 // ═══════════════════════════════════════════════════════════
 async function loadData() {
-  setRefreshLoading(true);
+  const btn = document.getElementById("refreshBtn");
+  const sp  = document.getElementById("btnSpinner");
+  if (btn) btn.disabled = true;
+  if (sp)  sp.innerHTML = '<span class="spin"></span> ';
   try {
     const r = await fetch("data.json?t=" + Date.now());
     if (!r.ok) throw new Error("not found");
@@ -610,7 +616,10 @@ async function loadData() {
   }
   buildOverrideGrids();
   render();
-  setRefreshLoading(false);
+  const btn2 = document.getElementById("refreshBtn");
+  const sp2  = document.getElementById("btnSpinner");
+  if (btn2) btn2.disabled = false;
+  if (sp2)  sp2.innerHTML = "";
 }
 
 function buildFallbackData() {
@@ -624,12 +633,22 @@ function buildFallbackData() {
 function updateDataPill(meta) {
   const pill = document.getElementById("dataPill");
   if (!meta) return;
-  if (meta.stale) {
-    pill.className = "data-pill stale";
-    pill.textContent = "⚠ Fallback data — " + (meta.source||"");
-  } else {
+  const ts = meta.last_updated ? new Date(meta.last_updated).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "unknown";
+  if (!meta.stale && meta.live_count > 0) {
     pill.className = "data-pill live";
-    pill.textContent = "● Live — " + new Date(meta.last_updated).toLocaleString();
+    pill.textContent = "● Live — " + ts + " (" + meta.live_count + "/" + meta.total_count + " funds)";
+    const asOf = document.getElementById("asOfDate");
+    if (asOf) asOf.textContent = "— as of " + ts;
+  } else if (meta.recent_count > 0) {
+    pill.className = "data-pill stale";
+    pill.textContent = "◑ Yesterday's data — " + ts;
+    const asOf = document.getElementById("asOfDate");
+    if (asOf) asOf.textContent = "— as of " + ts + " (prior run)";
+  } else {
+    pill.className = "data-pill stale";
+    pill.textContent = "⚠ Hardcoded fallback — run update_yields_local.py";
+    const asOf = document.getElementById("asOfDate");
+    if (asOf) asOf.textContent = "— as of Apr 9, 2026 (fallback)";
   }
 }
 
@@ -1193,10 +1212,10 @@ function render() {
   const st = getState();
 
   // Update state hint
-  document.getElementById("stateHint").textContent = STATE_HINTS[st] || "";
+  // stateHint removed from inputs bar
   const dur = getBondDuration();
   const bondTickers = activeBond();
-  document.getElementById("bondHint").textContent = bondTickers.join(" / ");
+  // bondHint removed from inputs bar
   document.getElementById("mmStateLabel").textContent =
     st==="CA"?"Showing CA state muni (SWKXX/SCAXX)":
     st==="NY"?"Showing NY state muni (SWYXX/SNYXX)":
