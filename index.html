@@ -24,12 +24,15 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .data-pill.live{border-color:#4caf50;color:#81c784}
 .data-pill.stale{border-color:#ff9800;color:#ffb74d}
 .wrap{max-width:1200px;margin:0 auto;padding:1.5rem 2rem 4rem}
-.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:grid;grid-template-columns:repeat(6,1fr);gap:1.25rem;align-items:end}
-.ig{display:flex;flex-direction:column;gap:5px}
-.ig label{font-size:.65rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);white-space:nowrap}
-.ig input,.ig select{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;min-width:0;box-sizing:border-box}
+.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1rem 1.5rem;margin-bottom:1.25rem;display:flex;flex-direction:row;flex-wrap:nowrap;gap:0;align-items:stretch}
+.ig{display:flex;flex-direction:column;gap:4px;padding:0 1rem;border-right:1px solid var(--rule);flex:1 1 0;min-width:0;justify-content:center}
+.ig label{font-size:.6rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ig input,.ig select{font-family:var(--mono);font-size:.88rem;border:1px solid var(--rule2);background:var(--paper);padding:6px 8px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;box-sizing:border-box}
 .ig input:focus,.ig select:focus{outline:none;border-color:var(--navy);background:var(--white)}
-.ig .hint{font-size:.62rem;font-family:var(--mono);color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;height:1.2em}
+.ig:first-child{padding-left:0}
+.ig:last-child{border-right:none}
+
+.ig .hint{font-size:.6rem;font-family:var(--mono);color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:2px}
 .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;padding:8px 16px;border-radius:var(--radius);cursor:pointer;transition:background .15s,opacity .15s;border:none;white-space:nowrap;flex-shrink:0}
 .btn-primary{background:var(--navy);color:#fff}
 .btn-primary:hover{background:var(--navy2)}
@@ -125,7 +128,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .be-result.muni-wins{border-left-color:var(--green)}
 .foot{font-size:.65rem;color:var(--ink3);font-family:var(--mono);margin-top:2.5rem;border-top:1px solid var(--rule);padding-top:1rem;line-height:1.9}
 /* NIIT toggle */
-.niit-toggle-wrap{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap;flex-shrink:0}
+.niit-toggle-wrap{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap}
 .niit-toggle-wrap:hover{border-color:var(--navy)}
 .niit-toggle-wrap input[type=checkbox]{width:14px;height:14px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}
 .niit-toggle-wrap .niit-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);letter-spacing:.03em}
