@@ -25,9 +25,9 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .data-pill.stale{border-color:#ff9800;color:#ffb74d}
 .wrap{max-width:1200px;margin:0 auto;padding:1.5rem 2rem 4rem}
 .inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-end}
-.ig{display:flex;flex-direction:column;gap:5px;min-width:140px}
-.ig label{font-size:.65rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3)}
-.ig input,.ig select{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s}
+.ig{display:flex;flex-direction:column;gap:5px;min-width:140px;width:160px}
+.ig label{font-size:.65rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);white-space:nowrap}
+.ig input,.ig select{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;min-width:0}
 .ig input:focus,.ig select:focus{outline:none;border-color:var(--navy);background:var(--white)}
 .ig .hint{font-size:.62rem;font-family:var(--mono);color:var(--ink3)}
 .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;padding:8px 16px;border-radius:var(--radius);cursor:pointer;transition:background .15s,opacity .15s;border:none;white-space:nowrap}
@@ -68,11 +68,16 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 @media(max-width:720px){.two-col{grid-template-columns:1fr}}
 .tcard{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden}
 .tcard-label{padding:8px 12px 0;font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
-.tcard table{width:100%;border-collapse:collapse;font-size:.82rem}
-.tcard thead th{background:#f9f8f5;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:7px 11px;text-align:right;font-weight:400;border-bottom:1px solid var(--rule)}
+.tcard table{width:100%;border-collapse:collapse;font-size:.82rem;table-layout:fixed}
+.tcard thead th:nth-child(1){width:38%}
+.tcard thead th:nth-child(2){width:18%}
+.tcard thead th:nth-child(3){width:15%}
+.tcard thead th:nth-child(4){width:12%}
+.tcard thead th:nth-child(5){width:17%}
+.tcard thead th{background:#f9f8f5;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:7px 8px;text-align:right;font-weight:400;border-bottom:1px solid var(--rule);white-space:normal;line-height:1.3}
 .tcard thead th:first-child{text-align:left}
-.tcard tbody td{padding:9px 11px;text-align:right;border-bottom:.5px solid var(--rule);font-family:var(--mono);font-size:.8rem;color:var(--ink2)}
-.tcard tbody td:first-child{text-align:left;font-family:var(--sans);font-size:.82rem;color:var(--ink)}
+.tcard tbody td{padding:8px 8px;text-align:right;border-bottom:.5px solid var(--rule);font-family:var(--mono);font-size:.78rem;color:var(--ink2)}
+.tcard tbody td:first-child{text-align:left;font-family:var(--sans);font-size:.78rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tcard tbody tr:last-child td{border-bottom:none}
 .tcard tbody tr:hover{background:var(--paper)}
 .tcard tbody tr.blank-row td{color:var(--ink3);font-style:italic;text-align:center!important;font-size:.75rem}
@@ -117,6 +122,29 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .be-result{font-family:var(--mono);font-size:.8rem;padding:.75rem 1rem;border-left:2px solid var(--red);background:var(--paper);border-radius:0 var(--radius) var(--radius) 0}
 .be-result.muni-wins{border-left-color:var(--green)}
 .foot{font-size:.65rem;color:var(--ink3);font-family:var(--mono);margin-top:2.5rem;border-top:1px solid var(--rule);padding-top:1rem;line-height:1.9}
+/* NIIT toggle */
+.niit-toggle-wrap{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap}
+.niit-toggle-wrap:hover{border-color:var(--navy)}
+.niit-toggle-wrap input[type=checkbox]{width:14px;height:14px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}
+.niit-toggle-wrap .niit-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);letter-spacing:.03em}
+.niit-toggle-wrap .niit-badge{font-family:var(--mono);font-size:.6rem;padding:1px 6px;border-radius:2px;background:var(--blue-bg);color:var(--navy);margin-left:4px}
+.niit-toggle-wrap.active .niit-badge{background:var(--navy);color:#fff}
+
+/* manual TEY calculator */
+.manual-calc{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.manual-calc h2{font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:1rem;font-weight:400}
+.mc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1rem}
+.mc-row{display:flex;flex-direction:column;gap:5px}
+.mc-row label{font-size:.63rem;font-family:var(--mono);letter-spacing:.07em;color:var(--ink3);white-space:nowrap}
+.mc-row .mc-type{font-size:.6rem;font-family:var(--mono);color:var(--ink3);background:var(--paper);padding:2px 6px;border-radius:2px;margin-top:2px;display:inline-block}
+.mc-row input{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s}
+.mc-row input:focus{outline:none;border-color:var(--navy);background:var(--white)}
+.mc-results{background:var(--paper);border-radius:var(--radius);padding:1rem 1.25rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.mc-stat{display:flex;flex-direction:column;gap:3px}
+.mc-stat .mc-stat-label{font-size:.6rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
+.mc-stat .mc-stat-val{font-size:1.1rem;font-family:var(--mono);font-weight:500;color:var(--navy)}
+.mc-stat .mc-stat-sub{font-size:.68rem;font-family:var(--mono);color:var(--ink3)}
+.mc-tax-note{font-size:.68rem;font-family:var(--mono);color:var(--ink3);margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--rule)}
 </style>
 </head>
 <body>
@@ -165,6 +193,11 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
       </select>
       <span class="hint" id="bondHint">CALI / SUB / VGSH / VCSH</span>
     </div>
+    <label class="niit-toggle-wrap" id="niitWrap" onclick="toggleNIIT()">
+      <input type="checkbox" id="niitCheck" onclick="event.stopPropagation()">
+      <span class="niit-label">Apply NIIT</span>
+      <span class="niit-badge" id="niitBadge">+3.8%</span>
+    </label>
     <button class="btn btn-primary" id="refreshBtn" onclick="loadData()">
       <span id="btnSpinner"></span> Refresh Data
     </button>
@@ -247,6 +280,50 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
         <div class="con">Mid-range TEY</div>
       </div>
     </div>
+  </div>
+
+
+  <!-- MANUAL TEY CALCULATOR -->
+  <div class="manual-calc">
+    <h2>Manual TEY Calculator</h2>
+    <p style="font-size:.75rem;color:var(--ink3);margin-bottom:1rem;font-family:var(--mono);">Enter any yield to compute TEY using the tax rates above. Useful for one-off comparisons or funds not in the tables.</p>
+    <div class="mc-grid">
+      <div class="mc-row">
+        <label>Posted Yield (%)</label>
+        <input type="number" id="mcYield" placeholder="e.g. 3.50" min="0" max="20" step="0.01" oninput="calcManualTEY()">
+      </div>
+      <div class="mc-row">
+        <label>Tax Treatment</label>
+        <select id="mcTaxType" onchange="calcManualTEY()" style="font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;">
+          <option value="state_muni">State Muni (Fed + State Exempt)</option>
+          <option value="national_muni">National Muni (Fed Exempt Only)</option>
+          <option value="treasury">Treasury (State Exempt Only)</option>
+          <option value="taxable" selected>Taxable (No Exemption)</option>
+        </select>
+        <span class="mc-type" id="mcTaxFormula">TEY = Yield (no adjustment)</span>
+      </div>
+    </div>
+    <div class="mc-results" id="mcResults">
+      <div class="mc-stat">
+        <div class="mc-stat-label">Posted Yield</div>
+        <div class="mc-stat-val" id="mcPostedVal">—</div>
+      </div>
+      <div class="mc-stat">
+        <div class="mc-stat-label">Tax Equiv. Yield (TEY)</div>
+        <div class="mc-stat-val" id="mcTEYVal">—</div>
+        <div class="mc-stat-sub" id="mcTEYSub"></div>
+      </div>
+      <div class="mc-stat">
+        <div class="mc-stat-label">After-Tax Yield</div>
+        <div class="mc-stat-val" id="mcATYVal">—</div>
+      </div>
+      <div class="mc-stat">
+        <div class="mc-stat-label">Est. Annual $ on Portfolio</div>
+        <div class="mc-stat-val" id="mcDollarVal">—</div>
+        <div class="mc-stat-sub" id="mcDollarSub"></div>
+      </div>
+    </div>
+    <div class="mc-tax-note" id="mcTaxNote"></div>
   </div>
 
   <!-- MONEY MARKET TABLES -->
@@ -337,7 +414,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
   </div>
 
   <div class="foot">
-    TEY math: Corporate = no adjustment (TEY = yield). Treasury = yield / (1 - state rate). National Muni = yield / (1 - fed rate). State Muni = yield / (1 - fed - state).
+    TEY math: Corporate = no adjustment. Treasury = yield / (1 - state rate). National Muni = yield / (1 - fed rate). State Muni = yield / (1 - fed - state). NIIT (3.8%) applies to treasury and taxable after-tax income when toggled on — muni income is NIIT-exempt.
     After-Tax $: Corporate = yield × (1 - fed - state) × portfolio. Treasury = yield × (1 - fed) × portfolio. National Muni = yield × (1 - state) × portfolio. State Muni = yield × portfolio.
     Yields from data.json refreshed nightly via GitHub Actions. Fallback values shown when live fetch unavailable. Not investment advice.
   </div>
@@ -605,28 +682,52 @@ function getPortfolioValue() {
 // State Muni (CA/NY):    TEY = yield / (1 - fed - state)
 //   after-tax yield = yield                [both exempt]
 // ═══════════════════════════════════════════════════════════
+function getNIIT() {
+  return document.getElementById("niitCheck")?.checked ? 0.038 : 0;
+}
+function toggleNIIT() {
+  const cb = document.getElementById("niitCheck");
+  cb.checked = !cb.checked;
+  const wrap = document.getElementById("niitWrap");
+  const badge = document.getElementById("niitBadge");
+  wrap.classList.toggle("active", cb.checked);
+  badge.textContent = cb.checked ? "ON" : "+3.8%";
+  render();
+}
+
 function taxParams() {
   const fed   = (parseFloat(document.getElementById("fedRate").value)   || 0) / 100;
   const state = (parseFloat(document.getElementById("stateRate").value) || 0) / 100;
+  const niit  = getNIIT(); // 0.038 when on, 0 when off
   const port  = getPortfolioValue();
   const combined = Math.min(fed + state, 0.99);
-  return { fed, state, combined, port };
+  // niitCombined: fed + state + niit — applies to fully taxable income
+  // niitFed: fed + niit — applies to treasury (state exempt but federally taxable)
+  const niitCombined = Math.min(fed + state + niit, 0.99);
+  const niitFed      = Math.min(fed + niit, 0.99);
+  return { fed, state, combined, port, niit, niitCombined, niitFed };
 }
 
 function calcTEY(y, taxType) {
-  const { fed, state, combined } = taxParams();
+  const { fed, state, combined, niit, niitCombined, niitFed } = taxParams();
+  // TEY = what taxable yield would equal this after-tax
+  // Muni: NIIT-exempt → TEY denominator unchanged
   if (taxType === "state_muni")    return combined < 1 ? y / (1 - combined) : y;
-  if (taxType === "national_muni") return fed    < 1 ? y / (1 - fed)      : y;
-  if (taxType === "treasury")      return state  < 1 ? y / (1 - state)    : y;
-  return y; // taxable — no adjustment
+  if (taxType === "national_muni") return fed < 1 ? y / (1 - fed) : y;
+  // Treasury: state exempt, but subject to fed + NIIT
+  // TEY = y / (1 - state) so a taxable fund at TEY earns same after-tax
+  // But with NIIT on, treasury's own after-tax drops, so its TEY (vs taxable) rises
+  if (taxType === "treasury")      return state < 1 ? y / (1 - state) : y;
+  // Taxable: TEY = yield (no uplift needed — already taxable)
+  return y;
 }
 
 function afterTaxYield(y, taxType) {
-  const { fed, state, combined } = taxParams();
-  if (taxType === "state_muni")    return y;                    // both exempt
-  if (taxType === "national_muni") return y * (1 - state);     // state tax still applies
-  if (taxType === "treasury")      return y * (1 - fed);       // fed tax still applies
-  return y * (1 - combined);                                   // fully taxable
+  const { fed, state, combined, niit, niitCombined, niitFed } = taxParams();
+  if (taxType === "state_muni")    return y;                        // NIIT-exempt
+  if (taxType === "national_muni") return y * (1 - state);         // NIIT-exempt (muni)
+  if (taxType === "treasury")      return y * (1 - niitFed);       // fed + NIIT, state exempt
+  return y * (1 - niitCombined);                                   // fed + state + NIIT
 }
 
 // Est. annual $ = after-tax yield × portfolio value
@@ -835,20 +936,30 @@ function mmChartData(tickerList) {
 function renderMMBarChart(canvasId, tickerList, title) {
   destroyChart(canvasId);
   const { labels, tey, maxTEY } = mmChartData(tickerList);
+  // Scale y-axis to zoom in: start just below min, end just above max
+  const validTey = tey.filter(v => v > 0);
+  const minTEY = validTey.length ? Math.min(...validTey) : 0;
+  const yMin = Math.max(0, parseFloat((minTEY * 0.92).toFixed(2)));
+  const yMax = parseFloat((maxTEY * 1.06).toFixed(2));
   charts[canvasId] = new Chart(document.getElementById(canvasId), {
     type:"bar",
     data:{ labels, datasets:[{
       label:"TEY (%)",
       data: tey,
-      backgroundColor: tey.map(v => v===maxTEY ? C_NAVY : C_NAVYL),
-      borderColor: C_NAVY, borderWidth:1
+      backgroundColor: tey.map(v => v===maxTEY ? C_NAVY : "rgba(27,53,87,0.18)"),
+      borderColor: tey.map(v => v===maxTEY ? C_NAVY : "rgba(27,53,87,0.35)"),
+      borderWidth: tey.map(v => v===maxTEY ? 2 : 1),
     }]},
     options:{
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false},
         tooltip:{ callbacks:{ label: ctx => " TEY: " + ctx.raw.toFixed(2) + "%" }}},
       scales:{
-        y:{ ticks:{ callback:v=>v.toFixed(2)+"%", font:{family:MONO,size:10} }, grid:{color:C_RULE} },
+        y:{
+          min: yMin, max: yMax,
+          ticks:{ callback:v=>v.toFixed(2)+"%", font:{family:MONO,size:10} },
+          grid:{color:C_RULE}
+        },
         x:{ ticks:{ font:{family:MONO,size:9}, maxRotation:30, autoSkip:false }, grid:{display:false} }
       }
     }
@@ -983,20 +1094,27 @@ function renderBreakeven() {
   const taxableY = parseFloat(document.getElementById("beTaxable").value) / 100;
   document.getElementById("lMuni").textContent    = (muniY*100).toFixed(2)+"%";
   document.getElementById("lTaxable").textContent = (taxableY*100).toFixed(2)+"%";
+  const { combined, niit, niitCombined } = taxParams();
+  // With NIIT, taxable after-tax uses niitCombined; breakeven shifts
+  const effectiveTaxableRate = niitCombined;
+  const muniAfterTax = muniY; // muni always NIIT-exempt
+  const taxableAfterTax = taxableY * (1 - effectiveTaxableRate);
   const breakeven = taxableY > 0 ? 1 - (muniY/taxableY) : 0;
-  const { combined } = taxParams();
-  const muniWins = muniY > taxableY*(1-combined);
+  // With NIIT the effective breakeven is higher (NIIT adds to taxable burden)
+  const breakevenWithNIIT = taxableY > 0 ? 1 - (muniY/(taxableY)) - niit : 0;
+  const muniWins = muniAfterTax > taxableAfterTax;
+  const niitNote = niit > 0 ? ` (incl. 3.8% NIIT — effective taxable rate ${(effectiveTaxableRate*100).toFixed(1)}%)` : "";
   const res = document.getElementById("beResult");
   res.className = "be-result" + (muniWins?" muni-wins":"");
-  res.innerHTML = `Breakeven combined rate: <strong>${(breakeven*100).toFixed(1)}%</strong> — at your combined rate of ${(combined*100).toFixed(1)}%, <strong>${muniWins?"state muni wins":"taxable wins"}</strong> on an after-tax basis.`;
+  res.innerHTML = `Breakeven combined rate: <strong>${(breakeven*100).toFixed(1)}%</strong>${niitNote} — at your rate of ${(combined*100).toFixed(1)}%${niit>0?" + 3.8% NIIT":""}, <strong>${muniWins?"state muni wins":"taxable wins"}</strong> on an after-tax basis.`;
   destroyChart("chartBE");
   const rateSteps = [];
   for (let r=0; r<=60; r+=2) rateSteps.push(r/100);
   charts["chartBE"] = new Chart(document.getElementById("chartBE"), {
     type:"line",
     data:{ labels:rateSteps.map(r=>(r*100).toFixed(0)+"%"), datasets:[
-      { label:"State Muni after-tax",  data:rateSteps.map(()=>parseFloat((muniY*100).toFixed(3))),              borderColor:C_TEAL, backgroundColor:"transparent", borderWidth:2, pointRadius:0 },
-      { label:"Taxable after-tax",     data:rateSteps.map(r=>parseFloat((taxableY*(1-r)*100).toFixed(3))),      borderColor:C_RED,  backgroundColor:"transparent", borderWidth:2, pointRadius:0, borderDash:[5,4] },
+      { label:"State Muni after-tax",  data:rateSteps.map(()=>parseFloat((muniY*100).toFixed(3))),                              borderColor:C_TEAL, backgroundColor:"transparent", borderWidth:2, pointRadius:0 },
+      { label:"Taxable after-tax",     data:rateSteps.map(r=>parseFloat((taxableY*(1-(r+niit))*100).toFixed(3))),               borderColor:C_RED,  backgroundColor:"transparent", borderWidth:2, pointRadius:0, borderDash:[5,4] },
     ]},
     options:{
       responsive:true, maintainAspectRatio:false,
@@ -1007,6 +1125,67 @@ function renderBreakeven() {
       }
     }
   });
+}
+
+// ═══════════════════════════════════════════════════════════
+// MANUAL TEY CALCULATOR
+// ═══════════════════════════════════════════════════════════
+function calcManualTEY() {
+  const yRaw    = parseFloat(document.getElementById("mcYield").value);
+  const taxType = document.getElementById("mcTaxType").value;
+  const { fed, state, combined, port } = taxParams();
+
+  // Always update formula note so it reflects current tax rates
+  const { niit, niitCombined, niitFed } = taxParams();
+  const niitStr = niit > 0 ? ` + 3.8% NIIT` : "";
+  const formulaMap = {
+    state_muni:    `Yield ÷ (1 − ${(fed*100).toFixed(1)}% − ${(state*100).toFixed(1)}%) [NIIT-exempt]`,
+    national_muni: `Yield ÷ (1 − ${(fed*100).toFixed(1)}%) [NIIT-exempt]`,
+    treasury:      `After-tax = Yield × (1 − ${(fed*100).toFixed(1)}%${niitStr})`,
+    taxable:       `After-tax = Yield × (1 − ${(combined*100).toFixed(1)}%${niitStr})`,
+  };
+  document.getElementById("mcTaxFormula").textContent = formulaMap[taxType] || "";
+
+  if (isNaN(yRaw) || yRaw <= 0) {
+    ["mcPostedVal","mcTEYVal","mcATYVal","mcDollarVal"].forEach(id =>
+      document.getElementById(id).textContent = "—"
+    );
+    document.getElementById("mcTEYSub").textContent = "";
+    document.getElementById("mcDollarSub").textContent = "";
+    document.getElementById("mcTaxNote").textContent = "";
+    return;
+  }
+
+  const y   = yRaw / 100;
+  const tey = calcTEY(y, taxType);
+  const aty = afterTaxYield(y, taxType);
+  const dollarReturn = aty * port;
+  const { niit: niitVal } = taxParams();
+
+  document.getElementById("mcPostedVal").textContent  = pct(y);
+  document.getElementById("mcTEYVal").textContent     = pct(tey);
+  document.getElementById("mcATYVal").textContent     = pct(aty);
+  document.getElementById("mcDollarVal").textContent  = usd(dollarReturn);
+
+  const uplift = tey - y;
+  document.getElementById("mcTEYSub").textContent =
+    uplift > 0.0001 ? `+${pct(uplift)} vs posted` : "same as posted";
+
+  const taxableReturn = y * (1 - combined) * port;
+  const diff = dollarReturn - taxableReturn;
+  document.getElementById("mcDollarSub").textContent =
+    taxType !== "taxable" && Math.abs(diff) > 1
+      ? (diff > 0 ? "+" : "") + usd(diff) + " vs fully taxable"
+      : "";
+
+  const niitNote2 = niitVal > 0 ? ` + 3.8% NIIT` : "";
+  const noteMap = {
+    state_muni:    `Fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}% = ${(combined*100).toFixed(1)}% combined exemption applied. NIIT does not apply to muni income.`,
+    national_muni: `Fed ${(fed*100).toFixed(1)}% exemption applied. State ${(state*100).toFixed(1)}% still applies. NIIT does not apply to muni income.`,
+    treasury:      `State ${(state*100).toFixed(1)}% exempt. Fed ${(fed*100).toFixed(1)}%${niitNote2} applies to treasury income.`,
+    taxable:       `Full rate: fed ${(fed*100).toFixed(1)}% + state ${(state*100).toFixed(1)}%${niitNote2} = ${(niitCombined*100).toFixed(1)}% effective rate.`,
+  };
+  document.getElementById("mcTaxNote").textContent = noteMap[taxType] || "";
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1043,6 +1222,7 @@ function render() {
   renderSensitivityChart();
   renderAllDollarChart();
   renderBreakeven();
+  calcManualTEY();
 }
 
 // ═══════════════════════════════════════════════════════════
