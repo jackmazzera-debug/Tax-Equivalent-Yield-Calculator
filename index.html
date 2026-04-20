@@ -24,13 +24,13 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .data-pill.live{border-color:#4caf50;color:#81c784}
 .data-pill.stale{border-color:#ff9800;color:#ffb74d}
 .wrap{max-width:1200px;margin:0 auto;padding:1.5rem 2rem 4rem}
-.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-end}
-.ig{display:flex;flex-direction:column;gap:5px;min-width:140px;width:160px}
+.inputs-bar{background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:grid;grid-template-columns:repeat(6,1fr);gap:1.25rem;align-items:end}
+.ig{display:flex;flex-direction:column;gap:5px}
 .ig label{font-size:.65rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);white-space:nowrap}
-.ig input,.ig select{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;min-width:0}
+.ig input,.ig select{font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;transition:border-color .15s;min-width:0;box-sizing:border-box}
 .ig input:focus,.ig select:focus{outline:none;border-color:var(--navy);background:var(--white)}
-.ig .hint{font-size:.62rem;font-family:var(--mono);color:var(--ink3)}
-.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;padding:8px 16px;border-radius:var(--radius);cursor:pointer;transition:background .15s,opacity .15s;border:none;white-space:nowrap}
+.ig .hint{font-size:.62rem;font-family:var(--mono);color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;height:1.2em}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;padding:8px 16px;border-radius:var(--radius);cursor:pointer;transition:background .15s,opacity .15s;border:none;white-space:nowrap;flex-shrink:0}
 .btn-primary{background:var(--navy);color:#fff}
 .btn-primary:hover{background:var(--navy2)}
 .btn-ghost{background:transparent;color:var(--ink2);border:1px solid var(--rule2)}
@@ -80,6 +80,8 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .tcard tbody td:first-child{text-align:left;font-family:var(--sans);font-size:.78rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tcard tbody tr:last-child td{border-bottom:none}
 .tcard tbody tr:hover{background:var(--paper)}
+.tcard tbody tr.best-row{background:#eef2f8}
+.tcard tbody tr.best-row:hover{background:#e4eaf4}
 .tcard tbody tr.blank-row td{color:var(--ink3);font-style:italic;text-align:center!important;font-size:.75rem}
 .tkey{font-family:var(--mono);font-size:.65rem;color:var(--ink3);background:#f0ede6;padding:1px 4px;border-radius:2px;margin-left:4px}
 .winner{color:var(--navy);font-weight:500}
@@ -123,11 +125,11 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .be-result.muni-wins{border-left-color:var(--green)}
 .foot{font-size:.65rem;color:var(--ink3);font-family:var(--mono);margin-top:2.5rem;border-top:1px solid var(--rule);padding-top:1rem;line-height:1.9}
 /* NIIT toggle */
-.niit-toggle-wrap{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap}
+.niit-toggle-wrap{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--paper);border:1px solid var(--rule2);border-radius:var(--radius);cursor:pointer;user-select:none;white-space:nowrap;flex-shrink:0}
 .niit-toggle-wrap:hover{border-color:var(--navy)}
 .niit-toggle-wrap input[type=checkbox]{width:14px;height:14px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}
 .niit-toggle-wrap .niit-label{font-family:var(--mono);font-size:.72rem;color:var(--ink2);letter-spacing:.03em}
-.niit-toggle-wrap .niit-badge{font-family:var(--mono);font-size:.6rem;padding:1px 6px;border-radius:2px;background:var(--blue-bg);color:var(--navy);margin-left:4px}
+.niit-toggle-wrap .niit-badge{font-family:var(--mono);font-size:.6rem;padding:1px 6px;border-radius:2px;background:var(--blue-bg);color:var(--navy);margin-left:4px;min-width:32px;text-align:center;display:inline-block}
 .niit-toggle-wrap.active .niit-badge{background:var(--navy);color:#fff}
 
 /* manual TEY calculator */
@@ -172,7 +174,6 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
     <div class="ig">
       <label>Portfolio Value ($)</label>
       <input type="text" id="portValue" value="1,000,000" inputmode="numeric"
-        style="font-family:var(--mono);font-size:.9rem;border:1px solid var(--rule2);background:var(--paper);padding:7px 9px;border-radius:var(--radius);color:var(--ink);width:100%;"
         oninput="formatPortfolioInput(this)">
     </div>
     <div class="ig">
@@ -193,14 +194,15 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
       </select>
       <span class="hint" id="bondHint">CALI / SUB / VGSH / VCSH</span>
     </div>
-    <label class="niit-toggle-wrap" id="niitWrap" onclick="toggleNIIT()">
-      <input type="checkbox" id="niitCheck" onclick="event.stopPropagation()">
-      <span class="niit-label">Apply NIIT</span>
-      <span class="niit-badge" id="niitBadge">+3.8%</span>
-    </label>
-    <button class="btn btn-primary" id="refreshBtn" onclick="loadData()">
-      <span id="btnSpinner"></span> Refresh Data
-    </button>
+    <div class="ig">
+      <label>NIIT</label>
+      <label class="niit-toggle-wrap" id="niitWrap" onclick="toggleNIIT()">
+        <input type="checkbox" id="niitCheck" onclick="event.stopPropagation()">
+        <span class="niit-label">Apply NIIT</span>
+        <span class="niit-badge" id="niitBadge">+3.8%</span>
+      </label>
+      <span class="hint">&nbsp;</span>
+    </div>
   </div>
 
   <!-- OVERRIDE PANEL -->
@@ -353,7 +355,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
   </div>
   <div class="tcard" style="margin-bottom:1.25rem;">
     <table><thead><tr>
-      <th>Fund Type</th><th>Ticker</th><th>YTM</th><th>Data Source</th><th>TEY</th><th>After-Tax Yield</th><th>Est. Annual $</th><th>Signal</th>
+      <th>Fund</th><th>Ticker</th><th>YTM</th><th>TEY</th><th>After-Tax $</th>
     </tr></thead><tbody id="bondTable"></tbody></table>
   </div>
 
@@ -872,7 +874,7 @@ function renderMMTable(tbodyId, tickerList) {
     const src = getSource(ticker);
     const srcClass = src==="manual"?"src-manual":(((baseData[ticker]||{}).live)?"src-live":"src-fallback");
 
-    return `<tr>
+    return `<tr class="${best?'best-row':''}">
       <td>${fund.name}${edited?' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:.55rem">edited</span>':""}</td>
       <td><span class="tkey">${ticker}</span> <span class="source-tag ${srcClass}" style="margin-left:2px">${src}</span></td>
       <td class="${best?'winner':'dimmed'}">${pct(y)}</td>
@@ -888,28 +890,21 @@ function renderBondTable() {
   const maxTEY  = Math.max(...teyVals);
 
   document.getElementById("bondTable").innerHTML = tickers.map((t, i) => {
-    const fund = ALL_FUNDS[t];
-    const y    = getYield(t);
-    const tey  = teyVals[i];
-    const aty  = afterTaxYield(y, fund.taxType);
-    const atd  = estAnnualDollar(y, fund.taxType);
-    const best = tey === maxTEY;
-    const src  = getSource(t);
-    const srcClass = src==="manual"?"src-manual":((baseData[t]||{}).live?"src-live":"src-fallback");
+    const fund   = ALL_FUNDS[t];
+    const y      = getYield(t);
+    const tey    = teyVals[i];
+    const atd    = estAnnualDollar(y, fund.taxType);
+    const best   = tey === maxTEY;
     const edited = isManual(t);
-    const signal = best
-      ? '<span class="badge badge-best">Best TEY</span>'
-      : (aty > 0.03 ? '<span class="badge badge-buy">Hold</span>' : '<span class="badge badge-hold">—</span>');
+    const src    = getSource(t);
+    const srcClass = src==="manual"?"src-manual":((baseData[t]||{}).live?"src-live":"src-fallback");
 
-    return `<tr>
+    return `<tr class="${best?'best-row':''}">
       <td>${fund.name}${edited?' <span class="badge" style="background:var(--amber-bg);color:var(--amber);font-size:.55rem">edited</span>':""}</td>
-      <td><span class="tkey">${t}</span></td>
+      <td><span class="tkey">${t}</span><span class="source-tag ${srcClass}" style="margin-left:3px">${src}</span></td>
       <td class="${best?'winner':'dimmed'}">${pct(y)}</td>
-      <td><span class="source-tag ${srcClass}">${src}</span></td>
       <td class="${best?'winner':''}">${pct(tey)}</td>
-      <td>${pct(aty)}</td>
       <td>${usd(atd)}</td>
-      <td>${signal}</td>
     </tr>`;
   }).join("");
 }
