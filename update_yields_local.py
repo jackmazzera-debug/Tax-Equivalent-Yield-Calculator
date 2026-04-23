@@ -48,16 +48,16 @@ ISHARES_URLS = {
 
 VANGUARD_TICKERS = ["VCSH", "VGSH", "VCIT"]
 
-FALLBACKS_DATE = "2026-04-09"
+FALLBACKS_DATE = "2026-04-23"
 
 FALLBACKS = {
-    "SWKXX": 0.0182,   "SWYXX": 0.0212,   "SWTXX": 0.0213,   "SWWXX": 0.0211,
-    "SNOXX": 0.0338,   "SNSXX": 0.0338,   "SNVXX": 0.0337,   "SWVXX": 0.0347,
-    "SCAXX": 0.0197,   "SNYXX": 0.0227,   "SWOXX": 0.0228,   "SCTXX": 0.0226,
-    "SCOXX": 0.0353,   "SUTXX": 0.0353,   "SGUXX": 0.0352,   "SNAXX": 0.0362,
-    "CALI":  0.0256,   "SUB":   0.02455,  "CMF":   0.031,    "MUB":   0.033,
-    "NYF":   0.0305,   "IEI":   0.04,     "VCSH":  0.043699, "VGSH":  0.035791,
-    "VCIT":  0.048,    "FORCX": 0.032,
+    "SWKXX": 0.0259,   "SWYXX": 0.0317,   "SWTXX": 0.0297,   "SWWXX": 0.0295,
+    "SNOXX": 0.0339,   "SNSXX": 0.0338,   "SNVXX": 0.0338,   "SWVXX": 0.0349,
+    "SCAXX": 0.0274,   "SNYXX": 0.0332,   "SWOXX": 0.0312,   "SCTXX": 0.031,
+    "SCOXX": 0.0354,   "SUTXX": 0.0353,   "SGUXX": 0.0353,   "SNAXX": 0.0364,
+    "CALI":  0.0301,   "SUB":   0.0257,  "CMF":   0.0318,    "MUB":   0.0343,
+    "NYF":   0.0344,   "IEI":   0.0394,     "VCSH":  0.046, "VGSH":  0.038,
+    "VCIT":  0.051,    "FORCX": 0.032,
 }
 
 HEADERS = {
