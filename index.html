@@ -735,12 +735,10 @@ function taxParams() {
 function calcTEY(y, taxType) {
   const { fed, state, combined, niit, niitCombined, niitFed } = taxParams();
   // TEY = what taxable yield would equal this after-tax
-  // Muni: NIIT-exempt → TEY denominator unchanged
-  if (taxType === "state_muni")    return combined < 1 ? y / (1 - combined) : y;
-  if (taxType === "national_muni") return fed < 1 ? y / (1 - fed) : y;
-  // Treasury: state exempt, but subject to fed + NIIT
-  // TEY = y / (1 - state) so a taxable fund at TEY earns same after-tax
-  // But with NIIT on, treasury's own after-tax drops, so its TEY (vs taxable) rises
+  // Muni is NIIT-exempt; taxable reference includes NIIT → larger denominator → higher TEY when NIIT on
+  if (taxType === "state_muni")    return niitCombined < 1 ? y / (1 - niitCombined) : y;
+  if (taxType === "national_muni") return niitFed < 1 ? y / (1 - niitFed) : y;
+  // Treasury: NIIT applies to both treasury and taxable → cancels in ratio → no change
   if (taxType === "treasury")      return state < 1 ? y / (1 - state) : y;
   // Taxable: TEY = yield (no uplift needed — already taxable)
   return y;
