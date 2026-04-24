@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-24T18:45:21Z",
+    "last_updated": "2026-04-24T18:57:56Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -13,7 +13,7 @@
       "series": "schwab",
       "yield": 0.0258,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SWYXX": {
@@ -22,7 +22,7 @@
       "series": "schwab",
       "yield": 0.0317,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SWTXX": {
@@ -31,7 +31,7 @@
       "series": "schwab",
       "yield": 0.0297,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SWWXX": {
@@ -40,7 +40,7 @@
       "series": "schwab",
       "yield": 0.0295,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SNOXX": {
@@ -49,7 +49,7 @@
       "series": "schwab",
       "yield": 0.0339,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SNSXX": {
@@ -58,7 +58,7 @@
       "series": "schwab",
       "yield": 0.0338,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SNVXX": {
@@ -67,7 +67,7 @@
       "series": "schwab",
       "yield": 0.0338,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SWVXX": {
@@ -76,7 +76,7 @@
       "series": "schwab",
       "yield": 0.0349,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SCAXX": {
@@ -85,7 +85,7 @@
       "series": "schwab",
       "yield": 0.0273,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SNYXX": {
@@ -94,7 +94,7 @@
       "series": "schwab",
       "yield": 0.0332,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SWOXX": {
@@ -103,7 +103,7 @@
       "series": "schwab",
       "yield": 0.0312,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SCTXX": {
@@ -112,7 +112,7 @@
       "series": "schwab",
       "yield": 0.031,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SCOXX": {
@@ -121,7 +121,7 @@
       "series": "schwab",
       "yield": 0.0354,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SUTXX": {
@@ -130,7 +130,7 @@
       "series": "schwab",
       "yield": 0.0353,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SGUXX": {
@@ -139,7 +139,7 @@
       "series": "schwab",
       "yield": 0.0353,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "SNAXX": {
@@ -148,7 +148,7 @@
       "series": "schwab",
       "yield": 0.0364,
       "yieldType": "7day",
-      "source": "schwabassetmanagement.com",
+      "source": "Schwab",
       "live": true
     },
     "CALI": {
