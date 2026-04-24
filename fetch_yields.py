@@ -181,7 +181,7 @@ for ticker, meta in FUND_META.items():
     if ticker == "FORCX":
         y, src, live = FORCX_YTM, f"Nuveen (manual {FORCX_AS_OF})", False
     elif ticker in schwab_live:
-        y, src, live = schwab_live[ticker], "schwabassetmanagement.com", True
+        y, src, live = schwab_live[ticker], "Schwab", True
     elif ticker in ishares_live:
         y, src, live = ishares_live[ticker], "iShares", True
     elif ticker in vanguard_live:
