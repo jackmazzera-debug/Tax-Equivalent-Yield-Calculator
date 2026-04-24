@@ -1154,8 +1154,8 @@ function calcManualTEY() {
   const { niit, niitCombined, niitFed } = taxParams();
   const niitStr = niit > 0 ? ` + 3.8% NIIT` : "";
   const formulaMap = {
-    state_muni:    `Yield ÷ (1 − ${(fed*100).toFixed(1)}% − ${(state*100).toFixed(1)}%) [NIIT-exempt]`,
-    national_muni: `Yield ÷ (1 − ${(fed*100).toFixed(1)}%) [NIIT-exempt]`,
+    state_muni:    `Yield ÷ (1 − ${(fed*100).toFixed(1)}% − ${(state*100).toFixed(1)}%${niitStr ? ` − 3.8% NIIT` : ""}) [muni NIIT-exempt]`,
+    national_muni: `Yield ÷ (1 − ${(fed*100).toFixed(1)}%${niitStr ? ` − 3.8% NIIT` : ""}) [muni NIIT-exempt]`,
     treasury:      `After-tax = Yield × (1 − ${(fed*100).toFixed(1)}%${niitStr})`,
     taxable:       `After-tax = Yield × (1 − ${(combined*100).toFixed(1)}%${niitStr})`,
   };
@@ -1186,7 +1186,7 @@ function calcManualTEY() {
   document.getElementById("mcTEYSub").textContent =
     uplift > 0.0001 ? `+${pct(uplift)} vs posted` : "same as posted";
 
-  const taxableReturn = y * (1 - combined) * port;
+  const taxableReturn = y * (1 - niitCombined) * port;
   const diff = dollarReturn - taxableReturn;
   document.getElementById("mcDollarSub").textContent =
     taxType !== "taxable" && Math.abs(diff) > 1
