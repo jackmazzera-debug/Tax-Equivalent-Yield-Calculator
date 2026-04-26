@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-25T14:04:10Z",
+    "last_updated": "2026-04-26T14:05:49Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -155,7 +155,7 @@
       "name": "CA Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0301,
+      "yield": 0.0309,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -164,7 +164,7 @@
       "name": "Short-Term National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.026,
+      "yield": 0.0262,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -173,7 +173,7 @@
       "name": "CA Intermediate Muni ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0319,
+      "yield": 0.032,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -182,7 +182,7 @@
       "name": "National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0344,
+      "yield": 0.0345,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -200,7 +200,7 @@
       "name": "Intermediate Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.0397,
+      "yield": 0.0393,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
