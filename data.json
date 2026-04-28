@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-27T15:08:57Z",
+    "last_updated": "2026-04-28T15:28:40Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -20,7 +20,7 @@
       "name": "NY Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0315,
+      "yield": 0.0314,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -92,7 +92,7 @@
       "name": "NY Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.033,
+      "yield": 0.0329,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -155,7 +155,7 @@
       "name": "CA Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0309,
+      "yield": 0.0302,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -164,7 +164,7 @@
       "name": "Short-Term National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0262,
+      "yield": 0.0261,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -173,7 +173,7 @@
       "name": "CA Intermediate Muni ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.032,
+      "yield": 0.0319,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -182,7 +182,7 @@
       "name": "National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0345,
+      "yield": 0.0344,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -200,7 +200,7 @@
       "name": "Intermediate Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.0393,
+      "yield": 0.0396,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
