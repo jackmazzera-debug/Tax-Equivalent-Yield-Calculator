@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-28T15:28:40Z",
+    "last_updated": "2026-04-29T15:15:52Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -47,7 +47,7 @@
       "name": "Treasury Obligations Money Fund",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0339,
+      "yield": 0.034,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -119,7 +119,7 @@
       "name": "Treasury Obligations (Ultra)",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0354,
+      "yield": 0.0355,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -155,7 +155,7 @@
       "name": "CA Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0302,
+      "yield": 0.0303,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -164,7 +164,7 @@
       "name": "Short-Term National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0261,
+      "yield": 0.0264,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -173,7 +173,7 @@
       "name": "CA Intermediate Muni ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0319,
+      "yield": 0.0322,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -182,7 +182,7 @@
       "name": "National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0344,
+      "yield": 0.0347,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -191,7 +191,7 @@
       "name": "NY Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0345,
+      "yield": 0.0347,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -200,7 +200,7 @@
       "name": "Intermediate Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.0396,
+      "yield": 0.0399,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
