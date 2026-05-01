@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-30T15:11:48Z",
+    "last_updated": "2026-05-01T14:18:16Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -11,7 +11,7 @@
       "name": "CA Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0256,
+      "yield": 0.0253,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -20,7 +20,7 @@
       "name": "NY Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0312,
+      "yield": 0.0308,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -29,7 +29,7 @@
       "name": "Municipal Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0295,
+      "yield": 0.0291,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -38,7 +38,7 @@
       "name": "AMT Tax-Free Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0293,
+      "yield": 0.0289,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -83,7 +83,7 @@
       "name": "CA Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0271,
+      "yield": 0.0268,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -92,7 +92,7 @@
       "name": "NY Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0327,
+      "yield": 0.0323,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -101,7 +101,7 @@
       "name": "Municipal Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.031,
+      "yield": 0.0306,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -110,7 +110,7 @@
       "name": "AMT Tax-Free Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0308,
+      "yield": 0.0304,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
