@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-10T14:20:48Z",
+    "last_updated": "2026-05-11T15:56:57Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -155,7 +155,7 @@
       "name": "CA Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0259,
+      "yield": 0.0262,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -191,7 +191,7 @@
       "name": "NY Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0347,
+      "yield": 0.0348,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
