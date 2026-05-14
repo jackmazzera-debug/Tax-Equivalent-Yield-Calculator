@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-13T15:45:46Z",
+    "last_updated": "2026-05-14T15:20:40Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 25,
     "total_count": 26,
@@ -11,7 +11,7 @@
       "name": "CA Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0188,
+      "yield": 0.0183,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -20,7 +20,7 @@
       "name": "NY Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0218,
+      "yield": 0.0213,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -29,7 +29,7 @@
       "name": "Municipal Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.022,
+      "yield": 0.0215,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -38,7 +38,7 @@
       "name": "AMT Tax-Free Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0219,
+      "yield": 0.0214,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -65,7 +65,7 @@
       "name": "Government Money Fund",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0336,
+      "yield": 0.0335,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -83,7 +83,7 @@
       "name": "CA Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0203,
+      "yield": 0.0198,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -92,7 +92,7 @@
       "name": "NY Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0233,
+      "yield": 0.0228,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -101,7 +101,7 @@
       "name": "Municipal Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0235,
+      "yield": 0.023,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -110,7 +110,7 @@
       "name": "AMT Tax-Free Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0234,
+      "yield": 0.0229,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -137,7 +137,7 @@
       "name": "Government Money Fund (Ultra)",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0351,
+      "yield": 0.035,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -155,7 +155,7 @@
       "name": "CA Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0261,
+      "yield": 0.0263,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -164,7 +164,7 @@
       "name": "Short-Term National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0267,
+      "yield": 0.0268,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -173,7 +173,7 @@
       "name": "CA Intermediate Muni ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.0326,
+      "yield": 0.0328,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -182,7 +182,7 @@
       "name": "National Muni ETF",
       "taxType": "national_muni",
       "series": "etf",
-      "yield": 0.0351,
+      "yield": 0.0352,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -191,7 +191,7 @@
       "name": "NY Muni Bond ETF",
       "taxType": "state_muni",
       "series": "etf",
-      "yield": 0.035,
+      "yield": 0.0351,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
@@ -200,7 +200,7 @@
       "name": "Intermediate Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.0414,
+      "yield": 0.0413,
       "yieldType": "sec_yield",
       "source": "iShares",
       "live": true
