@@ -1,90 +1,90 @@
 {
   "meta": {
-    "last_updated": "2026-04-30T14:46:11.483479+00:00",
-    "live_count": 0,
+    "last_updated": "2026-05-29T16:36:23.933302+00:00",
+    "live_count": 19,
     "total_count": 26,
     "stale": true
   },
   "funds": {
     "SWKXX": {
-      "yield": 0.0259,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0148,
+      "source": "Schwab",
+      "live": true
     },
     "SWYXX": {
-      "yield": 0.0317,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0157,
+      "source": "Schwab",
+      "live": true
     },
     "SWTXX": {
-      "yield": 0.0297,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0167,
+      "source": "Schwab",
+      "live": true
     },
     "SWWXX": {
-      "yield": 0.0295,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0165,
+      "source": "Schwab",
+      "live": true
     },
     "SNOXX": {
-      "yield": 0.0339,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0334,
+      "source": "Schwab",
+      "live": true
     },
     "SNSXX": {
-      "yield": 0.0338,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0336,
+      "source": "Schwab",
+      "live": true
     },
     "SNVXX": {
-      "yield": 0.0338,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0332,
+      "source": "Schwab",
+      "live": true
     },
     "SWVXX": {
-      "yield": 0.0349,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0344,
+      "source": "Schwab",
+      "live": true
     },
     "SCAXX": {
-      "yield": 0.0274,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0163,
+      "source": "Schwab",
+      "live": true
     },
     "SNYXX": {
-      "yield": 0.0332,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0172,
+      "source": "Schwab",
+      "live": true
     },
     "SWOXX": {
-      "yield": 0.0312,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0182,
+      "source": "Schwab",
+      "live": true
     },
     "SCTXX": {
-      "yield": 0.031,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.018,
+      "source": "Schwab",
+      "live": true
     },
     "SCOXX": {
-      "yield": 0.0354,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0349,
+      "source": "Schwab",
+      "live": true
     },
     "SUTXX": {
-      "yield": 0.0353,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0351,
+      "source": "Schwab",
+      "live": true
     },
     "SGUXX": {
-      "yield": 0.0353,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0347,
+      "source": "Schwab",
+      "live": true
     },
     "SNAXX": {
-      "yield": 0.0364,
-      "source": "Schwab (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.0359,
+      "source": "Schwab",
+      "live": true
     },
     "CALI": {
       "yield": 0.0301,
@@ -118,18 +118,18 @@
     },
     "VCSH": {
       "yield": 0.046,
-      "source": "Vanguard (fallback 2026-04-23)",
-      "live": false
+      "source": "Vanguard",
+      "live": true
     },
     "VGSH": {
-      "yield": 0.038,
-      "source": "Vanguard (fallback 2026-04-23)",
-      "live": false
+      "yield": 0.039,
+      "source": "Vanguard",
+      "live": true
     },
     "VCIT": {
       "yield": 0.051,
-      "source": "Vanguard (fallback 2026-04-23)",
-      "live": false
+      "source": "Vanguard",
+      "live": true
     },
     "FORCX": {
       "yield": 0.032,
