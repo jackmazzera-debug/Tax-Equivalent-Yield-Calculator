@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-06-12T16:19:00Z",
+    "last_updated": "2026-06-13T15:01:38Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 19,
     "total_count": 26,
@@ -11,7 +11,7 @@
       "name": "CA Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0192,
+      "yield": 0.0206,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -20,7 +20,7 @@
       "name": "NY Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0218,
+      "yield": 0.0239,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -29,7 +29,7 @@
       "name": "Municipal Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0219,
+      "yield": 0.0234,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -38,7 +38,7 @@
       "name": "AMT Tax-Free Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0215,
+      "yield": 0.0232,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -83,7 +83,7 @@
       "name": "CA Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0207,
+      "yield": 0.0221,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -92,7 +92,7 @@
       "name": "NY Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0233,
+      "yield": 0.0254,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -101,7 +101,7 @@
       "name": "Municipal Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0234,
+      "yield": 0.0249,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -110,7 +110,7 @@
       "name": "AMT Tax-Free Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.023,
+      "yield": 0.0247,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -209,7 +209,7 @@
       "name": "Short-Term Corp Bond ETF",
       "taxType": "taxable",
       "series": "etf",
-      "yield": 0.046,
+      "yield": 0.047,
       "yieldType": "sec_yield",
       "source": "Vanguard",
       "live": true
@@ -218,7 +218,7 @@
       "name": "Short-Term Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.039,
+      "yield": 0.04,
       "yieldType": "sec_yield",
       "source": "Vanguard",
       "live": true
