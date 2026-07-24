@@ -1,133 +1,133 @@
 {
   "meta": {
-    "last_updated": "2026-07-09T03:41:24.354879+00:00",
-    "live_count": 3,
+    "last_updated": "2026-07-24T22:03:18.067224+00:00",
+    "live_count": 19,
     "total_count": 26,
     "stale": true
   },
   "funds": {
     "SWKXX": {
-      "yield": 0.0148,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0214,
+      "source": "Schwab",
+      "live": true
     },
     "SWYXX": {
-      "yield": 0.0157,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0247,
+      "source": "Schwab",
+      "live": true
     },
     "SWTXX": {
-      "yield": 0.0167,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0243,
+      "source": "Schwab",
+      "live": true
     },
     "SWWXX": {
-      "yield": 0.0165,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0242,
+      "source": "Schwab",
+      "live": true
     },
     "SNOXX": {
-      "yield": 0.0334,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0337,
+      "source": "Schwab",
+      "live": true
     },
     "SNSXX": {
-      "yield": 0.0336,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.034,
+      "source": "Schwab",
+      "live": true
     },
     "SNVXX": {
-      "yield": 0.0332,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0335,
+      "source": "Schwab",
+      "live": true
     },
     "SWVXX": {
-      "yield": 0.0344,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0348,
+      "source": "Schwab",
+      "live": true
     },
     "SCAXX": {
-      "yield": 0.0163,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0229,
+      "source": "Schwab",
+      "live": true
     },
     "SNYXX": {
-      "yield": 0.0172,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0262,
+      "source": "Schwab",
+      "live": true
     },
     "SWOXX": {
-      "yield": 0.0182,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0258,
+      "source": "Schwab",
+      "live": true
     },
     "SCTXX": {
-      "yield": 0.018,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0257,
+      "source": "Schwab",
+      "live": true
     },
     "SCOXX": {
-      "yield": 0.0349,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0352,
+      "source": "Schwab",
+      "live": true
     },
     "SUTXX": {
-      "yield": 0.0351,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0355,
+      "source": "Schwab",
+      "live": true
     },
     "SGUXX": {
-      "yield": 0.0347,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.035,
+      "source": "Schwab",
+      "live": true
     },
     "SNAXX": {
-      "yield": 0.0359,
-      "source": "Schwab (fallback 2026-05-29)",
-      "live": false
+      "yield": 0.0363,
+      "source": "Schwab",
+      "live": true
     },
     "CALI": {
       "yield": 0.0301,
-      "source": "iShares (fallback 2026-05-29)",
+      "source": "iShares (fallback 2026-07-09)",
       "live": false
     },
     "SUB": {
       "yield": 0.0257,
-      "source": "iShares (fallback 2026-05-29)",
+      "source": "iShares (fallback 2026-07-09)",
       "live": false
     },
     "CMF": {
       "yield": 0.0318,
-      "source": "iShares (fallback 2026-05-29)",
+      "source": "iShares (fallback 2026-07-09)",
       "live": false
     },
     "MUB": {
       "yield": 0.0343,
-      "source": "iShares (fallback 2026-05-29)",
+      "source": "iShares (fallback 2026-07-09)",
       "live": false
     },
     "NYF": {
       "yield": 0.0344,
-      "source": "iShares (fallback 2026-05-29)",
+      "source": "iShares (fallback 2026-07-09)",
       "live": false
     },
     "IEI": {
       "yield": 0.0394,
-      "source": "iShares (fallback 2026-05-29)",
+      "source": "iShares (fallback 2026-07-09)",
       "live": false
     },
     "VCSH": {
-      "yield": 0.047,
+      "yield": 0.048,
       "source": "Vanguard",
       "live": true
     },
     "VGSH": {
-      "yield": 0.04,
+      "yield": 0.042,
       "source": "Vanguard",
       "live": true
     },
     "VCIT": {
-      "yield": 0.051,
+      "yield": 0.052,
       "source": "Vanguard",
       "live": true
     },
