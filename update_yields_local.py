@@ -24,8 +24,8 @@ from playwright.sync_api import sync_playwright
 # ---------------------------------------------------------------------------
 # !! MANUAL UPDATE – check nuveen.com monthly !!
 # ---------------------------------------------------------------------------
-FORCX_YTM = 0.032          # last updated 2026-04-09
-FORCX_AS_OF = "2026-04-09"
+FORCX_YTM = 0.0308         # last updated 2026-08-12
+FORCX_AS_OF = "2026-08-12"
 # ---------------------------------------------------------------------------
 
 SCHWAB_URL = "https://www.schwab.com/money-market-funds"
@@ -48,16 +48,16 @@ ISHARES_URLS = {
 
 VANGUARD_TICKERS = ["VCSH", "VGSH", "VCIT"]
 
-FALLBACKS_DATE = "2026-04-23"
+FALLBACKS_DATE = "2026-08-12"
 
 FALLBACKS = {
-    "SWKXX": 0.0259,   "SWYXX": 0.0317,   "SWTXX": 0.0297,   "SWWXX": 0.0295,
-    "SNOXX": 0.0339,   "SNSXX": 0.0338,   "SNVXX": 0.0338,   "SWVXX": 0.0349,
-    "SCAXX": 0.0274,   "SNYXX": 0.0332,   "SWOXX": 0.0312,   "SCTXX": 0.031,
-    "SCOXX": 0.0354,   "SUTXX": 0.0353,   "SGUXX": 0.0353,   "SNAXX": 0.0364,
-    "CALI":  0.0301,   "SUB":   0.0257,  "CMF":   0.0318,    "MUB":   0.0343,
-    "NYF":   0.0344,   "IEI":   0.0394,     "VCSH":  0.046, "VGSH":  0.038,
-    "VCIT":  0.051,    "FORCX": 0.032,
+    "SWKXX": 0.0141,   "SWYXX": 0.0147,   "SWTXX": 0.0161,   "SWWXX": 0.0162,
+    "SNOXX": 0.0338,   "SNSXX": 0.0341,   "SNVXX": 0.0338,   "SWVXX": 0.035,
+    "SCAXX": 0.0156,   "SNYXX": 0.0162,   "SWOXX": 0.0176,   "SCTXX": 0.0177,
+    "SCOXX": 0.0353,   "SUTXX": 0.0356,   "SGUXX": 0.0353,   "SNAXX": 0.0365,
+    "CALI":  0.0235,   "SUB":   0.0262,  "CMF":   0.0331,    "MUB":   0.0359,
+    "NYF":   0.0364,   "IEI":   0.044,     "VCSH":  0.048, "VGSH":  0.042,
+    "VCIT":  0.052,    "FORCX": 0.0308,
 }
 
 HEADERS = {
@@ -127,32 +127,52 @@ def fetch_schwab_yields() -> dict[str, dict]:
 # ---------------------------------------------------------------------------
 
 def fetch_ishares_yields() -> dict[str, dict]:
-    print("Fetching iShares ETF yields (YTM) …")
+    print("Fetching iShares ETF yields (YTM) via Playwright …")
     results: dict[str, dict] = {}
 
-    for ticker, url in ISHARES_URLS.items():
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=30)
-            resp.raise_for_status()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            for ticker, url in ISHARES_URLS.items():
+                try:
+                    page = browser.new_page()
+                    page.goto(url, wait_until="domcontentloaded", timeout=60000)
+                    # iShares is a JS SPA — wait for the characteristics section to render
+                    try:
+                        page.wait_for_selector("text=Yield to Maturity", timeout=20000)
+                    except Exception:
+                        pass
+                    content = page.content()
+                    page.close()
 
-            idx = resp.text.find("Yield to Maturity")
-            if idx == -1:
-                raise ValueError("YTM label not found")
+                    # Try multiple patterns for the rendered page
+                    m = (
+                        re.search(r'Yield to Maturity[^%<]{0,200}?([\d.]+)%', content, re.DOTALL)
+                        or re.search(r'ytm["\s:>]+([0-9]+\.[0-9]+)', content, re.IGNORECASE)
+                    )
+                    if not m:
+                        raise ValueError("YTM value not found in rendered page")
 
-            chunk = resp.text[idx:idx + 800]
-            m = re.search(r'class="data">\s*([\d.]+)%', chunk)
-            if not m:
-                raise ValueError("YTM value not found after label")
+                    yld = round(float(m.group(1)) / 100, 8)
+                    results[ticker] = {"yield": yld, "source": "iShares", "live": True}
 
-            yld = round(float(m.group(1)) / 100, 8)
-            results[ticker] = {"yield": yld, "source": "iShares", "live": True}
+                except Exception as exc:
+                    print(f"  WARNING: {ticker} failed ({exc}) — fallback.")
+                    results[ticker] = _fallback(ticker, "iShares")
+                    try:
+                        page.close()
+                    except Exception:
+                        pass
 
-        except Exception as exc:
-            print(f"  WARNING: {ticker} failed ({exc}) — fallback.")
-            results[ticker] = _fallback(ticker, "iShares")
+                status = "live" if results[ticker]["live"] else "FALLBACK"
+                print(f"  {ticker}: {results[ticker]['yield']:.4%}  [{status}]")
 
-        status = "live" if results[ticker]["live"] else "FALLBACK"
-        print(f"  {ticker}: {results[ticker]['yield']:.4%}  [{status}]")
+            browser.close()
+
+    except Exception as exc:
+        print(f"  ERROR launching Playwright for iShares: {exc}")
+        for ticker in ISHARES_URLS:
+            results.setdefault(ticker, _fallback(ticker, "iShares"))
 
     return results
 
@@ -237,10 +257,13 @@ def _fallback(ticker: str, source: str) -> dict:
 # ---------------------------------------------------------------------------
 
 def update_fallbacks_in_script(funds: dict) -> None:
-    """Rewrite FALLBACKS and FALLBACKS_DATE in this script with today's live values."""
-    live_funds = {t: v for t, v in funds.items() if v.get("live")}
-    if not live_funds:
-        print("No live data fetched — skipping fallback update.")
+    """Rewrite FALLBACKS and FALLBACKS_DATE in this script with the most recent values.
+
+    Includes all funds — live-scraped and manual (e.g. FORCX) — so fallbacks always
+    match the latest known data regardless of source.
+    """
+    if not funds:
+        print("No fund data — skipping fallback update.")
         return
 
     script_path = __file__
@@ -249,7 +272,7 @@ def update_fallbacks_in_script(funds: dict) -> None:
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-    for ticker, data in live_funds.items():
+    for ticker, data in funds.items():
         yld = data["yield"]
         content = re.sub(
             rf'("{re.escape(ticker)}":\s*)[\d.]+',
@@ -266,7 +289,8 @@ def update_fallbacks_in_script(funds: dict) -> None:
     with open(script_path, "w") as f:
         f.write(content)
 
-    print(f"Updated fallback reference data for {len(live_funds)} tickers (date: {today}).")
+    live_count = sum(1 for v in funds.values() if v.get("live"))
+    print(f"Updated fallback reference data: {live_count} live + {len(funds) - live_count} manual tickers (date: {today}).")
 
 
 # ---------------------------------------------------------------------------
