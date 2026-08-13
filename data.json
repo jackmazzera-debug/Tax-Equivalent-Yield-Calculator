@@ -1,139 +1,244 @@
 {
   "meta": {
-    "last_updated": "2026-08-13T03:40:15.492632+00:00",
-    "live_count": 4,
+    "last_updated": "2026-08-13T14:22:08Z",
+    "source": "GitHub Actions \u2014 fetch_yields.py",
+    "live_count": 16,
     "total_count": 26,
-    "stale": true
+    "stale": false
   },
   "funds": {
     "SWKXX": {
-      "yield": 0.0141,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "CA Municipal Money Fund",
+      "taxType": "state_muni",
+      "series": "schwab",
+      "yield": 0.0143,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SWYXX": {
-      "yield": 0.0147,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "NY Municipal Money Fund",
+      "taxType": "state_muni",
+      "series": "schwab",
+      "yield": 0.0151,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SWTXX": {
-      "yield": 0.0161,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "Municipal Money Fund",
+      "taxType": "national_muni",
+      "series": "schwab",
+      "yield": 0.0163,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SWWXX": {
-      "yield": 0.0162,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "AMT Tax-Free Money Fund",
+      "taxType": "national_muni",
+      "series": "schwab",
+      "yield": 0.0163,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SNOXX": {
+      "name": "Treasury Obligations Money Fund",
+      "taxType": "treasury",
+      "series": "schwab",
       "yield": 0.0338,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SNSXX": {
+      "name": "U.S. Treasury Money Fund",
+      "taxType": "treasury",
+      "series": "schwab",
       "yield": 0.0341,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SNVXX": {
+      "name": "Government Money Fund",
+      "taxType": "treasury",
+      "series": "schwab",
       "yield": 0.0338,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SWVXX": {
+      "name": "Prime Advantage Money Fund",
+      "taxType": "taxable",
+      "series": "schwab",
       "yield": 0.035,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SCAXX": {
-      "yield": 0.0156,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "CA Municipal Money Fund (Ultra)",
+      "taxType": "state_muni",
+      "series": "schwab",
+      "yield": 0.0158,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SNYXX": {
-      "yield": 0.0162,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "NY Municipal Money Fund (Ultra)",
+      "taxType": "state_muni",
+      "series": "schwab",
+      "yield": 0.0166,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SWOXX": {
-      "yield": 0.0176,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "Municipal Money Fund (Ultra)",
+      "taxType": "national_muni",
+      "series": "schwab",
+      "yield": 0.0178,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SCTXX": {
-      "yield": 0.0177,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "name": "AMT Tax-Free Money Fund (Ultra)",
+      "taxType": "national_muni",
+      "series": "schwab",
+      "yield": 0.0178,
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SCOXX": {
+      "name": "Treasury Obligations (Ultra)",
+      "taxType": "treasury",
+      "series": "schwab",
       "yield": 0.0353,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SUTXX": {
+      "name": "U.S. Treasury Money Fund (Ultra)",
+      "taxType": "treasury",
+      "series": "schwab",
       "yield": 0.0356,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SGUXX": {
+      "name": "Government Money Fund (Ultra)",
+      "taxType": "treasury",
+      "series": "schwab",
       "yield": 0.0353,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "SNAXX": {
+      "name": "Prime Advantage Money Fund (Ultra)",
+      "taxType": "taxable",
+      "series": "schwab",
       "yield": 0.0365,
-      "source": "Schwab (fallback 2026-08-12)",
-      "live": false
+      "yieldType": "7day",
+      "source": "Schwab",
+      "live": true
     },
     "CALI": {
-      "yield": 0.0235,
-      "source": "iShares (fallback 2026-08-12)",
+      "name": "CA Muni Bond ETF",
+      "taxType": "state_muni",
+      "series": "etf",
+      "yield": 0.0301,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
       "live": false
     },
     "SUB": {
-      "yield": 0.0262,
-      "source": "iShares (fallback 2026-08-12)",
+      "name": "Short-Term National Muni ETF",
+      "taxType": "national_muni",
+      "series": "etf",
+      "yield": 0.026,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
       "live": false
     },
     "CMF": {
-      "yield": 0.0331,
-      "source": "iShares",
-      "live": true
+      "name": "CA Intermediate Muni ETF",
+      "taxType": "state_muni",
+      "series": "etf",
+      "yield": 0.0319,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "MUB": {
-      "yield": 0.0359,
-      "source": "iShares",
-      "live": true
+      "name": "National Muni ETF",
+      "taxType": "national_muni",
+      "series": "etf",
+      "yield": 0.0344,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "NYF": {
-      "yield": 0.0364,
-      "source": "iShares",
-      "live": true
+      "name": "NY Muni Bond ETF",
+      "taxType": "state_muni",
+      "series": "etf",
+      "yield": 0.0345,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "IEI": {
-      "yield": 0.044,
-      "source": "iShares",
-      "live": true
+      "name": "Intermediate Treasury ETF",
+      "taxType": "treasury",
+      "series": "etf",
+      "yield": 0.0397,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "VCSH": {
-      "yield": 0.048,
-      "source": "Vanguard (fallback 2026-08-12)",
+      "name": "Short-Term Corp Bond ETF",
+      "taxType": "taxable",
+      "series": "etf",
+      "yield": 0.046,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
       "live": false
     },
     "VGSH": {
-      "yield": 0.042,
-      "source": "Vanguard (fallback 2026-08-12)",
+      "name": "Short-Term Treasury ETF",
+      "taxType": "treasury",
+      "series": "etf",
+      "yield": 0.038,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
       "live": false
     },
     "VCIT": {
-      "yield": 0.052,
-      "source": "Vanguard (fallback 2026-08-12)",
+      "name": "Intermediate Corp Bond ETF",
+      "taxType": "taxable",
+      "series": "etf",
+      "yield": 0.051,
+      "yieldType": "sec_yield",
+      "source": "fallback_2026-04-24",
       "live": false
     },
     "FORCX": {
-      "yield": 0.0308,
-      "source": "Nuveen (manual 2026-08-12)",
+      "name": "OR Intermediate Muni Fund",
+      "taxType": "state_muni",
+      "series": "etf",
+      "yield": 0.032,
+      "yieldType": "sec_yield",
+      "source": "Nuveen (manual 2026-04-09)",
       "live": false
     }
   }
