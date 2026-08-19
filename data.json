@@ -1,8 +1,8 @@
 {
   "meta": {
-    "last_updated": "2026-08-18T13:42:01Z",
+    "last_updated": "2026-08-19T13:43:40Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
-    "live_count": 17,
+    "live_count": 16,
     "total_count": 26,
     "stale": false
   },
@@ -11,7 +11,7 @@
       "name": "CA Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0185,
+      "yield": 0.019,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -20,7 +20,7 @@
       "name": "NY Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.021,
+      "yield": 0.0217,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -29,7 +29,7 @@
       "name": "Municipal Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0214,
+      "yield": 0.022,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -38,7 +38,7 @@
       "name": "AMT Tax-Free Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0212,
+      "yield": 0.0217,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -83,7 +83,7 @@
       "name": "CA Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.02,
+      "yield": 0.0205,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -92,7 +92,7 @@
       "name": "NY Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0225,
+      "yield": 0.0232,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -101,7 +101,7 @@
       "name": "Municipal Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0229,
+      "yield": 0.0235,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -110,7 +110,7 @@
       "name": "AMT Tax-Free Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0227,
+      "yield": 0.0232,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -227,10 +227,10 @@
       "name": "Intermediate Corp Bond ETF",
       "taxType": "taxable",
       "series": "etf",
-      "yield": 0.055,
+      "yield": 0.051,
       "yieldType": "sec_yield",
-      "source": "Vanguard",
-      "live": true
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "FORCX": {
       "name": "OR Intermediate Muni Fund",
