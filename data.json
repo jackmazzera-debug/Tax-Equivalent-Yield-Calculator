@@ -1,8 +1,8 @@
 {
   "meta": {
-    "last_updated": "2026-08-23T13:32:48Z",
+    "last_updated": "2026-08-24T13:52:39Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
-    "live_count": 19,
+    "live_count": 16,
     "total_count": 26,
     "stale": false
   },
@@ -209,28 +209,28 @@
       "name": "Short-Term Corp Bond ETF",
       "taxType": "taxable",
       "series": "etf",
-      "yield": 0.05,
+      "yield": 0.046,
       "yieldType": "sec_yield",
-      "source": "Vanguard",
-      "live": true
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "VGSH": {
       "name": "Short-Term Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.043,
+      "yield": 0.038,
       "yieldType": "sec_yield",
-      "source": "Vanguard",
-      "live": true
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "VCIT": {
       "name": "Intermediate Corp Bond ETF",
       "taxType": "taxable",
       "series": "etf",
-      "yield": 0.055,
+      "yield": 0.051,
       "yieldType": "sec_yield",
-      "source": "Vanguard",
-      "live": true
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "FORCX": {
       "name": "OR Intermediate Muni Fund",
