@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-09-02T17:02:11Z",
+    "last_updated": "2026-09-03T16:57:21Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 16,
     "total_count": 26,
@@ -11,7 +11,7 @@
       "name": "CA Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0188,
+      "yield": 0.0185,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -20,7 +20,7 @@
       "name": "NY Municipal Money Fund",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.021,
+      "yield": 0.0205,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -29,7 +29,7 @@
       "name": "Municipal Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0215,
+      "yield": 0.0212,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -38,7 +38,7 @@
       "name": "AMT Tax-Free Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0214,
+      "yield": 0.0211,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -47,7 +47,7 @@
       "name": "Treasury Obligations Money Fund",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0339,
+      "yield": 0.034,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -65,7 +65,7 @@
       "name": "Government Money Fund",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0339,
+      "yield": 0.034,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -83,7 +83,7 @@
       "name": "CA Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0203,
+      "yield": 0.02,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -92,7 +92,7 @@
       "name": "NY Municipal Money Fund (Ultra)",
       "taxType": "state_muni",
       "series": "schwab",
-      "yield": 0.0225,
+      "yield": 0.022,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -101,7 +101,7 @@
       "name": "Municipal Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.023,
+      "yield": 0.0227,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -110,7 +110,7 @@
       "name": "AMT Tax-Free Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0229,
+      "yield": 0.0226,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -119,7 +119,7 @@
       "name": "Treasury Obligations (Ultra)",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0354,
+      "yield": 0.0355,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -137,7 +137,7 @@
       "name": "Government Money Fund (Ultra)",
       "taxType": "treasury",
       "series": "schwab",
-      "yield": 0.0354,
+      "yield": 0.0355,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
