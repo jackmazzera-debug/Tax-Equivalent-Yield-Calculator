@@ -1,8 +1,8 @@
 {
   "meta": {
-    "last_updated": "2026-09-05T15:50:01Z",
+    "last_updated": "2026-09-06T16:01:14Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
-    "live_count": 17,
+    "live_count": 16,
     "total_count": 26,
     "stale": false
   },
@@ -218,10 +218,10 @@
       "name": "Short-Term Treasury ETF",
       "taxType": "treasury",
       "series": "etf",
-      "yield": 0.043,
+      "yield": 0.038,
       "yieldType": "sec_yield",
-      "source": "Vanguard",
-      "live": true
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "VCIT": {
       "name": "Intermediate Corp Bond ETF",
