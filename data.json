@@ -1,8 +1,8 @@
 {
   "meta": {
-    "last_updated": "2026-09-27T17:33:21Z",
+    "last_updated": "2026-09-28T20:00:52Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
-    "live_count": 17,
+    "live_count": 16,
     "total_count": 26,
     "stale": false
   },
@@ -227,10 +227,10 @@
       "name": "Intermediate Corp Bond ETF",
       "taxType": "taxable",
       "series": "etf",
-      "yield": 0.055,
+      "yield": 0.051,
       "yieldType": "sec_yield",
-      "source": "Vanguard",
-      "live": true
+      "source": "fallback_2026-04-24",
+      "live": false
     },
     "FORCX": {
       "name": "OR Intermediate Muni Fund",
