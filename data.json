@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-11-04T20:18:04Z",
+    "last_updated": "2026-11-05T20:29:19Z",
     "source": "GitHub Actions \u2014 fetch_yields.py",
     "live_count": 16,
     "total_count": 26,
@@ -29,7 +29,7 @@
       "name": "Municipal Money Fund",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0224,
+      "yield": 0.0225,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
@@ -101,7 +101,7 @@
       "name": "Municipal Money Fund (Ultra)",
       "taxType": "national_muni",
       "series": "schwab",
-      "yield": 0.0239,
+      "yield": 0.024,
       "yieldType": "7day",
       "source": "Schwab",
       "live": true
